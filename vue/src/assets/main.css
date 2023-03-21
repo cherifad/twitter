@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* import local fonts */
+@font-face {
+  font-family: 'Twitter';
+  src: url('./fonts/Chirp-Regular.80fda27a.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Twitter', sans-serif;
+}
+
+* {
+    transition-duration: 0.2s;
+    transition-property: background-color, box-shadow;
+}
