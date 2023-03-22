@@ -6,12 +6,12 @@
 
 <template>
     <div class="relative">
-        <form class=" mb-3 mt-1 h-12">
+        <form class=" mb-3 mt-3 h-12">
             <div id="searchBar" class="flex items-center border-[1px] rounded-full" :class="searchFocus ? 'bg-white dark:bg-black border-blue': 'bg-[#eff3f4] dark:bg-[#16181c] dark:border-[#16181c] border-[#eff3f4]'">
                 <IconSearch class="ml-3" :class="searchFocus ? 'text-blue' : 'text-[#536471]'" />
                 <input @focusout="searchFocus = false" @focusin="searchFocus = true" id="search" type="text" placeholder="Search Twitter" class="outline-none border-none p-3 bg-transparent flex-1">
             </div>
-            <IconSettings class="absolute top-5 right-5"/>
+            <IconSettings class="absolute top-7 right-5"/>
         </form>
         <div>
             <h1 class="relative font-extrabold text-xl top-3 left-5">Tendances pour vous</h1>

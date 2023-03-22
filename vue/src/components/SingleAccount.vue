@@ -34,7 +34,7 @@
 
         </div>
         <div class="flex items-center">
-            <button class=" mr-7 rounded-full bg-white text-black font-black px-4 text-sm min-h-[32px] dark:bg-black dark:text-white">Follow</button>
+            <button class=" mr-7 rounded-full bg-black text-white font-black px-4 text-sm min-h-[32px] dark:bg-white dark:text-black">Follow</button>
         </div>
     </div>
 </template>

@@ -3,8 +3,8 @@
     <header class="select-none w-1/4 flex justify-end border-r-[1px] dark:border-zinc-800 border-zinc-200">
       <div class="w-72 dark:text-white flex flex-col justify-between items-end px-2">
         <div>
-          <IconTwitter class="my-1 mx-8" />
-          <LeftBar />
+          <IconTwitter class="ml-10 mt-5" />
+          <LeftBar class="mt-5"/>
         </div>
         <UserCard name="John" pseudo="doe" />
       </div>
