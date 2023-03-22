@@ -1,5 +1,5 @@
 <template>
-  <div class="flex px-4 py-1 border-y-2 border-zinc-800">
+  <div class="flex px-4 py-1 border-y-[1px] dark:border-zinc-800 border-zinc-200">
     <div class="mr-3 pt-1">
       <img v-if="avatar" :src="avatar" alt="" />
       <IconTwitter v-else />

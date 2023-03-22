@@ -42,7 +42,7 @@
             <div
               v-for="media in tweetMedia"
               :key="media.id"
-              class="h-32 pl-1 pb-1"
+              class="h-32 pl-1 pb-1 rounded-lg"
               :class="tweetMediaCount == 1 ? 'w-full' : !(tweetMediaCount % 2) &&  tweetMediaCount == media.id ? 'w-full' : 'w-1/2'"
             >
               <img

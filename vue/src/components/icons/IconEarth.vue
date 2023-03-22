@@ -2,7 +2,7 @@
   <svg
     viewBox="0 0 24 24"
     aria-hidden="true"
-    class="w-6 h-6 fill-current text-black dark:text-white"
+    class="w-6 h-6 fill-current text-white"
   >
     <g>
       <path
