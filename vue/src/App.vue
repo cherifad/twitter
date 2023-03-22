@@ -14,7 +14,9 @@
         <RouterView class="flex-1 border-r-[1px] dark:border-zinc-800 border-zinc-200" />
         <div class="w-[350px] flex min-h-screen">
           <RightBarHome v-if="route.name == 'Home'" />
+          <RightBarExplore v-if="route.name == 'Explore'" />
         </div>
+        
       </div>
     </main>
   </div>
@@ -25,6 +27,7 @@ import LeftBar from './components/Nav/LeftNavBar.vue';
 import UserCard from './components/UserCard.vue';
 import IconTwitter from './components/icons/IconTwitter.vue';
 import RightBarHome from './components/Nav/RightBarHome.vue';
+import RightBarExplore from './components/Nav/RightBarExplore.vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
