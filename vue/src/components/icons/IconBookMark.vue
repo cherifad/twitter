@@ -3,7 +3,7 @@
     v-if="selected"
     viewBox="0 0 24 24"
     aria-hidden="true"
-    class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e"
+    class="w-6 h-6 fill-current text-black dark:text-white"
   >
     <g>
       <path
@@ -15,7 +15,7 @@
     v-else
     viewBox="0 0 24 24"
     aria-hidden="true"
-    class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e"
+    class="w-6 h-6 fill-current text-black dark:text-white"
   >
     <g>
       <path
