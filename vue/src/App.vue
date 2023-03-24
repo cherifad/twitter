@@ -15,6 +15,7 @@
         <div class="w-[350px] flex min-h-screen">
           <RightBarHome v-if="route.name == 'Home'" />
           <RightBarExplore v-if="route.name == 'Explore'" />
+          <RightBarHome v-if="route.name == 'Notifications'" />
         </div>
         
       </div>
