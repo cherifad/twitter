@@ -37,7 +37,7 @@
                     </div>
                     </div>
                     <SingleMention contentNotif="Do you want to come in my bed ?" account="JulosSs_05" accountName="Mia Kalifa" accountNameUser="miakalifa3" accountPictureUser="../src/assets/img/mk.jpg" tweetReplies="5" tweetRetweets="120" tweetLikes="15000"/>
-                    <SingleMention contentNotif="Do you want to come in my bed ?" account="JulosSs_05" accountName="Adriana Chechik" accountNameUser="adriana_checkik_tv" accountPictureUser="../src/assets/img/ac.jpg" tweetReplies="8963" tweetRetweets="13000" tweetLikes="370000"/>
+                    <SingleMention contentNotif="Do you want to come in my bed ?" account="JulosSs_05" accountName="Adriana Chechik" accountNameUser="CheckikTv" accountPictureUser="../src/assets/img/ac.jpg" tweetReplies="8963" tweetRetweets="13000" tweetLikes="370000"/>
                 </TabPanel>
             </TabPanels>
         </TabGroup>

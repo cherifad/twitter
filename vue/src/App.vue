@@ -12,9 +12,10 @@
     <main class="flex-1">
       <div class="w-[990px] dark:text-white flex gap-3 justify-between">
         <RouterView class="flex-1 border-r-[1px] dark:border-zinc-800 border-zinc-200" />
-        <div class="w-[350px] flex min-h-screen">
+        <div :class="route.name == 'Messages'?'w-[600px]':'w-[350px]'" class=" flex min-h-screen">
           <RightBarHome v-if="route.name == 'Home'" />
           <RightBarExplore v-if="route.name == 'Explore'" />
+          <RightBarHome v-if="route.name == 'Notifications'" />
           <RightBarHome v-if="route.name == 'Notifications'" />
         </div>
         
