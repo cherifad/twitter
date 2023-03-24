@@ -32,7 +32,6 @@
 
 
 <template>
-    <!-- Tout revoir pour faire avec Tab et TabPanel --> 
     <div class="flex justify-between items-center  py-4 hover:bg-[#16181c] hover:border-r-[2px] hover:border-r-sky-500 hover:cursor-pointer w-full">
         <div class="flex items-center">
             <div class=" ml-5">
