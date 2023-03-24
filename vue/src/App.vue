@@ -9,15 +9,14 @@
         <UserCard name="John" pseudo="doe" />
       </div>
     </header>
-    <main class="flex-1">
-      <div class="w-[990px] dark:text-white flex gap-3 justify-between ">
-        <RouterView :class="route.name != 'Messages'?'border-r-[1px] dark:border-zinc-800 border-zinc-200':''" class="flex-1" />
+    <main class="flex-1 flex flex-col">
+      <div class="w-[990px] dark:text-white flex gap-3 justify-between flex-1">
+        <RouterView :class="route.name != 'Messages' ? 'border-r-[1px] dark:border-zinc-800 border-zinc-200' : ''" class="flex-1 flex flex-col" />
         <div v-if="route.name != 'Messages'" class=" outline-none w-[350px] flex min-h-screen">
           <RightBarHome v-if="route.name == 'Home'" />
           <RightBarExplore v-if="route.name == 'Explore'" />
           <RightBarHome v-if="route.name == 'Notifications'" />
-        </div>
-        
+        </div>        
       </div>
     </main>
   </div>

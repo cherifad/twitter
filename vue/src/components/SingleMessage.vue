@@ -24,7 +24,12 @@
             type: String,
             default: "",
             required: true,
-        }
+        },
+        selected: {
+            type: Boolean,
+            default: false,
+            required: true,
+        },
     }
     );
 
@@ -32,7 +37,7 @@
 
 
 <template>
-    <div class="flex justify-between items-center  py-4 hover:bg-[#16181c] hover:border-r-[2px] hover:border-r-sky-500 hover:cursor-pointer w-full">
+    <div :class="selected ? 'border-r-[2px] border-blue bg-[#16181c]' : ''" class="flex justify-between items-center  py-4 hover:bg-[#16181c] hover:border-r-[2px] hover:border-blue hover:cursor-pointer w-full">
         <div class="flex items-center">
             <div class=" ml-5">
                 <img :src=accountPictureAuthor class="w-12 h-12 rounded-full">
