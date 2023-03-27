@@ -2039,3 +2039,5 @@ data/database/pg_wal/000000010000000000000004
 data/database/pg_wal/000000010000000000000005
 data/database/pg_xact/0000
 vue/docker-compose.yml
+docker/export/hasura_backup.tar
+docker/export/postgres_backup.tar

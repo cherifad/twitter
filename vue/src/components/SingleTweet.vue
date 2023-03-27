@@ -1,21 +1,21 @@
 <template>
-  <div class="flex pt-3 px-4">
+  <div class="flex pt-3 px-4 border-b-[1px] dark:border-zinc-800 border-zinc-200">
     <div class="p-2">
       <img
         class="w-12 h-12 rounded-full"
-        :src="tweetAuthorAvatar"
+        :src="tweetAuthorAvatar ? tweetAuthorAvatar : '/src/assets/img/default-avatar.webp'"
         :alt="tweetAuthor"
       />
     </div>
-    <div class="pt-2 flex-1">
+    <div class="pt-2 mb-3 flex-1">
       <div class="flex items-center justify-between w-full">
         <div class="flex items-center text-base">
           <span class="font-bold flex items-center">{{ tweetAuthor }} <IconVerified class="ml-1" v-if="tweetAuthorVerified" /></span>
-          <span class="ml-1 text-gray-light text-sm font-normal"
+          <span class="ml-1 text-gray-light font-normal"
             >@{{ tweetAuthorUsername }}</span
           >
-          <span class="px-1 text-gray-light font-normal text-sm">·</span>
-          <span class="ml-1 text-gray-light text-sm">{{ timeSince(tweetDate) }}</span>
+          <span class="px-1 text-gray-light font-normal">·</span>
+          <span class="ml-1 text-gray-light">{{ timeSince(tweetDate) }}</span>
         </div>
         <div class="ml-2">
           <svg
@@ -122,8 +122,7 @@ defineProps({
     default: "",
   },
   tweetAuthorAvatar: {
-    type: String,
-    default: "",
+    type: String,    
   },
   tweetAuthorUsername: {
     type: String,
