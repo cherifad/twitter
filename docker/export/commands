@@ -1,0 +1,3 @@
+docker load --input postgres_backup.tar & docker load --input hasura_backup
+
+docker-compose up -d

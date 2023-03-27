@@ -8,7 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.10",
     "@headlessui/vue": "^1.7.12",
+    "@vueuse/core": "^9.13.0",
+    "bcryptjs": "^2.4.3",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "pinia": "^2.0.32",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
