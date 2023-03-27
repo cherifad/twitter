@@ -13,7 +13,7 @@
 
 
 <template>
-    <div class="flex border-b-[1px] border-current border-zinc-800 p-2 text-sm">
+    <div class="flex border-b-[1px] border-current dark:border-zinc-800 border-zinc-200 p-2 text-sm">
         <div class=" relative justify-center flex w-2/12 items-center">
             <IconTwitter/>
         </div>

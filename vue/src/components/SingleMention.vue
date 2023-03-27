@@ -118,7 +118,7 @@ import { formatCount, timeSince } from "../utils/helpers.js";
 
 
 <template>
-    <div class=" border-b-[1px] border-current border-zinc-800 p-2 text-sm">
+    <div class=" border-b-[1px] border-current dark:border-zinc-800 border-zinc-200 p-2 text-sm">
         <div class=" flex w-5/6 items-center">
             <img :src=accountPictureUser class="w-12 h-12 rounded-full">
             <div class=" ml-3">
