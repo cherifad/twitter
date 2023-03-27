@@ -74,12 +74,12 @@ import Button from "../components/Button.vue";
                 <Button class="mt-8" text="New Message" />
             </div>
           </TabPanel>
-          <TabPanel
-            ><SingleChatMessage accountPictureAuthor="/src/assets/img/mk.jpg"
-          /></TabPanel>
-          <TabPanel
-            ><SingleChatMessage accountPictureAuthor="/src/assets/img/cm.jpg"
-          /></TabPanel>
+          <TabPanel>
+            <SingleChatMessage messageUser="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." :sendMessage="true" nbFollowers="15194525" accountPictureAuthor="/src/assets/img/mk.jpg" dateCreateAccount="March 2023" accountAuthor="Mia Kalifa" accountUserAuthor="Miakalifa3"/>
+          </TabPanel>
+          <TabPanel>
+            <SingleChatMessage messageUser="Reçu" :sendMessage="false" nbFollowers="37537637" accountPictureAuthor="/src/assets/img/cm.jpg" dateCreateAccount="September 2021" accountAuthor="ClaraMorgane FanClub" accountUserAuthor="ClaraMorganeFC"/>
+          </TabPanel>
         </TabPanels>
       </div>
     </TabGroup>
