@@ -8,11 +8,11 @@
         </form>
         <div class="bg-[#f7f9f9] dark:bg-[#16181c] pt-3 rounded-2xl">
             <span class="mx-4 mb-3 text-xl font-extrabold">Trends for you</span>
-            <SingleTrend title="Trending in Nigeria" theme="Nigeria" ranking="1" :numberOfTweets="1000000" />
-            <SingleTrend title="Trending in Nigeria" theme="Nigeria" ranking="2" :numberOfTweets="1000000" />
-            <SingleTrend title="Trending in Nigeria" theme="Nigeria" ranking="3" :numberOfTweets="1000000" />
-            <SingleTrend title="Trending in Nigeria" theme="Nigeria" ranking="4" :numberOfTweets="1000000" />
-            <SingleTrend title="Trending in Nigeria" theme="Nigeria" ranking="5" :numberOfTweets="1000000" />
+            <SingleTrend title="Trending in Nigeria" theme="Nigeria" :ranking="1" :numberOfTweets="1000000" />
+            <SingleTrend title="Trending in Nigeria" theme="Nigeria" :ranking="2" :numberOfTweets="1000000" />
+            <SingleTrend title="Trending in Nigeria" theme="Nigeria" :ranking="3" :numberOfTweets="1000000" />
+            <SingleTrend title="Trending in Nigeria" theme="Nigeria" :ranking="4" :numberOfTweets="1000000" />
+            <SingleTrend title="Trending in Nigeria" theme="Nigeria" :ranking="5" :numberOfTweets="1000000" />
             <div class="px-4 py-3 ring-gray-hover">
                 <RouterLink to="/explore" class="text-sm text-blue">Show more</RouterLink>
             </div>

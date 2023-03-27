@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: import('../views/HomeView.vue'),
+      component: () => import('../views/HomeView.vue'),
       metaTags: [
         {
           name: 'Home',
@@ -21,22 +21,22 @@ const router = createRouter({
     {
       path: '/explore',
       name: 'Explore',
-      component: import('../views/ExploreView.vue'),
+      component: () => import('../views/ExploreView.vue'),
     },
     {
       path: '/notifications',
       name: 'Notifications',
-      component: import('../views/NotifsView.vue'),
+      component: () => import('../views/NotifsView.vue'),
     },
     {
       path: '/messages',
       name: 'Messages',
-      component: import('../views/MessagesView.vue'),
+      component: () => import('../views/MessagesView.vue'),
     },
     {
       path: '/profile',
       name: 'Profile',
-      component: import('../views/ProfileView.vue'),
+      component: () => import('../views/ProfileView.vue'),
     }
   ]
 })

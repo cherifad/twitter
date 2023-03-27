@@ -4,35 +4,35 @@ import { GET_USER_WITH_PASSWORD, CREATE_NEW_USER } from "../api";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    authUser: useStorage("authUser", null, localStorage, {
+    twitterUser: useStorage("authUser", null, localStorage, {
       serializer: StorageSerializers.object,
       expires: 1800,
     }),
-    authErrors: [],
+    twitterAuthErrors: [],
   }),
   getters: {
-    user: (state) => state.authUser,
-    errors: (state) => state.authErrors,
+    user: (state) => state.twitterUser,
+    errors: (state) => state.twitterAuthErrors,
     isAuthenticated: (state) => state.user !== null,
     isPremium: (state) => state.user !== null && state.user.premium,
   },
   actions: {
     async login(email, password) {
-      this.authError = [];
+      this.twitterAuthErrors = [];
       try {
         const response = await GET_USER_WITH_PASSWORD(email, password);
         if (response === null) {
-          this.authErrors.push("Identifiants incorrects");
+          this.twitterAuthErrors.push("Identifiants incorrects");
         } else {
-          this.authUser = response;
+          this.twitterUser = response;
           this.router.push(`/profile/${response.username}`);
         }
       } catch (error) {
-        this.authErrors.push("Identifiants incorrects");
+        this.twitterAuthErrors.push("Identifiants incorrects");
       }
     },
     async logout() {
-      this.authUser = null;
+      this.twitterUser = null;
       this.router.push("/");
     },
     async register(
@@ -44,10 +44,10 @@ export const useAuthStore = defineStore("auth", {
       dateOfBirth
     ) {
       if (password !== password_confirmation) {
-        this.authErrors.push("Les mots de passe ne correspondent pas");
+        this.twitterAuthErrors.push("Les mots de passe ne correspondent pas");
         return;
       }
-      this.authError = [];
+      this.twitterAuthErrors = [];
       try {
         const response = await CREATE_NEW_USER(
           name,
@@ -56,10 +56,10 @@ export const useAuthStore = defineStore("auth", {
           username,
           dateOfBirth
         );
-        this.authUser = response.data.userDetails;
+        this.twitterUser = response.data.userDetails;
         this.router.push(`/profile/${response.username}`);
       } catch (error) {
-        this.authErrors = error.response.data.errors;
+        this.twitterAuthErrors = error.response.data.errors;
       }
     },
     // async forgotPassword(email) {

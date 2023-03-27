@@ -19,6 +19,7 @@
         </div>        
       </div>
     </main>
+    <authBanner v-if="!authStore.isAuthenticated" />
   </div>
 </template>
 
@@ -29,6 +30,9 @@ import IconTwitter from './components/icons/IconTwitter.vue';
 import RightBarHome from './components/Nav/RightBarHome.vue';
 import RightBarExplore from './components/Nav/RightBarExplore.vue';
 import { useRoute } from 'vue-router';
+import authBanner from './components/Auth/authBanner.vue';
+import { useAuthStore } from './stores/authStore'; 
 
 const route = useRoute();
+const authStore = useAuthStore();
 </script>
