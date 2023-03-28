@@ -37,6 +37,12 @@ const router = createRouter({
       path: '/profile',
       name: 'Profile',
       component: () => import('../views/ProfileView.vue'),
+    },
+    // to match with any route
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'Home',
+      component: () => import('../views/HomeView.vue'),
     }
   ]
 })

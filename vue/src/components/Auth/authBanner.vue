@@ -12,26 +12,29 @@
       </div>
       <div class="flex gap-3">
         <button
-          @click="showPopup = true"
+          @click="register = false, showPopup = true"
           class="outline-none font-bold text-sm px-4 rounded-full border-[1px] border-slate-100 min-h-[36px] text-white"
         >
           Log in
         </button>
         <button
+          @click="register = true, showPopup = true"
           class="outline-non bg-white font-bold text-sm px-4 rounded-full border-[1px] border-white min-h-[36px]"
         >
-          Sign up
+          Sign up {{ register }}
         </button>
       </div>
     </div>
+    <AuthPopup @close="showPopup = false" :to-show="showPopup" :register="register" />
   </div>
 </template>
 
 <script setup>
-// import AuthPopup from "./AuthPopup.vue";
 import { ref } from "vue";
+import AuthPopup from "./AuthPopup.vue";
 
 const isOpen = ref(true);
+const register = ref(false);
 
 const showPopup = ref(true);
 

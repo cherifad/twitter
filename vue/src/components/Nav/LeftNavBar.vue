@@ -24,6 +24,7 @@
           <IconMessage :selected="route.name == 'Messages'" />
           <h1 class="mr-4 ml-5 text-xl dark:text-white" :class="route.name == 'Messages' ? 'font-bold' : null" >Messages</h1>
         </RouterLink>
+        <button @click="authStore.logout">sign out</button>
       </li>
       <li class="">
         <RouterLink to="" class="p-3 w-fit flex rounded-full items-center hover:bg-gray dark:hover:bg-gray-hover">
@@ -60,8 +61,10 @@ import IconProfile from "../icons/IconProfile.vue";
 import IconMore from "../icons/IconMore.vue";
 import Button from "../Button.vue";
 import { useRoute, RouterLink } from "vue-router";
+import { useAuthStore } from "../../stores/authStore";
 
 const route = useRoute();
+const authStore = useAuthStore();
 
 </script>
 

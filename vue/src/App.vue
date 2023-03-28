@@ -20,6 +20,7 @@
       </div>
     </main>
     <authBanner v-if="!authStore.isAuthenticated" />
+    <AuthPopup />
   </div>
 </template>
 
@@ -32,6 +33,7 @@ import RightBarExplore from './components/Nav/RightBarExplore.vue';
 import { useRoute } from 'vue-router';
 import authBanner from './components/Auth/authBanner.vue';
 import { useAuthStore } from './stores/authStore'; 
+import AuthPopup from './components/Auth/AuthPopup.vue';
 
 const route = useRoute();
 const authStore = useAuthStore();

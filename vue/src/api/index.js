@@ -1,5 +1,6 @@
 import { apolloProvider } from "./apolloProvider";
 import { gql } from "graphql-tag";
+import bcrypt from "bcryptjs";
 
 const GET_TWEETS = async () => {
   const query = gql`
@@ -83,6 +84,7 @@ const GET_USER_WITH_PASSWORD = async (username, password) => {
   try {
     const response = await apolloProvider.query({ query });
     const user = response.data.user;
+    if(user.length == 0) return null;
     if (bcrypt.compareSync(password, user.password)) {
       return user;
     } else {
@@ -127,7 +129,7 @@ const CREATE_NEW_USER = async (
     }
   `;
   try {
-    const response = await apolloProvider.query({ query });
+    const response = await apolloProvider.mutate({ query });
     const user = response.data.user;
     return user;
   } catch (error) {

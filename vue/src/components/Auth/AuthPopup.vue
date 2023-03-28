@@ -1,14 +1,6 @@
 <template>
-    <div class="fixed inset-0 flex items-center justify-center">
-      <button
-        type="button"
-        @click="openModal"
-        class="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-      >
-        Open dialog
-      </button>
-    </div>
-    <TransitionRoot appear :show="isOpen" as="template">
+  <div>
+    <TransitionRoot appear :show="isOpen">
       <Dialog as="div" @close="closeModal" class="relative z-10">
         <TransitionChild
           as="template"
@@ -19,9 +11,9 @@
           leave-from="opacity-100"
           leave-to="opacity-0"
         >
-          <div class="fixed inset-0 bg-black bg-opacity-25" />
+          <div class="fixed inset-0 bg-slate-300 bg-opacity-40" />
         </TransitionChild>
-  
+
         <div class="fixed inset-0 overflow-y-auto">
           <div
             class="flex min-h-full items-center justify-center p-4 text-center"
@@ -36,55 +28,532 @@
               leave-to="opacity-0 scale-95"
             >
               <DialogPanel
-                class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+                class="transform relative overflow-hidden rounded-2xl dark:bg-black bg-white p-6 text-left align-middle shadow-xl transition-all min-h-[400px] max-h-[90vh] max-w-[80vw] w-[600px]"
               >
+                <div
+                  id="close"
+                  class="absolute rounded-full p-2 top-2 left-2 cursor-pointer"
+                  @click="closeModal"
+                >
+                  <IconClose />
+                </div>
                 <DialogTitle
                   as="h3"
-                  class="text-lg font-medium leading-6 text-gray-900"
+                  class="dark:text-white flex-col text-3xl flex items-center font-bold leading-6 text-gray-900"
                 >
-                  Payment successful
-                </DialogTitle>
-                <div class="mt-2">
-                  <p class="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
-                </div>
-  
-                <div class="mt-4">
-                  <button
-                    type="button"
-                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    @click="closeModal"
+                  <IconTwitter />
+                  <span class="my-5"
+                    >{{ register ? "Sign up" : "Log in" }} to Twitter</span
                   >
-                    Got it, thanks!
+                </DialogTitle>
+                <form
+                  v-if="register"
+                  @submit="(e) => registerUser(e)"
+                  class="pb-12 flex h-full justify-center items-center flex-col px-8 max-w-[364px] m-auto py-3 rounded-sm border-[1px] border-gray overflow-scroll overflow-x-hidden"
+                >
+                  <div
+                    class="group rounded-[4px] dark:text-white my-3 w-full"
+                    :class="
+                      emailFocus
+                        ? 'border-blue border-2'
+                        : 'border-[1px] border-[#515151]'
+                    "
+                  >
+                    <input
+                      @focusin="emailFocus = true"
+                      @focusout="emailFocus = false"
+                      v-model="registerForm.email"
+                      required=""
+                      type="email"
+                      class="input dark:text-white"
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label :class="emailFocus ? 'text-blue' : 'text-[#999]'"
+                      >Email</label
+                    >
+                  </div>
+                  <div
+                    v-if="authStore.errors.length > 0"
+                    class="w-full flex flex-col"
+                  >
+                    <span
+                      v-for="error in authStore.errors"
+                      class="text-red-600"
+                      >{{ error }}</span
+                    >
+                  </div>
+                  <div
+                    class="group rounded-[4px] dark:text-white my-3 w-full"
+                    :class="
+                      passwordFocus
+                        ? 'border-blue border-2'
+                        : 'border-[1px] border-[#515151]'
+                    "
+                  >
+                    <input
+                      @focusin="passwordFocus = true"
+                      @focusout="passwordFocus = false"
+                      v-model="registerForm.password"
+                      required=""
+                      type="password"
+                      class="input dark:text-white"
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label :class="passwordFocus ? 'text-blue' : 'text-[#999]'"
+                      >Password</label
+                    >
+                  </div>
+                  <div
+                    class="group rounded-[4px] dark:text-white my-3 w-full"
+                    :class="
+                      registerFocus.password_confirmation
+                        ? 'border-blue border-2'
+                        : 'border-[1px] border-[#515151]'
+                    "
+                  >
+                    <input
+                      @focusin="registerFocus.password_confirmation = true"
+                      @focusout="registerFocus.password_confirmation = false"
+                      v-model="registerForm.password_confirmation"
+                      required=""
+                      type="password"
+                      class="input dark:text-white"
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label
+                      :class="
+                        registerFocus.password_confirmation
+                          ? 'text-blue'
+                          : 'text-[#999]'
+                      "
+                      >Password confirmation</label
+                    >
+                  </div>
+                  <div
+                    class="group rounded-[4px] dark:text-white my-3 w-full"
+                    :class="
+                      registerFocus.dateOfBirth
+                        ? 'border-blue border-2'
+                        : 'border-[1px] border-[#515151]'
+                    "
+                  >
+                    <input
+                      @focusin="registerFocus.dateOfBirth = true"
+                      @focusout="registerFocus.dateOfBirth = false"
+                      v-model="registerForm.dateOfBirth"
+                      required=""
+                      :type="registerFocus.dateOfBirth ? 'date' : 'text'"
+                      class="input dark:text-white"
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label
+                      :class="
+                        registerFocus.dateOfBirth ? 'text-blue' : 'text-[#999]'
+                      "
+                      >Date of Birth</label
+                    >
+                  </div>
+                  <div
+                    class="group rounded-[4px] dark:text-white my-3 w-full"
+                    :class="
+                      registerFocus.name
+                        ? 'border-blue border-2'
+                        : 'border-[1px] border-[#515151]'
+                    "
+                  >
+                    <input
+                      @focusin="registerFocus.name = true"
+                      @focusout="registerFocus.name = false"
+                      v-model="registerForm.name"
+                      required=""
+                      type="text"
+                      class="input dark:text-white"
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label
+                      :class="registerFocus.name ? 'text-blue' : 'text-[#999]'"
+                      >Full Name</label
+                    >
+                  </div>
+                  <div
+                    class="group rounded-[4px] dark:text-white my-3 w-full"
+                    :class="
+                      registerFocus.username
+                        ? 'border-blue border-2'
+                        : 'border-[1px] border-[#515151]'
+                    "
+                  >
+                    <input
+                      @focusin="registerFocus.username = true"
+                      @focusout="registerFocus.username = false"
+                      v-model="registerForm.username"
+                      required=""
+                      type="text"
+                      class="input dark:text-white"
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label
+                      :class="
+                        registerFocus.username ? 'text-blue' : 'text-[#999]'
+                      "
+                      >Username</label
+                    >
+                  </div>
+                  <input
+                    type="submit"
+                    value="Sign in"
+                    class="w-full rounded-full bg-white font-bold min-h-[36px] mt-3 hover:bg-slate-100 cursor-pointer"
+                  />
+                  <button
+                    class="w-full rounded-full border-white text-white border-[1px] font-bold min-h-[36px] mt-7 hover:bg-slate-900"
+                  >
+                    Sign in
                   </button>
-                </div>
+                  <span class="text-gray-light w-full mt-10"
+                    >Already have an account?
+                    <a
+                      @click="register = false"
+                      class="text-blue cursor-pointer"
+                      >Sign in</a
+                    ></span
+                  >
+                </form>
+                <form
+                  v-else
+                  @submit="(e) => login(e)"
+                  class="pb-12 flex h-full justify-center items-center flex-col px-8 max-w-[364px] m-auto py-3 rounded-sm border-[1px] border-gray overflow-scroll overflow-x-hidden"
+                >
+                  <div
+                    class="group rounded-[4px] dark:text-white my-3 w-full"
+                    :class="
+                      emailFocus
+                        ? 'border-blue border-2'
+                        : 'border-[1px] border-[#515151]'
+                    "
+                  >
+                    <input
+                      @focusin="emailFocus = true"
+                      @focusout="emailFocus = false"
+                      v-model="form.email"
+                      required=""
+                      type="email"
+                      class="input dark:text-white"
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label :class="emailFocus ? 'text-blue' : 'text-[#999]'"
+                      >Phone, Email or username</label
+                    >
+                  </div>
+                  <div
+                    v-if="authStore.errors.length > 0"
+                    class="w-full flex flex-col"
+                  >
+                    <span
+                      v-for="error in authStore.errors"
+                      class="text-red-600"
+                      >{{ error }}</span
+                    >
+                  </div>
+                  <div
+                    class="group rounded-[4px] dark:text-white my-3 w-full"
+                    :class="
+                      passwordFocus
+                        ? 'border-blue border-2'
+                        : 'border-[1px] border-[#515151]'
+                    "
+                  >
+                    <input
+                      @focusin="passwordFocus = true"
+                      @focusout="passwordFocus = false"
+                      v-model="form.password"
+                      required=""
+                      type="password"
+                      class="input dark:text-white"
+                    />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label :class="passwordFocus ? 'text-blue' : 'text-[#999]'"
+                      >Password</label
+                    >
+                  </div>
+                  <input
+                    type="submit"
+                    value="Sign in"
+                    class="w-full rounded-full bg-white font-bold min-h-[36px] mt-3 hover:bg-slate-100 cursor-pointer"
+                  />
+                  <button
+                    class="w-full rounded-full border-white text-white border-[1px] font-bold min-h-[36px] mt-7 hover:bg-slate-900"
+                  >
+                    Sign in
+                  </button>
+                  <span class="text-gray-light w-full mt-10"
+                    >Don't have an account?
+                    <a @click="register = true" class="text-blue cursor-pointer"
+                      >Sign up</a
+                    ></span
+                  >
+                </form>
               </DialogPanel>
             </TransitionChild>
           </div>
         </div>
       </Dialog>
     </TransitionRoot>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue'
-  import {
-    TransitionRoot,
-    TransitionChild,
-    Dialog,
-    DialogPanel,
-    DialogTitle,
-  } from '@headlessui/vue'
-  
-  const isOpen = ref(true)
-  
-  function closeModal() {
-    isOpen.value = false
+  </div>
+</template>
+
+<script setup>
+import { ref, watch } from "vue";
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Combobox,
+  ComboboxInput,
+  ComboboxOptions,
+  ComboboxOption,
+} from "@headlessui/vue";
+import IconTwitter from "../icons/IconTwitter.vue";
+import IconClose from "../icons/IconClose.vue";
+import { useAuthStore } from "../../stores/authStore";
+
+const authStore = useAuthStore();
+
+const props = defineProps({
+  toShow: {
+    type: Boolean,
+    required: true,
+  },
+  registerProp: {
+    type: Boolean,
+  },
+});
+
+///////////////////
+/// date picker ///
+//////////////////
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const years = Array.from(
+  { length: new Date().getFullYear() - 1900 + 1 },
+  (_, i) => i + 1900
+).reverse();
+
+const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
+const selectedDay = ref(days[0]);
+const selectedMonth = ref(months[0]);
+const selectedYear = ref(years[0]);
+const query = ref("");
+
+const filteredPeople = computed(() =>
+  query.value === ""
+    ? people
+    : people.filter((person) => {
+        return person.toLowerCase().includes(query.value.toLowerCase());
+      })
+);
+
+///////////////////
+/// modal part ///
+//////////////////
+
+const register = ref(props.registerProp);
+
+watch(
+  () => props.toShow,
+  (value) => {
+    isOpen.value = value;
   }
-  function openModal() {
-    isOpen.value = true
+);
+
+watch(
+  () => props.registerProp,
+  (value) => {
+    register.value = value;
   }
-  </script>
-  
+);
+
+const close = defineEmits(["close"]);
+
+const isOpen = ref(props.toShow);
+
+function closeModal() {
+  isOpen.value = false;
+  register.value = false;
+  close("close");
+}
+
+///////////////////
+/// login part ///
+//////////////////
+
+const emailFocus = ref(false);
+const passwordFocus = ref(false);
+
+const form = ref({
+  email: "",
+  password: "",
+});
+
+const login = (event) => {
+  event.preventDefault();
+  authStore.login(form.value.email, form.value.password);
+};
+
+///////////////////
+// register part //
+///////////////////
+
+const registerUser = (event) => {
+  event.preventDefault();
+  authStore.register(
+    registerForm.value.name,
+    registerForm.value.email,
+    registerForm.value.password,
+    registerForm.value.password_confirmation,
+    registerForm.value.username,
+    registerForm.value.dateOfBirth
+  );
+};
+
+const registerForm = ref({
+  email: "",
+  password: "",
+  password_confirmation: "",
+  username: "",
+  name: "",
+  dateOfBirth: "",
+});
+
+const registerFocus = ref({
+  password_confirmation: false,
+  username: false,
+  name: false,
+  dateOfBirth: false,
+});
+</script>
+
+<style scoped>
+#close:hover {
+  background-color: rgba(239, 244, 243, 0.1);
+}
+
+.group {
+  position: relative;
+  padding-top: 7px;
+}
+
+.input {
+  font-size: 17px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: white;
+}
+
+.input:focus {
+  outline: none;
+}
+
+label {
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 12px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.input:focus ~ label,
+.input:valid ~ label {
+  top: 0px;
+  font-size: 13px;
+  /* color: #5264AE; */
+}
+
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.bar:before,
+.bar:after {
+  content: "";
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  /* background: #5264AE; */
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+.input:focus ~ .bar:before,
+.input:focus ~ .bar:after {
+  width: 50%;
+}
+
+.highlight {
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.input:focus ~ .highlight {
+  animation: inputHighlighter 0.3s ease;
+}
+
+/* @keyframes inputHighlighter {
+ from {
+  background: #5264AE;
+ }
+
+ to {
+  width: 0;
+  background: transparent;
+ }
+} */
+</style>

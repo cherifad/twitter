@@ -21,7 +21,7 @@ export const useAuthStore = defineStore("auth", {
       this.twitterAuthErrors = [];
       try {
         const response = await GET_USER_WITH_PASSWORD(email, password);
-        if (response === null) {
+        if (response.user.length == 0) {
           this.twitterAuthErrors.push("Identifiants incorrects");
         } else {
           this.twitterUser = response;
@@ -59,7 +59,7 @@ export const useAuthStore = defineStore("auth", {
         this.twitterUser = response.data.userDetails;
         this.router.push(`/profile/${response.username}`);
       } catch (error) {
-        this.twitterAuthErrors = error.response.data.errors;
+        this.twitterAuthErrors.push("Une erreur est survenue");
       }
     },
     // async forgotPassword(email) {
