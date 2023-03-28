@@ -20,7 +20,7 @@
       </DialogPanel>
     </Dialog>
     <NewTweet />
-    <div class="flex-1">
+    <div class="flex-1 overflow-scroll overflow-x-hidden">
       <SingleTweet
         v-if="state.tweets"
         v-for="tweet in state.tweets"

@@ -21,11 +21,11 @@
           @click="register = true, showPopup = true"
           class="outline-non bg-white font-bold text-sm px-4 rounded-full border-[1px] border-white min-h-[36px]"
         >
-          Sign up {{ register }}
+          Sign up
         </button>
       </div>
     </div>
-    <AuthPopup @close="showPopup = false" :to-show="showPopup" :register="register" />
+    <AuthPopup @close="showPopup = false" :toShow="showPopup" :register="register" />
   </div>
 </template>
 

@@ -21,11 +21,12 @@ export const useAuthStore = defineStore("auth", {
       this.twitterAuthErrors = [];
       try {
         const response = await GET_USER_WITH_PASSWORD(email, password);
-        if (response.user.length == 0) {
+        console.log(response);
+        if (response.length == 0) {
           this.twitterAuthErrors.push("Identifiants incorrects");
         } else {
-          this.twitterUser = response;
-          this.router.push(`/profile/${response.username}`);
+          this.twitterUser = response[0];
+          this.router.push(`/profile/${twitterUser.username}`);
         }
       } catch (error) {
         this.twitterAuthErrors.push("Identifiants incorrects");
@@ -56,7 +57,7 @@ export const useAuthStore = defineStore("auth", {
           username,
           dateOfBirth
         );
-        this.twitterUser = response.data.userDetails;
+        this.twitterUser = response.data;
         this.router.push(`/profile/${response.username}`);
       } catch (error) {
         this.twitterAuthErrors.push("Une erreur est survenue");

@@ -132,30 +132,10 @@
                       >Password confirmation</label
                     >
                   </div>
-                  <div
-                    class="group rounded-[4px] dark:text-white my-3 w-full"
-                    :class="
-                      registerFocus.dateOfBirth
-                        ? 'border-blue border-2'
-                        : 'border-[1px] border-[#515151]'
-                    "
-                  >
-                    <input
-                      @focusin="registerFocus.dateOfBirth = true"
-                      @focusout="registerFocus.dateOfBirth = false"
-                      v-model="registerForm.dateOfBirth"
-                      required=""
-                      :type="registerFocus.dateOfBirth ? 'date' : 'text'"
-                      class="input dark:text-white"
-                    />
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label
-                      :class="
-                        registerFocus.dateOfBirth ? 'text-blue' : 'text-[#999]'
-                      "
-                      >Date of Birth</label
-                    >
+                  <div class="flex justify-between gap-2">
+                    <DayInput @day="(day) => (date.day = day)" />
+                    <MonthInput @month="(month) => (date.month = month)" />
+                    <YearInput @year="(year) => (date.year = year)" />
                   </div>
                   <div
                     class="group rounded-[4px] dark:text-white my-3 w-full"
@@ -207,14 +187,9 @@
                   </div>
                   <input
                     type="submit"
-                    value="Sign in"
+                    value="Sign up"
                     class="w-full rounded-full bg-white font-bold min-h-[36px] mt-3 hover:bg-slate-100 cursor-pointer"
                   />
-                  <button
-                    class="w-full rounded-full border-white text-white border-[1px] font-bold min-h-[36px] mt-7 hover:bg-slate-900"
-                  >
-                    Sign in
-                  </button>
                   <span class="text-gray-light w-full mt-10"
                     >Already have an account?
                     <a
@@ -241,8 +216,8 @@
                       @focusin="emailFocus = true"
                       @focusout="emailFocus = false"
                       v-model="form.email"
-                      required=""
-                      type="email"
+                      required
+                      type="text"
                       class="input dark:text-white"
                     />
                     <span class="highlight"></span>
@@ -273,7 +248,7 @@
                       @focusin="passwordFocus = true"
                       @focusout="passwordFocus = false"
                       v-model="form.password"
-                      required=""
+                      required
                       type="password"
                       class="input dark:text-white"
                     />
@@ -291,7 +266,7 @@
                   <button
                     class="w-full rounded-full border-white text-white border-[1px] font-bold min-h-[36px] mt-7 hover:bg-slate-900"
                   >
-                    Sign in
+                    Forgot password?
                   </button>
                   <span class="text-gray-light w-full mt-10"
                     >Don't have an account?
@@ -310,21 +285,20 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import {
   TransitionRoot,
   TransitionChild,
   Dialog,
   DialogPanel,
   DialogTitle,
-  Combobox,
-  ComboboxInput,
-  ComboboxOptions,
-  ComboboxOption,
 } from "@headlessui/vue";
 import IconTwitter from "../icons/IconTwitter.vue";
 import IconClose from "../icons/IconClose.vue";
 import { useAuthStore } from "../../stores/authStore";
+import DayInput from "./DayInput.vue";
+import MonthInput from "./MonthInput.vue";
+import YearInput from "./YearInput.vue";
 
 const authStore = useAuthStore();
 
@@ -339,43 +313,14 @@ const props = defineProps({
 });
 
 ///////////////////
-/// date picker ///
+// date handler //
 //////////////////
 
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-const years = Array.from(
-  { length: new Date().getFullYear() - 1900 + 1 },
-  (_, i) => i + 1900
-).reverse();
-
-const days = Array.from({ length: 31 }, (_, i) => i + 1);
-
-const selectedDay = ref(days[0]);
-const selectedMonth = ref(months[0]);
-const selectedYear = ref(years[0]);
-const query = ref("");
-
-const filteredPeople = computed(() =>
-  query.value === ""
-    ? people
-    : people.filter((person) => {
-        return person.toLowerCase().includes(query.value.toLowerCase());
-      })
-);
+const date = ref({
+  day: null,
+  month: null,
+  year: null,
+});
 
 ///////////////////
 /// modal part ///
@@ -428,7 +373,26 @@ const login = (event) => {
 // register part //
 ///////////////////
 
+const monthsIndex = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 const registerUser = (event) => {
+  const dateGenerated = `${date.value.year}-${monthsIndex.indexOf(
+    date.value.month
+  ) + 1}-${date.value.day}`;
+  console.log(dateGenerated);
   event.preventDefault();
   authStore.register(
     registerForm.value.name,
@@ -436,7 +400,7 @@ const registerUser = (event) => {
     registerForm.value.password,
     registerForm.value.password_confirmation,
     registerForm.value.username,
-    registerForm.value.dateOfBirth
+    dateGenerated
   );
 };
 

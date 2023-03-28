@@ -1,8 +1,8 @@
 <template>
     <div class="rounded-full hover:bg-gray dark:hover:bg-gray-hover flex w-full items-center justify-between p-3 cursor-pointer">
         <div class="flex items-center gap-3">
-            <img v-if="avatar" :src="avatar" :alt="name">
-            <IconTwitter v-else />
+            <img class="rounded-full w-10 h-10" :src="avatar ? avatar : '/src/assets/img/default-avatar.webp'" :alt="name">
+            <!-- <IconTwitter v-else /> -->
             <div>
                 <p>{{ name }}</p>
                 <p class="text-slate-700 dark:text-zinc-500">@{{ pseudo }}</p>

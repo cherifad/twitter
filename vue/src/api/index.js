@@ -83,10 +83,10 @@ const GET_USER_WITH_PASSWORD = async (username, password) => {
   `;
   try {
     const response = await apolloProvider.query({ query });
-    const user = response.data.user;
-    if(user.length == 0) return null;
-    if (bcrypt.compareSync(password, user.password)) {
-      return user;
+    const users = response.data.user;
+    if(users.length == 0) return null;
+    if (bcrypt.compareSync(password, users[0].password)) {
+      return users;
     } else {
       return null;
     }
@@ -104,7 +104,7 @@ const CREATE_NEW_USER = async (
   dateOfBirth
 ) => {
   const encryptedPassword = bcrypt.hashSync(password, 10);
-  const query = gql`
+  const mutation = gql`
     mutation {
       insert_user(
         objects: {
@@ -112,7 +112,7 @@ const CREATE_NEW_USER = async (
           email: "${email}"
           password: "${encryptedPassword}"
           username: "${username}"
-          dateOfBirth: "${dateOfBirth}"
+          date_of_birth: "${dateOfBirth}"
         }
       ) {
         returning {
@@ -129,8 +129,8 @@ const CREATE_NEW_USER = async (
     }
   `;
   try {
-    const response = await apolloProvider.mutate({ query });
-    const user = response.data.user;
+    const response = await apolloProvider.mutate({ mutation });
+    const user = response.data.insert_user.returning[0];
     return user;
   } catch (error) {
     console.error(error);
