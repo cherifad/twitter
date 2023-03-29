@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col max-h-screen">
-    <div class="px-4 items-center h-14 flex">
+  <div class="flex flex-col min-h-screen">
+    <div class="px-4 sticky top-0 items-center h-14 flex">
       <span class="text-xl font-bold">Home</span>
     </div>
     <Dialog :open="isOpen" @close="setIsOpen">
@@ -19,8 +19,8 @@
         <button @click="setIsOpen(false)">Cancel</button>
       </DialogPanel>
     </Dialog>
-    <NewTweet :author_id="auths.user.id" />
-    <div class="flex-1 overflow-scroll overflow-x-hidden">
+    <NewTweet v-if="auths.isAuthenticated" :author_id="auths.user.id" />
+    <div class="flex-1">
       <SingleTweet
         v-if="state.tweets"
         v-for="tweet in state.tweets"

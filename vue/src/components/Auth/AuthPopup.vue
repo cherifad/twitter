@@ -32,10 +32,10 @@
               >
                 <div
                   id="close"
-                  class="absolute rounded-full p-2 top-2 left-2 cursor-pointer"
+                  class="absolute dark:hover:bg-[rgb(239,244,243)]/10 hover:bg-[rgb(15,20,25)]/10 rounded-full p-2 top-2 left-2 cursor-pointer"
                   @click="closeModal"
                 >
-                  <IconClose />
+                  <IconClose class="bg-white text-white" />
                 </div>
                 <DialogTitle
                   as="h3"
@@ -49,7 +49,7 @@
                 <form
                   v-if="register"
                   @submit="(e) => registerUser(e)"
-                  class="pb-12 flex h-full justify-center items-center flex-col px-8 max-w-[364px] m-auto py-3 rounded-sm border-[1px] border-gray overflow-scroll overflow-x-hidden"
+                  class="pb-12 flex h-full justify-center items-center flex-col px-8 max-w-[364px] m-auto py-3 rounded-sm overflow-y-auto overflow-scroll overflow-x-hidden"
                 >
                   <div
                     class="group rounded-[4px] dark:text-white my-3 w-full"
@@ -188,7 +188,7 @@
                   <input
                     type="submit"
                     value="Sign up"
-                    class="w-full rounded-full bg-white font-bold min-h-[36px] mt-3 hover:bg-slate-100 cursor-pointer"
+                    class="w-full rounded-full dark:bg-white bg-black text-white dark:text-black font-bold min-h-[36px] mt-3 hover:bg-slate-900 dark:hover:bg-slate-100 cursor-pointer"
                   />
                   <span class="text-gray-light w-full mt-10"
                     >Already have an account?
@@ -202,7 +202,7 @@
                 <form
                   v-else
                   @submit="(e) => login(e)"
-                  class="pb-12 flex h-full justify-center items-center flex-col px-8 max-w-[364px] m-auto py-3 rounded-sm border-[1px] border-gray overflow-scroll overflow-x-hidden"
+                  class="pb-12 flex h-full justify-center items-center flex-col px-8 max-w-[364px] m-auto py-3 rounded-sm overflow-auto overflow-x-hidden"
                 >
                   <div
                     class="group rounded-[4px] dark:text-white my-3 w-full"
@@ -261,10 +261,10 @@
                   <input
                     type="submit"
                     value="Sign in"
-                    class="w-full rounded-full bg-white font-bold min-h-[36px] mt-3 hover:bg-slate-100 cursor-pointer"
+                    class="w-full rounded-full dark:bg-white bg-black text-white dark:text-black font-bold min-h-[36px] mt-3 hover:bg-slate-900 dark:hover:bg-slate-100 cursor-pointer"
                   />
                   <button
-                    class="w-full rounded-full border-white text-white border-[1px] font-bold min-h-[36px] mt-7 hover:bg-slate-900"
+                    class="w-full rounded-full dark:border-white border-black dark:text-white border-[1px] font-bold min-h-[36px] mt-7 hover:bg-slate-100"
                   >
                     Forgot password?
                   </button>
@@ -431,10 +431,6 @@ const registerFocus = ref({
 </script>
 
 <style scoped>
-#close:hover {
-  background-color: rgba(239, 244, 243, 0.1);
-}
-
 .group {
   position: relative;
   padding-top: 7px;
@@ -447,7 +443,6 @@ const registerFocus = ref({
   width: 100%;
   border: none;
   background: transparent;
-  color: white;
 }
 
 .input:focus {
@@ -518,15 +513,4 @@ label {
 .input:focus ~ .highlight {
   animation: inputHighlighter 0.3s ease;
 }
-
-/* @keyframes inputHighlighter {
- from {
-  background: #5264AE;
- }
-
- to {
-  width: 0;
-  background: transparent;
- }
-} */
 </style>

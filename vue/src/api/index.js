@@ -164,11 +164,11 @@ const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
 
 const CREATE_NEW_LIKE = async (tweet_id, user_id) => {
   const mutation = gql`
-    mutation {
+    mutation createNewLike($tweet_id: uuid!, $user_id: uuid!) {
       insert_like(
         objects: {
-          tweet_id: "${tweet_id}"
-          user_id: "${user_id}"
+          tweet_id: $tweet_id
+          user_id: $user_id
         },
         on_conflict: {
           constraint: like_user_id_tweet_id_key,
@@ -179,8 +179,30 @@ const CREATE_NEW_LIKE = async (tweet_id, user_id) => {
       }
     }
   `;
+
+  const deleteMutation = gql`
+    mutation deleteLike($tweet_id: uuid!, $user_id: uuid!) {
+      delete_like(
+        where: {
+          tweet_id: {
+            _eq: $tweet_id
+          },
+          user_id: {
+            _eq: $user_id
+          }
+        }
+      ) {
+        affected_rows
+      }
+    }
+  `;
+
   try {
-    const response = await apolloProvider.mutate({ mutation });
+    const response = await apolloProvider.mutate({ mutation, variables: { tweet_id, user_id } });
+    if (response.data.insert_like.affected_rows === 0) {
+      // if there is a conflict, delete the conflicted row and create a new one
+      await apolloProvider.mutate({ mutation: deleteMutation, variables: { tweet_id, user_id } });
+    }
     return response;
   } catch (error) {
     console.error(error);

@@ -11,12 +11,12 @@ import { onError } from "@apollo/client/link/error"
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: "http://localhost:8080/v1/graphql",
+  uri: "http://10.103.252.17:8080/v1/graphql",
 });
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: "ws://localhost:8080/v1/graphql",
+  uri: "ws://10.103.252.17:8080/v1/graphql",
   options: {
     reconnect: true,
     lazy: true,

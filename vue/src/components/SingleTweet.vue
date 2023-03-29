@@ -15,7 +15,7 @@
             >@{{ tweetAuthorUsername }}</span
           >
           <span class="px-1 text-gray-light font-normal">·</span>
-          <span class="ml-1 text-gray-light">{{ timeSince(tweetDate) }}</span>
+          <span class="ml-1 text-gray-light">{{ time }}</span>
         </div>
         <div class="ml-2">
           <svg
@@ -114,8 +114,10 @@ import IconViewsCount from "./icons/IconViewsCount.vue";
 import { formatCount, timeSince } from "../utils/helpers.js";
 import { CREATE_NEW_LIKE } from "../api";
 import { useAuthStore } from "../stores/authStore";
+import { ref } from "vue";
 
 const auth = useAuthStore();
+const time = ref("");
 
 const props = defineProps({
   tweetAuthor: {
@@ -216,6 +218,12 @@ const likeDislikeTweet = async () => {
   const data = await response;
   console.log(data);
 };
+
+const affectToTime = () => {
+  time.value = timeSince(props.tweetDate);
+};
+
+setInterval(affectToTime, 1000);
 
 </script>
 

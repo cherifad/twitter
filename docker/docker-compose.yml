@@ -5,9 +5,9 @@ services:
     restart: always
     volumes:
     - db_data:/var/lib/postgresql/data
-    - ./sql:/docker-entrypoint-initdb.d
+    - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: postgrespassword
     ports:
     - "5000:5432"      
   graphql-engine:
