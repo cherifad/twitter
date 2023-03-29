@@ -3,7 +3,7 @@
     viewBox="0 0 22 22"
     aria-label="Verified account"
     role="img"
-    class="w-5 h-5 fill-current text-gray-light text-inherit"
+    class="w-5 h-5 fill-current text-blue"
     data-testid="icon-verified"
   >
     <g>

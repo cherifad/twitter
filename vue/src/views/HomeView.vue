@@ -29,7 +29,7 @@
         :tweet-media-count="0"
         :tweet-author-avatar="tweet.tweet_user.profile_picture_url"
         :tweet-author-username="tweet.tweet_user.username"
-        :tweet-author-verified="tweet.premium"
+        :tweet-author-verified="tweet.tweet_user.premium"
         :tweet-content="tweet.content"
         :tweet-date="tweet.created_at"
         :tweet-likes="tweet.tweet_likes_aggregate.aggregate.count"

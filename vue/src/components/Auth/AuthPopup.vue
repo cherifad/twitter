@@ -35,7 +35,7 @@
                   class="absolute dark:hover:bg-[rgb(239,244,243)]/10 hover:bg-[rgb(15,20,25)]/10 rounded-full p-2 top-2 left-2 cursor-pointer"
                   @click="closeModal"
                 >
-                  <IconClose class="bg-white text-white" />
+                  <IconClose class="" />
                 </div>
                 <DialogTitle
                   as="h3"

@@ -48,7 +48,7 @@
           </MenuItems>
         </transition>
       </Menu>
-      <input type="text" v-model="tweet" :class="tweet.length > 0 ? 'text-black dark:text-white' : 'text-[#71767B]'" class="bg-transparent border-0 my-5 outline-none text-xl" placeholder="What’s happening?">
+      <textarea type="text" v-model="tweet" :class="tweet.length > 0 ? 'text-black dark:text-white' : 'text-[#71767B]'" class="bg-transparent border-0 my-5 outline-none text-xl" placeholder="What’s happening?" />
       <div class="w-full flex justify-end">
         <Button @click="postNewTweet()" text="Tweet" :disabled="tweet.length === 0 || !author_id" />
       </div>

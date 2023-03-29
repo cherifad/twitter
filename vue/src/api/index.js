@@ -1,6 +1,7 @@
 import { apolloProvider } from "./apolloProvider";
 import { gql } from "graphql-tag";
 import bcrypt from "bcryptjs";
+import { extractHashTags } from "../utils/helpers";
 
 const GET_TWEETS = () => {
   const query = gql`
@@ -19,6 +20,7 @@ const GET_TWEETS = () => {
           name
           username
           profile_picture_url
+          premium
           id
         }
         tweet_retweets_aggregate {
@@ -51,6 +53,31 @@ const GET_USER = async (id) => {
   try {
     const response = await apolloProvider.query({ query });
     const user = response.data.user;
+    return user;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const GET_USER_WITH_USERNAME = async (username) => {
+  const query = gql`
+    query {
+      user(where: { username: { _eq: "${username}" } }) {
+        id
+        name
+        username
+        profile_picture_url
+        bio
+        location
+        website
+        created_at
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.query({ query });
+    const user = response.data.user[0];
     return user;
   } catch (error) {
     console.error(error);
@@ -132,7 +159,41 @@ const CREATE_NEW_USER = async (
   }
 };
 
+const CREATE_HASHTAG = async (hashtag) => {
+  const mutation = gql`
+    mutation {
+      insert_hashtag(
+        objects: {
+          text: "${hashtag}"
+        },
+        on_conflict: {
+          constraint: hashtag_text_key,
+          update_columns: []
+        }
+      ) {
+        returning {
+          id
+          text
+        }
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({ mutation });
+    const hashtag = response.data.insert_hashtag.returning[0];
+    return hashtag;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
+  // const hashtags = extractHashTags(content);
+  // hashtags.forEach(async (hashtag) => {
+  //   await CREATE_HASHTAG(hashtag);
+  // });
+
   const mutation = gql`
     mutation {
       insert_tweet(
@@ -244,4 +305,5 @@ export {
   CREATE_NEW_USER,
   CREATE_NEW_TWEET,
   CREATE_NEW_LIKE,
+  GET_USER_WITH_USERNAME
 };

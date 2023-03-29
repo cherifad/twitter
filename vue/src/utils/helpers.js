@@ -38,4 +38,8 @@ function timeSince(date) {
   return Math.floor(seconds) + "sec";
 }
 
-export { formatCount, timeSince };
+function extractHashTags(text) {
+  return text.match(/#[a-zA-Z0-9]+/g);
+}
+
+export { formatCount, timeSince, extractHashTags };

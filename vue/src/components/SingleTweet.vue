@@ -1,16 +1,25 @@
 <template>
-  <div class="flex pt-3 px-4 border-b-[1px] dark:border-zinc-800 border-zinc-200">
+  <div
+    class="flex pt-3 px-4 border-b-[1px] dark:border-zinc-800 border-zinc-200"
+  >
     <div class="p-2">
       <img
         class="w-12 h-12 rounded-full"
-        :src="tweetAuthorAvatar ? tweetAuthorAvatar : '/src/assets/img/default-avatar.webp'"
+        :src="
+          tweetAuthorAvatar
+            ? tweetAuthorAvatar
+            : '/src/assets/img/default-avatar.webp'
+        "
         :alt="tweetAuthor"
       />
     </div>
     <div class="pt-2 mb-3 flex-1">
       <div class="flex items-center justify-between w-full">
         <div class="flex items-center text-base">
-          <span class="font-bold flex items-center">{{ tweetAuthor }} <IconVerified class="ml-1" v-if="tweetAuthorVerified" /></span>
+          <RouterLink :to="'/profile/' + tweetAuthorUsername" class="font-bold flex items-center"
+            >{{ tweetAuthor }}
+            <IconVerified class="ml-1 w-4 h-4" v-if="tweetAuthorVerified"
+          /></RouterLink>
           <span class="ml-1 text-gray-light font-normal"
             >@{{ tweetAuthorUsername }}</span
           >
@@ -34,7 +43,8 @@
         </div>
       </div>
       <div class="text-base dark:text-slate-200 text-black">
-        <p>{{ tweetContent }}</p>
+        <p class="break-all" v-html="formatTweetContent(tweetContent)">
+        </p>
       </div>
       <div v-if="tweetMediaCount > 0">
         <div class="flex mt-3 rounded-lg">
@@ -43,10 +53,16 @@
               v-for="media in tweetMedia"
               :key="media.id"
               class="h-32 pl-1 pb-1 rounded-lg"
-              :class="tweetMediaCount == 1 ? 'w-full' : !(tweetMediaCount % 2) &&  tweetMediaCount == media.id ? 'w-full' : 'w-1/2'"
+              :class="
+                tweetMediaCount == 1
+                  ? 'w-full'
+                  : !(tweetMediaCount % 2) && tweetMediaCount == media.id
+                  ? 'w-full'
+                  : 'w-1/2'
+              "
             >
               <img
-                class="w-full h-full object-cover "
+                class="w-full h-full object-cover"
                 :src="media.url"
                 :alt="media.alt"
               />
@@ -70,9 +86,7 @@
           id="retweet"
           class="text-gray-light flex items-center gap-2 hover:text-[#00BA7C] cursor-pointer"
         >
-          <div
-            class="rounded-full w-9 h-9 flex items-center justify-center"
-          >
+          <div class="rounded-full w-9 h-9 flex items-center justify-center">
             <IconRetweet />
           </div>
           {{ formatCount(tweetRetweets) }}
@@ -115,6 +129,7 @@ import { formatCount, timeSince } from "../utils/helpers.js";
 import { CREATE_NEW_LIKE } from "../api";
 import { useAuthStore } from "../stores/authStore";
 import { ref } from "vue";
+import { RouterLink } from "vue-router";
 
 const auth = useAuthStore();
 const time = ref("");
@@ -130,7 +145,7 @@ const props = defineProps({
     default: "",
   },
   tweetAuthorAvatar: {
-    type: String,    
+    type: String,
   },
   tweetAuthorUsername: {
     type: String,
@@ -199,15 +214,15 @@ const props = defineProps({
   tweetChild: {
     type: Object,
   },
-  userLiked : {
+  userLiked: {
     type: Boolean,
     default: false,
   },
-  userRetweeted : {
+  userRetweeted: {
     type: Boolean,
     default: false,
   },
-  userReplied : {
+  userReplied: {
     type: Boolean,
     default: false,
   },
@@ -223,8 +238,12 @@ const affectToTime = () => {
   time.value = timeSince(props.tweetDate);
 };
 
-setInterval(affectToTime, 1000);
+function formatTweetContent(tweetContent) {
+  // Find all hashtags and wrap them in a span with a CSS class
+  return tweetContent.replace(/#(\w+)/g, '<RouterLink to="/hashtag/$&" class="text-blue cursor-pointer">$&</RouterLink>');
+}
 
+setInterval(affectToTime, 1000);
 </script>
 
 <style scoped>
