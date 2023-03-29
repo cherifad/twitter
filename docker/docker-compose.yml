@@ -1,0 +1,65 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+    - "5000:5432"      
+  graphql-engine:
+    image: hasura/graphql-engine:v2.21.0
+    ports:
+    - "8080:8080"
+    depends_on:
+    - "postgres"
+    restart: always
+    environment:
+      ## postgres database to store Hasura metadata
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
+      PG_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      ## uncomment next line to run console offline (i.e load console assets from server instead of CDN)
+      # HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
+      ## uncomment next line to set an admin secret
+      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      # HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "cQG0wyviGgryMy4GGBKmAIirksUKkGNm9yfZb6wvFZX2fOKehEpjvF0EvdhRgWm" }'
+      HASURA_GRAPHQL_METADATA_DIR: ./export
+      HASURA_GRAPHQL_TRANSPORTS: "http,websocket"
+
+networks:
+  db_net:
+    driver: bridge
+
+volumes:
+  db_data:
+  fusionauth_config:
+  
+  # fusionauth:
+  #   image: fusionauth/fusionauth-app:latest
+  #   depends_on:
+  #   - "postgres"
+  #   environment:
+  #     DATABASE_URL: jdbc:postgresql://postgres:5432/fusionauth
+  #     DATABASE_ROOT_USERNAME: ${POSTGRES_USER}
+  #     DATABASE_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
+  #     DATABASE_USERNAME: ${DATABASE_USERNAME}
+  #     DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+  #     FUSIONAUTH_APP_MEMORY: ${FUSIONAUTH_APP_MEMORY}
+  #     FUSIONAUTH_APP_RUNTIME_MODE: development
+  #     FUSIONAUTH_APP_URL: http://fusionauth:9011
+  #     # SEARCH_SERVERS: http://search:9200
+  #     # SEARCH_TYPE: elasticsearch
+  #   ports:
+  #     - "9011:9011"
+  #   volumes:
+  #     - fusionauth_config:/usr/local/fusionauth/config
+
