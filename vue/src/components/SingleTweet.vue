@@ -16,7 +16,7 @@
     <div class="pt-2 mb-3 flex-1">
       <div class="flex items-center justify-between w-full">
         <div class="flex items-center text-base">
-          <RouterLink :to="'/profile/' + tweetAuthorUsername" class="font-bold flex items-center"
+          <RouterLink :to="'/' + tweetAuthorUsername" class="font-bold flex items-center"
             >{{ tweetAuthor }}
             <IconVerified class="ml-1 w-4 h-4" v-if="tweetAuthorVerified"
           /></RouterLink>
@@ -230,7 +230,7 @@ const props = defineProps({
 
 const likeDislikeTweet = async () => {
   const response = await CREATE_NEW_LIKE(props.tweetId, auth.user.id);
-  const data = await response;
+  const data = response;
   console.log(data);
 };
 
@@ -240,7 +240,7 @@ const affectToTime = () => {
 
 function formatTweetContent(tweetContent) {
   // Find all hashtags and wrap them in a span with a CSS class
-  return tweetContent.replace(/#(\w+)/g, '<RouterLink to="/hashtag/$&" class="text-blue cursor-pointer">$&</RouterLink>');
+  return tweetContent.replace(/#([\p{L}\p{Mn}\p{Pc}]+)/ug, '<a href="/search?q=%23$1" class="text-blue cursor-pointer hover:underline">#$1</a>');
 }
 
 setInterval(affectToTime, 1000);

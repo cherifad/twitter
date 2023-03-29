@@ -36,7 +36,8 @@ import { formatCount } from "../utils/helpers";
 defineProps({
   ranking: {
     type: Number,
-    required: true,
+    required: false,
+    
   },
   theme: {
     type: String,
@@ -48,7 +49,7 @@ defineProps({
   },
   numberOfTweets: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 </script>

@@ -33,7 +33,7 @@
         </RouterLink>
       </li>
       <li class="">
-        <RouterLink :to="authStore.isAuthenticated ? `/profile/${authStore.user.username}` : '/'" class="p-3 w-fit flex rounded-full items-center hover:bg-gray dark:hover:bg-gray-hover">
+        <RouterLink :to="authStore.isAuthenticated ? `/${authStore.user.username}` : '/'" class="p-3 w-fit flex rounded-full items-center hover:bg-gray dark:hover:bg-gray-hover">
           <IconProfile :selected="route.name == 'Profile'" />
           <h1 class="mr-4 ml-5 text-xl dark:text-white" :class="route.name == 'Profile' ? 'font-bold' : null" >Profile</h1>
         </RouterLink>

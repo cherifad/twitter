@@ -16,7 +16,7 @@
         <div class="px-4 pt-3">
             <div class="flex items-center justify-end">
                 <button
-                    class="rounded-full dark:border-white border-zinc-200 dark:text-white border-[1px] font-bold min-h-[36px] px-4 hover:bg-slate-100"
+                    class="rounded-full dark:border-white border-zinc-200 dark:text-white border-[1px] dark:hover:bg-zinc-800 font-bold min-h-[36px] px-4 hover:bg-slate-100"
                   >
                     {{ authStore.isAuthenticated && user.username == username ? "Edit profile" : "Follow" }}
                   </button>

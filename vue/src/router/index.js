@@ -34,7 +34,7 @@ const router = createRouter({
       component: () => import('../views/MessagesView.vue'),
     },
     {
-      path: '/profile/:username',
+      path: '/:username',
       name: 'Profile',
       component: () => import('../views/ProfileView.vue'),
     },
@@ -43,6 +43,11 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'Home',
       component: () => import('../views/HomeView.vue'),
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: () => import('../views/ExploreView.vue'),
     }
   ]
 })

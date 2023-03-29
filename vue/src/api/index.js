@@ -168,7 +168,7 @@ const CREATE_HASHTAG = async (hashtag) => {
         },
         on_conflict: {
           constraint: hashtag_text_key,
-          update_columns: []
+          update_columns: [text]
         }
       ) {
         returning {
@@ -188,12 +188,73 @@ const CREATE_HASHTAG = async (hashtag) => {
   }
 };
 
-const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
-  // const hashtags = extractHashTags(content);
-  // hashtags.forEach(async (hashtag) => {
-  //   await CREATE_HASHTAG(hashtag);
-  // });
+const CREATE_TWEET_HASHTAG = async (tweet_id, hashtag_id) => {
+  const mutation = gql`
+    mutation {
+      insert_tweet_hashtag(
+        objects: { hashtag_id: "${hashtag_id}", tweet_id: "${tweet_id}" }
+        on_conflict: {
+          constraint: tweet_hashtag_pkey
+          update_columns: hashtag_id
+        }
+      ) {
+        returning {
+          id
+          hashtag_id
+          tweet_id
+        }
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({ mutation });
+    const tweet_hashtag = response.data.insert_tweet_hashtag.returning[0];
+    return tweet_hashtag;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
 
+const GET_TWEETS_OF_HASHTAG = (hashtag) => {
+  const query = gql`
+    subscription {
+      hashtag(where: { text: { _eq: "${hashtag}" } }) {
+        id
+        text
+        tweet_hashtags {
+          tweet {
+            id
+            content
+            image_url
+            created_at
+            tweet_user {
+              id
+              name
+              username
+              profile_picture_url
+              premium
+            }
+            tweet_likes_aggregate {
+              aggregate {
+                count
+              }
+            }
+            tweet_retweets_aggregate {
+              aggregate {
+                count
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  return apolloProvider.subscribe({ query });
+};
+
+const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
   const mutation = gql`
     mutation {
       insert_tweet(
@@ -216,6 +277,12 @@ const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
   try {
     const response = await apolloProvider.mutate({ mutation });
     const tweet = response.data.insert_tweet.returning[0];
+    const hashtags = extractHashTags(content);
+    hashtags.forEach(async (hashtag) => {
+      const hashtagResponse = await CREATE_HASHTAG(hashtag);
+      console.log(tweet, hashtagResponse);
+      await CREATE_TWEET_HASHTAG(tweet.id, hashtagResponse.id);
+    });
     return tweet;
   } catch (error) {
     console.error(error);
@@ -227,12 +294,9 @@ const CREATE_NEW_LIKE = async (tweet_id, user_id) => {
   const mutation = gql`
     mutation createNewLike($tweet_id: uuid!, $user_id: uuid!) {
       insert_like(
-        objects: {
-          tweet_id: $tweet_id
-          user_id: $user_id
-        },
+        objects: { tweet_id: $tweet_id, user_id: $user_id }
         on_conflict: {
-          constraint: like_user_id_tweet_id_key,
+          constraint: like_user_id_tweet_id_key
           update_columns: []
         }
       ) {
@@ -244,14 +308,7 @@ const CREATE_NEW_LIKE = async (tweet_id, user_id) => {
   const deleteMutation = gql`
     mutation deleteLike($tweet_id: uuid!, $user_id: uuid!) {
       delete_like(
-        where: {
-          tweet_id: {
-            _eq: $tweet_id
-          },
-          user_id: {
-            _eq: $user_id
-          }
-        }
+        where: { tweet_id: { _eq: $tweet_id }, user_id: { _eq: $user_id } }
       ) {
         affected_rows
       }
@@ -259,10 +316,16 @@ const CREATE_NEW_LIKE = async (tweet_id, user_id) => {
   `;
 
   try {
-    const response = await apolloProvider.mutate({ mutation, variables: { tweet_id, user_id } });
+    const response = await apolloProvider.mutate({
+      mutation,
+      variables: { tweet_id, user_id },
+    });
     if (response.data.insert_like.affected_rows === 0) {
       // if there is a conflict, delete the conflicted row and create a new one
-      await apolloProvider.mutate({ mutation: deleteMutation, variables: { tweet_id, user_id } });
+      await apolloProvider.mutate({
+        mutation: deleteMutation,
+        variables: { tweet_id, user_id },
+      });
     }
     return response;
   } catch (error) {
@@ -305,5 +368,6 @@ export {
   CREATE_NEW_USER,
   CREATE_NEW_TWEET,
   CREATE_NEW_LIKE,
-  GET_USER_WITH_USERNAME
+  GET_USER_WITH_USERNAME,
+  GET_TWEETS_OF_HASHTAG,
 };
