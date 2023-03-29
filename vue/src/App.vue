@@ -6,7 +6,7 @@
           <IconTwitter class="ml-10 mt-5" />
           <LeftBar class="mt-5"/>
         </div>
-        <UserCard v-if="authStore.isAuthenticated" :name="authStore.user.name" :pseudo="authStore.user.username" :avatar="authStore.user.avatar" />
+        <UserCard v-if="authStore.isAuthenticated" :name="authStore.user.name" :pseudo="authStore.user.username" :avatar="authStore.user.avatar" :verified="authStore.isPremium" />
       </div>
     </header>
     <main class="flex-1 flex flex-col">

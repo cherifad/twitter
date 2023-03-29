@@ -2,10 +2,10 @@ import { apolloProvider } from "./apolloProvider";
 import { gql } from "graphql-tag";
 import bcrypt from "bcryptjs";
 
-const GET_TWEETS = async () => {
+const GET_TWEETS = () => {
   const query = gql`
-    query {
-      tweet {
+    subscription {
+      tweet(order_by: { created_at: desc }) {
         created_at
         content
         id
@@ -30,14 +30,7 @@ const GET_TWEETS = async () => {
     }
   `;
 
-  try {
-    const response = await apolloProvider.query({ query });
-    const tweets = response.data.tweet;
-    return tweets;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
+  return apolloProvider.subscribe({ query });
 };
 
 const GET_USER = async (id) => {
@@ -78,13 +71,14 @@ const GET_USER_WITH_PASSWORD = async (username, password) => {
         website
         created_at
         password
+        premium
       }
     }
   `;
   try {
     const response = await apolloProvider.query({ query });
     const users = response.data.user;
-    if(users.length == 0) return null;
+    if (users.length == 0) return null;
     if (bcrypt.compareSync(password, users[0].password)) {
       return users;
     } else {
@@ -138,5 +132,94 @@ const CREATE_NEW_USER = async (
   }
 };
 
+const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
+  const mutation = gql`
+    mutation {
+      insert_tweet(
+        objects: {
+          content: "${content}"
+          image_url: "${image_url}"
+          author_id: "${user_id}"
+        }
+      ) {
+        returning {
+          id
+          content
+          image_url
+          created_at
+          author_id
+        }
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({ mutation });
+    const tweet = response.data.insert_tweet.returning[0];
+    return tweet;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
 
-export { GET_TWEETS, GET_USER, GET_USER_WITH_PASSWORD, CREATE_NEW_USER };
+const CREATE_NEW_LIKE = async (tweet_id, user_id) => {
+  const mutation = gql`
+    mutation {
+      insert_like(
+        objects: {
+          tweet_id: "${tweet_id}"
+          user_id: "${user_id}"
+        },
+        on_conflict: {
+          constraint: like_user_id_tweet_id_key,
+          update_columns: []
+        }
+      ) {
+        affected_rows
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({ mutation });
+    return response;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const CREATE_NEW_RETWEET = async (tweet_id, user_id) => {
+  const mutation = gql`
+    mutation {
+      insert_retweet(
+        objects: {
+          tweet_id: "${tweet_id}"
+          user_id: "${user_id}"
+        }
+      ) {
+        returning {
+          id
+          tweet_id
+          user_id
+        }
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({ mutation });
+    const retweet = response.data.insert_retweet.returning[0];
+    return retweet;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export {
+  GET_TWEETS,
+  GET_USER,
+  GET_USER_WITH_PASSWORD,
+  CREATE_NEW_USER,
+  CREATE_NEW_TWEET,
+  CREATE_NEW_LIKE,
+};

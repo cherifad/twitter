@@ -4,7 +4,7 @@
             <img class="rounded-full w-10 h-10" :src="avatar ? avatar : '/src/assets/img/default-avatar.webp'" :alt="name">
             <!-- <IconTwitter v-else /> -->
             <div>
-                <p>{{ name }}</p>
+                <p class="flex items-center gap-2">{{ name }} <IconVerified v-if="verified" /></p>
                 <p class="text-slate-700 dark:text-zinc-500">@{{ pseudo }}</p>
             </div>
         </div>
@@ -14,7 +14,7 @@
 
 <script setup>
 import IconThreeDots from "./icons/IconThreeDots.vue";
-import IconTwitter from "./icons/IconTwitter.vue";
+import IconVerified from "./icons/IconVerified.vue";
 
 defineProps({
     name: {
@@ -29,5 +29,9 @@ defineProps({
         type: String,
         required: false
     },
+    verified : {
+        type: Boolean,
+        required: false
+    }
 })
 </script>

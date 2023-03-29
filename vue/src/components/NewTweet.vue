@@ -49,8 +49,10 @@
         </transition>
       </Menu>
       <input type="text" v-model="tweet" :class="tweet.length > 0 ? 'text-black dark:text-white' : 'text-[#71767B]'" class="bg-transparent border-0 my-5 outline-none text-xl" placeholder="What’s happening?">
+      <div class="w-full flex justify-end">
+        <Button @click="postNewTweet()" text="Tweet" :disabled="tweet.length === 0 || !author_id" />
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -60,14 +62,25 @@ import IconChevron from "./icons/IconChevron.vue";
 import IconEarth from "./icons/IconEarth.vue";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { ref } from "vue";
+import Button from "./Button.vue";
+import { CREATE_NEW_TWEET } from "../api"
 
-defineProps({
+const props = defineProps({
   avatar: {
     type: String,
     required: false,
   },
+  author_id : {
+    type: String,
+    required: true,
+  },
 });
 
 const tweet = ref("");
+
+const postNewTweet = async () => {
+  await CREATE_NEW_TWEET(tweet.value, props.author_id, null)
+  tweet.value = ""
+};
 
 </script>

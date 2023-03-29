@@ -1,5 +1,5 @@
 {
-  "resource_version": 42,
+  "resource_version": 49,
   "metadata": {
     "version": 3,
     "sources": [
@@ -7,6 +7,12 @@
         "name": "main",
         "kind": "postgres",
         "tables": [
+          {
+            "table": {
+              "name": "conversation",
+              "schema": "public"
+            }
+          },
           {
             "table": {
               "name": "follower",
@@ -86,6 +92,12 @@
                 }
               }
             ]
+          },
+          {
+            "table": {
+              "name": "message",
+              "schema": "public"
+            }
           },
           {
             "table": {
@@ -331,6 +343,17 @@
           }
         }
       }
-    ]
+    ],
+    "network": {
+      "tls_allowlist": [
+        {
+          "host": "vuejs.com",
+          "permissions": [
+            "self-signed"
+          ],
+          "suffix": "5136"
+        }
+      ]
+    }
   }
 }

@@ -342,6 +342,15 @@ watch(
   }
 );
 
+watch(
+  () => authStore.isAuthenticated,
+  (value) => {
+    if (value) {
+      closeModal();
+    }
+  }
+);
+
 const close = defineEmits(["close"]);
 
 const isOpen = ref(props.toShow);
@@ -366,7 +375,7 @@ const form = ref({
 
 const login = (event) => {
   event.preventDefault();
-  authStore.login(form.value.email, form.value.password);
+  const response = authStore.login(form.value.email, form.value.password);
 };
 
 ///////////////////
@@ -389,12 +398,12 @@ const monthsIndex = [
 ];
 
 const registerUser = (event) => {
-  const dateGenerated = `${date.value.year}-${monthsIndex.indexOf(
-    date.value.month
-  ) + 1}-${date.value.day}`;
+  const dateGenerated = `${date.value.year}-${
+    monthsIndex.indexOf(date.value.month) + 1
+  }-${date.value.day}`;
   console.log(dateGenerated);
   event.preventDefault();
-  authStore.register(
+  const response = authStore.register(
     registerForm.value.name,
     registerForm.value.email,
     registerForm.value.password,

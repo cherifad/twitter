@@ -19,7 +19,7 @@
         <button @click="setIsOpen(false)">Cancel</button>
       </DialogPanel>
     </Dialog>
-    <NewTweet />
+    <NewTweet :author_id="auths.user.id" />
     <div class="flex-1 overflow-scroll overflow-x-hidden">
       <SingleTweet
         v-if="state.tweets"
@@ -60,8 +60,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@headlessui/vue";
+import { useAuthStore } from "../stores/authStore";
 
 const isOpen = ref(true);
+const auths = useAuthStore();
 
 function setIsOpen(value) {
   isOpen.value = value;
@@ -71,8 +73,14 @@ const state = reactive({
   tweets: [],
 });
 
-(async () => {
-  state.tweets = await GET_TWEETS();
-  console.log(state.tweets);
-})();
+const subscription = GET_TWEETS();
+
+subscription.subscribe({
+  next: ({ data }) => {
+    state.tweets = data.tweet;
+  },
+  error: (error) => {
+    console.error(error);
+  },
+});
 </script>

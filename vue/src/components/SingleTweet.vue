@@ -78,6 +78,7 @@
           {{ formatCount(tweetRetweets) }}
         </div>
         <div
+          @click="likeDislikeTweet"
           id="like"
           class="text-gray-light flex items-center gap-2 hover:text-[#F91880] cursor-pointer"
         >
@@ -111,7 +112,12 @@ import IconReply from "./icons/IconReply.vue";
 import IconVerified from "./icons/IconVerified.vue";
 import IconViewsCount from "./icons/IconViewsCount.vue";
 import { formatCount, timeSince } from "../utils/helpers.js";
-defineProps({
+import { CREATE_NEW_LIKE } from "../api";
+import { useAuthStore } from "../stores/authStore";
+
+const auth = useAuthStore();
+
+const props = defineProps({
   tweetAuthor: {
     type: String,
     default: "",
@@ -190,9 +196,27 @@ defineProps({
   },
   tweetChild: {
     type: Object,
-
-  }
+  },
+  userLiked : {
+    type: Boolean,
+    default: false,
+  },
+  userRetweeted : {
+    type: Boolean,
+    default: false,
+  },
+  userReplied : {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const likeDislikeTweet = async () => {
+  const response = await CREATE_NEW_LIKE(props.tweetId, auth.user.id);
+  const data = await response;
+  console.log(data);
+};
+
 </script>
 
 <style scoped>
