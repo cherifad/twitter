@@ -278,11 +278,11 @@ const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
     const response = await apolloProvider.mutate({ mutation });
     const tweet = response.data.insert_tweet.returning[0];
     const hashtags = extractHashTags(content);
-    hashtags.forEach(async (hashtag) => {
+    hashtags ? hashtags.forEach(async (hashtag) => {
       const hashtagResponse = await CREATE_HASHTAG(hashtag);
       console.log(tweet, hashtagResponse);
       await CREATE_TWEET_HASHTAG(tweet.id, hashtagResponse.id);
-    });
+    }) : null;
     return tweet;
   } catch (error) {
     console.error(error);

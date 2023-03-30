@@ -19,7 +19,7 @@
         <button @click="setIsOpen(false)">Cancel</button>
       </DialogPanel>
     </Dialog>
-    <NewTweet v-if="auths.isAuthenticated" :author_id="auths.user.id" />
+    <NewTweet v-if="auths.isAuthenticated" :author_id="auths.user.id" :avatar="auths.user.profile_picture_url" />
     <div class="flex-1">
       <SingleTweet
         v-if="state.tweets"
@@ -44,6 +44,7 @@
         :tweet-id="tweet.id"
         :tweet-thread="false"
       />
+      <Loading v-else />
     </div>
   </div>
 </template>
@@ -61,6 +62,7 @@ import {
   DialogDescription,
 } from "@headlessui/vue";
 import { useAuthStore } from "../stores/authStore";
+import Loading from "../components/Loading.vue";
 
 const isOpen = ref(true);
 const auths = useAuthStore();
