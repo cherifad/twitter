@@ -34,6 +34,17 @@ services:
       # HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "cQG0wyviGgryMy4GGBKmAIirksUKkGNm9yfZb6wvFZX2fOKehEpjvF0EvdhRgWm" }'
       HASURA_GRAPHQL_METADATA_DIR: ./export
       HASURA_GRAPHQL_TRANSPORTS: "http,websocket"
+  
+  vue-app:
+    build: ../vue
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - "graphql-engine"
+    networks:
+      - db_net
+
 
 networks:
   db_net:
