@@ -1,7 +1,7 @@
 <template>
     <div>
         <Popover class="relative">
-            <PopoverPanel class="absolute top-0 transform" :ref="(el) => consoleLogel(el)">
+            <PopoverPanel class="absolute top-0 transform" >
                 <div class="grid grid-cols-2">
                     <a href="/analytics">Analytics</a>
                     <a href="/engagement">Engagement</a>

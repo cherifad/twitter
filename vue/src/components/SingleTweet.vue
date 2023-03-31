@@ -128,11 +128,10 @@ import IconViewsCount from "./icons/IconViewsCount.vue";
 import { formatCount, timeSince } from "../utils/helpers.js";
 import { CREATE_NEW_LIKE } from "../api";
 import { useAuthStore } from "../stores/authStore";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { RouterLink } from "vue-router";
 
 const auth = useAuthStore();
-const time = ref("");
 
 const props = defineProps({
   tweetAuthor: {
@@ -228,6 +227,8 @@ const props = defineProps({
   },
 });
 
+const time = ref(timeSince(props.tweetDate));
+
 const likeDislikeTweet = async () => {
   const response = await CREATE_NEW_LIKE(props.tweetId, auth.user.id);
   const data = response;
@@ -243,7 +244,7 @@ function formatTweetContent(tweetContent) {
   return tweetContent.replace(/#([\p{L}\p{Mn}\p{Pc}]+)/ug, '<a href="/search?q=%23$1" class="text-blue cursor-pointer hover:underline">#$1</a>');
 }
 
-setInterval(affectToTime, 1000);
+setInterval(affectToTime, 10000);
 </script>
 
 <style scoped>

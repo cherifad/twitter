@@ -9,7 +9,7 @@
       <span class="text-xl font-bold ml-3">{{ user.username }}</span>
     </div>
     <div class="relative">
-      <img class="w-full h-auto" src="/src/assets/img/default-banner.jpg" :alt="user.username">
+      <img class="w-full h-auto" :src="user.avatar ? user.avatar : '/src/assets/img/default-banner.jpg'" :alt="user.username">
       <div class="absolute bottom-0 px-4">
         <img class="w-24 h-24 rounded-full border-white dark:border-black border-4 p-0"
           :src="user.avatar ? user.avatar : '/src/assets/img/default-avatar.webp'" :alt="user.username">
@@ -18,12 +18,12 @@
         <div class="flex items-center justify-end">
           <button
             class="rounded-full dark:border-white border-zinc-200 dark:text-white border-[1px] dark:hover:bg-zinc-800 font-bold min-h-[36px] px-4 hover:bg-slate-100">
-            {{ authStore.isAuthenticated && user.username == username ? "Edit profile" : "Follow" }}
+            {{ authStore.isAuthenticated && user.username == authStore.user.username ? "Edit profile" : "Follow" }}
           </button>
         </div>
       </div>
     </div>
-    <div class=" px-4 mt-4">
+    <div class=" px-4 my-4">
       <div class="mb-3">
         <span class="flex gap-2 items-center font-extrabold text-xl">{{ user.name }}
           <IconVerified v-if="user.premium" />
@@ -44,15 +44,36 @@
       </div>
     </div>
     <TabGroup>
-      <TabList class="flex">
-        <Tab v-slot="{ selected }" :class="selected ? 'text-black' : 'text-red-500'" class=" px-4 h-[53px] min-w-[56px] flex-1 hover:bg-[rgb(15,20,25)]/10 ">Tab 1</Tab>
-        <Tab v-slot="{ selected }" :class="selected ? 'text-black' : 'text-red-500'" class=" px-4 h-[53px] min-w-[56px] flex-1 hover:bg-[rgb(15,20,25)]/10 ">Tab 2</Tab>
-        <Tab v-slot="{ selected }" :class="selected ? 'text-black' : 'text-red-500'" class=" px-4 h-[53px] min-w-[56px] flex-1 hover:bg-[rgb(15,20,25)]/10 ">Tab 3</Tab>
+      <TabList class="flex border-b-[1px] border-gray dark:border-zinc-800">
+        <Tab v-slot="{ selected }" class="flex-1 outline-none">
+          <div :class="['flex justify-center items-center px-4 h-[53px] min-w-[56px] flex-1 hover:bg-[rgb(15,20,25)]/10', selected ? 'text-black font-extrabold' : 'text-gray-light']">
+            <div class=" w-fit flex flex-col">
+              <span class="py-3">Likes</span>
+              <div v-if="selected" class=" rounded-full bg-blue h-1 w-full"></div>
+            </div>
+          </div>
+        </Tab>
+        <Tab v-slot="{ selected }" class="flex-1 outline-none">
+          <div :class="['flex justify-center items-center px-4 h-[53px] min-w-[56px] flex-1 hover:bg-[rgb(15,20,25)]/10', selected ? 'text-black font-extrabold' : 'text-gray-light']">
+            <div class=" w-fit flex flex-col">
+              <span class="py-3">Likes</span>
+              <div v-if="selected" class=" rounded-full bg-blue h-1 w-full"></div>
+            </div>
+          </div>
+        </Tab>
+        <Tab v-slot="{ selected }" class="flex-1 outline-none">
+          <div :class="['flex justify-center items-center px-4 h-[53px] min-w-[56px] flex-1 hover:bg-[rgb(15,20,25)]/10', selected ? 'text-black font-extrabold' : 'text-gray-light']">
+            <div class=" w-fit flex flex-col">
+              <span class="py-3">Likes</span>
+              <div v-if="selected" class=" rounded-full bg-blue h-1 w-full"></div>
+            </div>
+          </div>
+        </Tab>
       </TabList>
-      <TabPanels>
-        <TabPanel>Content 1</TabPanel>
-        <TabPanel>Content 2</TabPanel>
-        <TabPanel>Content 3</TabPanel>
+      <TabPanels class="px-4">
+        <TabPanel class=" pt-3">Content 1</TabPanel>
+        <TabPanel class=" pt-3">Content 2</TabPanel>
+        <TabPanel class=" pt-3">Content 3</TabPanel>
       </TabPanels>
     </TabGroup>
   </div>
@@ -80,14 +101,6 @@ const user = ref(null);
 const username = ref(route.params.username);
 
 onMounted(async () => {
-  if (!authStore.isAuthenticated) {
     user.value = await GET_USER_WITH_USERNAME(username.value);
-  } else {
-    if (authStore.user.username == username.value) {
-      user.value = authStore.user;
-    } else {
-      user.value = await GET_USER_WITH_USERNAME(username.value);
-    }
-  }
 });
 </script>

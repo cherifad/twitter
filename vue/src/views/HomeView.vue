@@ -3,22 +3,6 @@
     <div class="px-4 sticky top-0 items-center h-14 flex">
       <span class="text-xl font-bold">Home</span>
     </div>
-    <Dialog :open="isOpen" @close="setIsOpen">
-      <DialogPanel>
-        <DialogTitle>Deactivate account</DialogTitle>
-        <DialogDescription>
-          This will permanently deactivate your account
-        </DialogDescription>
-
-        <p>
-          Are you sure you want to deactivate your account? All of your data
-          will be permanently removed. This action cannot be undone.
-        </p>
-
-        <button @click="setIsOpen(false)">Deactivate</button>
-        <button @click="setIsOpen(false)">Cancel</button>
-      </DialogPanel>
-    </Dialog>
     <NewTweet v-if="auths.isAuthenticated" :author_id="auths.user.id" :avatar="auths.user.profile_picture_url" />
     <div class="flex-1">
       <SingleTweet
