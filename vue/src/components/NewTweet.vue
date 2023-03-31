@@ -117,8 +117,7 @@ const sanitizedString = (str) => {
 };
 
 const postNewTweet = async () => {
-  await CREATE_NEW_TWEET(sanitizedString(tweet.value), props.author_id, null)
+  await CREATE_NEW_TWEET(sanitizedString(tweetText.value), props.author_id, null)
   tweet.value = ""
 };
-
 </script>

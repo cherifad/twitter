@@ -35,15 +35,41 @@ services:
       HASURA_GRAPHQL_METADATA_DIR: ./export
       HASURA_GRAPHQL_TRANSPORTS: "http,websocket"
   
-  vue-app:
-    build: ../vue
-    restart: always
+  # vue-app:
+  #   build: ../vue
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - "graphql-engine"
+  #   networks:
+  #     - db_net
+  
+  swag:
+    image: lscr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - URL=yourdomain.url
+      - SUBDOMAINS=www,
+      - VALIDATION=http
+      - CERTPROVIDER= #optional
+      - DNSPLUGIN=cloudflare #optional
+      - DUCKDNSTOKEN=<token> #optional
+      - EMAIL=<e-mail> #optional
+      - ONLY_SUBDOMAINS=false #optional
+      - EXTRA_DOMAINS=<extradomains> #optional
+      - STAGING=false #optional
+    volumes:
+      - </path/to/appdata/config>:/config
     ports:
-      - "80:80"
-    depends_on:
-      - "graphql-engine"
-    networks:
-      - db_net
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
 
 
 networks:

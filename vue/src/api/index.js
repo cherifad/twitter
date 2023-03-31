@@ -72,6 +72,11 @@ const GET_USER_WITH_USERNAME = async (username) => {
         location
         website
         created_at
+        followers_aggregate {
+          aggregate {
+            count(distinct: true)
+          }
+        }
       }
     }
   `;

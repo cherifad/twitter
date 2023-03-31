@@ -4,7 +4,7 @@
       <div class="w-72 dark:text-white flex flex-col justify-between items-end px-2">
         <div>
           <IconTwitter class="ml-10 mt-5" />
-          <LeftBar class="mt-5"/>
+          <LeftBar class="w-full"/>
         </div>
         <UserCard v-if="authStore.isAuthenticated" :name="authStore.user.name" :pseudo="authStore.user.username" :avatar="authStore.user.avatar" :verified="authStore.isPremium" />
       </div>

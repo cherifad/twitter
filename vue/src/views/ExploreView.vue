@@ -22,6 +22,7 @@ onMounted(() => {
 
     subscription.subscribe({
       next: ({ data }) => {
+        console.log(data);
         state.tweets = data.hashtag[0].tweet_hashtags;
       },
       error: (error) => {

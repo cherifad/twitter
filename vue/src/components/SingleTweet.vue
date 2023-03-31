@@ -16,7 +16,7 @@
     <div class="pt-2 mb-3 flex-1">
       <div class="flex items-center justify-between w-full">
         <div class="flex items-center text-base">
-          <RouterLink :to="'/' + tweetAuthorUsername" class="font-bold flex items-center"
+          <RouterLink :to="'/' + tweetAuthorUsername" class="font-bold flex items-center underline-offset-2 hover:underline"
             >{{ tweetAuthor }}
             <IconVerified class="ml-1 w-4 h-4" v-if="tweetAuthorVerified"
           /></RouterLink>
