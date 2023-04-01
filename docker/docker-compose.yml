@@ -34,7 +34,17 @@ services:
       # HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "cQG0wyviGgryMy4GGBKmAIirksUKkGNm9yfZb6wvFZX2fOKehEpjvF0EvdhRgWm" }'
       HASURA_GRAPHQL_METADATA_DIR: ./export
       HASURA_GRAPHQL_TRANSPORTS: "http,websocket"
-  
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_storage:/data
+    environment:
+      MINIO_ROOT_USER: masoud
+      MINIO_ROOT_PASSWORD: Strong#Pass#2022
+    command: server --console-address ":9001" /data
   # vue-app:
   #   build: ../vue
   #   restart: always
@@ -45,31 +55,31 @@ services:
   #   networks:
   #     - db_net
   
-  # swag:
-  #   image: lscr.io/linuxserver/swag
-  #   container_name: swag
-  #   cap_add:
-  #     - NET_ADMIN
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Europe/London
-  #     - URL=yourdomain.url
-  #     - SUBDOMAINS=www,
-  #     - VALIDATION=http
-  #     - CERTPROVIDER= #optional
-  #     - DNSPLUGIN=cloudflare #optional
-  #     - DUCKDNSTOKEN=<token> #optional
-  #     - EMAIL=<e-mail> #optional
-  #     - ONLY_SUBDOMAINS=false #optional
-  #     - EXTRA_DOMAINS=<extradomains> #optional
-  #     - STAGING=false #optional
-  #   volumes:
-  #     - </path/to/appdata/config>:/config
-  #   ports:
-  #     - 443:443
-  #     - 80:80 #optional
-  #   restart: unless-stopped
+  swag:
+    image: lscr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - URL=localhost
+      - SUBDOMAINS=www,
+      - VALIDATION=http
+      - CERTPROVIDER= #optional
+      - DNSPLUGIN=cloudflare #optional
+      - DUCKDNSTOKEN=<token> #optional
+      - EMAIL=<e-mail> #optional
+      - ONLY_SUBDOMAINS=false #optional
+      - EXTRA_DOMAINS=<extradomains> #optional
+      - STAGING=false #optional
+    volumes:
+      - ./proxy:/config
+    ports:
+      - 5002:443
+      - 5001:80
+    restart: unless-stopped
 
 
 networks:
@@ -79,6 +89,7 @@ networks:
 volumes:
   db_data:
   fusionauth_config:
+  minio_storage: {}
   
   # fusionauth:
   #   image: fusionauth/fusionauth-app:latest

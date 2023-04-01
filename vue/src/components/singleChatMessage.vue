@@ -1,43 +1,42 @@
 <script setup>
-import singleChatBubble from './singleChatBubble.vue'
 import { ref } from 'vue'
 
-defineProps({
-    accountPictureAuthor: {
-        type: String,
-        default: "",
-        required: true,
-    },
-    accountAuthor: {
-        type: String,
-        default: "",
-        required: true,
-    },
-    accountUserAuthor: {
-        type: String,
-        default: "",
-        required: true,
-    },
-    dateCreateAccount: {
-        type: String,
-        default: "",
-        required: true,
-    },
-    nbFollowers: {
-        type: String,
-        default: "",
-        required: true,
-    },
-    sendMessage: {
-        type: Boolean,
-        required: true,
-    },
-    messageUser: {
-        type: String,
-        default: "",
-        required: true,
-    }
-});
+// defineProps({
+//     accountPictureAuthor: {
+//         type: String,
+//         default: "",
+//         required: true,
+//     },
+//     accountAuthor: {
+//         type: String,
+//         default: "",
+//         required: true,
+//     },
+//     accountUserAuthor: {
+//         type: String,
+//         default: "",
+//         required: true,
+//     },
+//     dateCreateAccount: {
+//         type: String,
+//         default: "",
+//         required: true,
+//     },
+//     nbFollowers: {
+//         type: String,
+//         default: "",
+//         required: true,
+//     },
+//     sendMessage: {
+//         type: Boolean,
+//         required: true,
+//     },
+//     messageUser: {
+//         type: String,
+//         default: "",
+//         required: true,
+//     }
+// });
 
 const array = ref([
     { "message": "Salut", "send": true },
@@ -52,7 +51,7 @@ const array = ref([
     { "message": "drtbdbrtb", "send": false },
     { "message": "drtbdrtbrd", "send": true },
     { "message": "rdtbrdtb", "send": false },
-])
+]);
 
 </script>
 
@@ -80,6 +79,6 @@ const array = ref([
         </div>
     </div> -->
     <div>
-        <h1>FROM COMPONENTfffff</h1>
+        <h1>FROM COMPONENTcccfffff</h1>
     </div>
 </template>

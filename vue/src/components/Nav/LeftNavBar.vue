@@ -21,7 +21,7 @@
       </li>
       <li class="">
         <RouterLink to="/messages" class="p-3 w-fit flex rounded-full items-center hover:bg-gray dark:hover:bg-gray-hover">
-          <IconMessage :selected="route.name == 'Messages'" />
+          <IconMessage class="w-6 h-6" :selected="route.name == 'Messages'" />
           <h1 class="mr-4 ml-5 text-xl dark:text-white" :class="route.name == 'Messages' ? 'font-bold' : null" >Messages</h1>
         </RouterLink>
         <button @click="authStore.logout">sign out</button>

@@ -5,7 +5,7 @@
 -- Dumped from database version 12.14 (Debian 12.14-1.pgdg110+1)
 -- Dumped by pg_dump version 15.0
 
--- Started on 2023-04-02 00:40:58
+-- Started on 2023-03-29 13:08:39
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -47,7 +47,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 
 --
--- TOC entry 3225 (class 0 OID 0)
+-- TOC entry 3205 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
 --
@@ -56,7 +56,7 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
--- TOC entry 259 (class 1255 OID 16422)
+-- TOC entry 258 (class 1255 OID 16422)
 -- Name: gen_hasura_uuid(); Type: FUNCTION; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -231,7 +231,7 @@ CREATE TABLE public.conversation (
 ALTER TABLE public.conversation OWNER TO postgres;
 
 --
--- TOC entry 3226 (class 0 OID 0)
+-- TOC entry 3206 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: TABLE conversation; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -247,15 +247,14 @@ COMMENT ON TABLE public.conversation IS 'Conversation table';
 CREATE TABLE public.follower (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     user_id uuid NOT NULL,
-    follower_id uuid NOT NULL,
-    created_at timestamp with time zone DEFAULT now()
+    follower_id uuid NOT NULL
 );
 
 
 ALTER TABLE public.follower OWNER TO postgres;
 
 --
--- TOC entry 3227 (class 0 OID 0)
+-- TOC entry 3207 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: TABLE follower; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -277,38 +276,12 @@ CREATE TABLE public.hashtag (
 ALTER TABLE public.hashtag OWNER TO postgres;
 
 --
--- TOC entry 3228 (class 0 OID 0)
+-- TOC entry 3208 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: TABLE hashtag; Type: COMMENT; Schema: public; Owner: postgres
 --
 
 COMMENT ON TABLE public.hashtag IS 'Hashtag table';
-
-
---
--- TOC entry 222 (class 1259 OID 24917)
--- Name: image; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.image (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    tweet_id uuid NOT NULL,
-    data bytea NOT NULL,
-    description text,
-    title text,
-    user_id uuid
-);
-
-
-ALTER TABLE public.image OWNER TO postgres;
-
---
--- TOC entry 3229 (class 0 OID 0)
--- Dependencies: 222
--- Name: TABLE image; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON TABLE public.image IS 'Image table';
 
 
 --
@@ -327,7 +300,7 @@ CREATE TABLE public."like" (
 ALTER TABLE public."like" OWNER TO postgres;
 
 --
--- TOC entry 3230 (class 0 OID 0)
+-- TOC entry 3209 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: TABLE "like"; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -351,7 +324,7 @@ CREATE TABLE public.mention (
 ALTER TABLE public.mention OWNER TO postgres;
 
 --
--- TOC entry 3231 (class 0 OID 0)
+-- TOC entry 3210 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: TABLE mention; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -366,18 +339,18 @@ COMMENT ON TABLE public.mention IS 'Mention table';
 
 CREATE TABLE public.message (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    conversation_id uuid NOT NULL,
     sender_id uuid NOT NULL,
     recipient_id uuid NOT NULL,
     content text NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    conversation_id uuid
+    created_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
 ALTER TABLE public.message OWNER TO postgres;
 
 --
--- TOC entry 3232 (class 0 OID 0)
+-- TOC entry 3211 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: TABLE message; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -401,7 +374,7 @@ CREATE TABLE public.retweet (
 ALTER TABLE public.retweet OWNER TO postgres;
 
 --
--- TOC entry 3233 (class 0 OID 0)
+-- TOC entry 3212 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: TABLE retweet; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -418,15 +391,15 @@ CREATE TABLE public.tweet (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     author_id uuid NOT NULL,
     content text NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    image_url jsonb
+    image_url text,
+    created_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
 ALTER TABLE public.tweet OWNER TO postgres;
 
 --
--- TOC entry 3234 (class 0 OID 0)
+-- TOC entry 3213 (class 0 OID 0)
 -- Dependencies: 213
 -- Name: TABLE tweet; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -449,7 +422,7 @@ CREATE TABLE public.tweet_hashtag (
 ALTER TABLE public.tweet_hashtag OWNER TO postgres;
 
 --
--- TOC entry 3235 (class 0 OID 0)
+-- TOC entry 3214 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: TABLE tweet_hashtag; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -481,7 +454,7 @@ CREATE TABLE public."user" (
 ALTER TABLE public."user" OWNER TO postgres;
 
 --
--- TOC entry 3236 (class 0 OID 0)
+-- TOC entry 3215 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: TABLE "user"; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -490,7 +463,7 @@ COMMENT ON TABLE public."user" IS 'User table';
 
 
 --
--- TOC entry 3202 (class 0 OID 16446)
+-- TOC entry 3183 (class 0 OID 16446)
 -- Dependencies: 206
 -- Data for Name: hdb_action_log; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
@@ -500,7 +473,7 @@ COPY hdb_catalog.hdb_action_log (id, action_name, input_payload, request_headers
 
 
 --
--- TOC entry 3204 (class 0 OID 16472)
+-- TOC entry 3185 (class 0 OID 16472)
 -- Dependencies: 208
 -- Data for Name: hdb_cron_event_invocation_logs; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
@@ -510,7 +483,7 @@ COPY hdb_catalog.hdb_cron_event_invocation_logs (id, event_id, status, request, 
 
 
 --
--- TOC entry 3203 (class 0 OID 16457)
+-- TOC entry 3184 (class 0 OID 16457)
 -- Dependencies: 207
 -- Data for Name: hdb_cron_events; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
@@ -520,18 +493,18 @@ COPY hdb_catalog.hdb_cron_events (id, trigger_name, scheduled_time, status, trie
 
 
 --
--- TOC entry 3201 (class 0 OID 16435)
+-- TOC entry 3182 (class 0 OID 16435)
 -- Dependencies: 205
 -- Data for Name: hdb_metadata; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
 COPY hdb_catalog.hdb_metadata (id, metadata, resource_version) FROM stdin;
-1	{"network":{"tls_allowlist":[{"host":"vuejs.com","permissions":["self-signed"],"suffix":"5136"}]},"sources":[{"configuration":{"connection_info":{"database_url":"postgres://postgres:postgrespassword@postgres:5432/postgres","isolation_level":"read-committed","use_prepared_statements":false}},"kind":"postgres","name":"main","tables":[{"array_relationships":[{"name":"conversation_messages","using":{"foreign_key_constraint_on":{"column":"conversation_id","table":{"name":"message","schema":"public"}}}}],"object_relationships":[{"name":"conversation_user","using":{"foreign_key_constraint_on":"user2_id"}},{"name":"conversation_user2","using":{"manual_configuration":{"column_mapping":{"user1_id":"id"},"insertion_order":null,"remote_table":{"name":"user","schema":"public"}}}}],"table":{"name":"conversation","schema":"public"}},{"object_relationships":[{"name":"user","using":{"foreign_key_constraint_on":"follower_id"}},{"name":"user2","using":{"manual_configuration":{"column_mapping":{"user_id":"id"},"insertion_order":null,"remote_table":{"name":"user","schema":"public"}}}},{"name":"userByUserId","using":{"foreign_key_constraint_on":"user_id"}}],"table":{"name":"follower","schema":"public"}},{"array_relationships":[{"name":"tweet_hashtags","using":{"foreign_key_constraint_on":{"column":"hashtag_id","table":{"name":"tweet_hashtag","schema":"public"}}}}],"table":{"name":"hashtag","schema":"public"}},{"object_relationships":[{"name":"image_tweet","using":{"foreign_key_constraint_on":"tweet_id"}}],"table":{"name":"image","schema":"public"}},{"object_relationships":[{"name":"tweet","using":{"foreign_key_constraint_on":"tweet_id"}},{"name":"user","using":{"foreign_key_constraint_on":"user_id"}}],"table":{"name":"like","schema":"public"}},{"object_relationships":[{"name":"tweet","using":{"foreign_key_constraint_on":"tweet_id"}},{"name":"user","using":{"foreign_key_constraint_on":"user_id"}}],"table":{"name":"mention","schema":"public"}},{"table":{"name":"message","schema":"public"}},{"object_relationships":[{"name":"tweet","using":{"foreign_key_constraint_on":"tweet_id"}},{"name":"user","using":{"foreign_key_constraint_on":"user_id"}}],"table":{"name":"retweet","schema":"public"}},{"array_relationships":[{"name":"tweet_images","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"image","schema":"public"}}}},{"name":"tweet_likes","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"like","schema":"public"}}}},{"name":"tweet_mentions","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"mention","schema":"public"}}}},{"name":"tweet_retweets","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"retweet","schema":"public"}}}},{"name":"tweet_tweet_hashtags","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"tweet_hashtag","schema":"public"}}}}],"object_relationships":[{"name":"tweet_user","using":{"foreign_key_constraint_on":"author_id"}}],"table":{"name":"tweet","schema":"public"}},{"object_relationships":[{"name":"hashtag","using":{"foreign_key_constraint_on":"hashtag_id"}},{"name":"tweet","using":{"foreign_key_constraint_on":"tweet_id"}}],"table":{"name":"tweet_hashtag","schema":"public"}},{"array_relationships":[{"name":"follower","using":{"foreign_key_constraint_on":{"column":"follower_id","table":{"name":"follower","schema":"public"}}}},{"name":"followers","using":{"manual_configuration":{"column_mapping":{"id":"follower_id"},"insertion_order":null,"remote_table":{"name":"follower","schema":"public"}}}},{"name":"followersByUserId","using":{"foreign_key_constraint_on":{"column":"user_id","table":{"name":"follower","schema":"public"}}}},{"name":"following","using":{"manual_configuration":{"column_mapping":{"id":"user_id"},"insertion_order":null,"remote_table":{"name":"follower","schema":"public"}}}},{"name":"likes","using":{"foreign_key_constraint_on":{"column":"user_id","table":{"name":"like","schema":"public"}}}},{"name":"mentions","using":{"foreign_key_constraint_on":{"column":"user_id","table":{"name":"mention","schema":"public"}}}},{"name":"retweets","using":{"foreign_key_constraint_on":{"column":"user_id","table":{"name":"retweet","schema":"public"}}}},{"name":"tweets","using":{"foreign_key_constraint_on":{"column":"author_id","table":{"name":"tweet","schema":"public"}}}},{"name":"user_conversations","using":{"foreign_key_constraint_on":{"column":"user1_id","table":{"name":"conversation","schema":"public"}}}},{"name":"user_conversations_2","using":{"foreign_key_constraint_on":{"column":"user2_id","table":{"name":"conversation","schema":"public"}}}}],"select_permissions":[{"permission":{"columns":["premium","bio","email","location","name","password","profile_picture_url","username","website","created_at","id"],"filter":{"id":{"_eq":"X-Hasura-User-Id"}}},"role":"user"}],"table":{"name":"user","schema":"public"},"update_permissions":[{"permission":{"check":null,"columns":["id","username","email","password","bio","profile_picture_url","website","location","created_at","name","premium"],"filter":{"id":{"_eq":"X-Hasura-User-Id"}}},"role":"user"}]}]}],"version":3}	86
+1	{"network":{"tls_allowlist":[{"host":"vuejs.com","permissions":["self-signed"],"suffix":"5136"}]},"sources":[{"configuration":{"connection_info":{"database_url":"postgres://postgres:postgrespassword@postgres:5432/postgres","isolation_level":"read-committed","use_prepared_statements":false}},"kind":"postgres","name":"main","tables":[{"table":{"name":"conversation","schema":"public"}},{"object_relationships":[{"name":"user","using":{"foreign_key_constraint_on":"follower_id"}},{"name":"userByUserId","using":{"foreign_key_constraint_on":"user_id"}}],"table":{"name":"follower","schema":"public"}},{"array_relationships":[{"name":"tweet_hashtags","using":{"foreign_key_constraint_on":{"column":"hashtag_id","table":{"name":"tweet_hashtag","schema":"public"}}}}],"table":{"name":"hashtag","schema":"public"}},{"object_relationships":[{"name":"tweet","using":{"foreign_key_constraint_on":"tweet_id"}},{"name":"user","using":{"foreign_key_constraint_on":"user_id"}}],"table":{"name":"like","schema":"public"}},{"object_relationships":[{"name":"tweet","using":{"foreign_key_constraint_on":"tweet_id"}},{"name":"user","using":{"foreign_key_constraint_on":"user_id"}}],"table":{"name":"mention","schema":"public"}},{"table":{"name":"message","schema":"public"}},{"object_relationships":[{"name":"tweet","using":{"foreign_key_constraint_on":"tweet_id"}},{"name":"user","using":{"foreign_key_constraint_on":"user_id"}}],"table":{"name":"retweet","schema":"public"}},{"array_relationships":[{"name":"tweet_likes","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"like","schema":"public"}}}},{"name":"tweet_mentions","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"mention","schema":"public"}}}},{"name":"tweet_retweets","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"retweet","schema":"public"}}}},{"name":"tweet_tweet_hashtags","using":{"foreign_key_constraint_on":{"column":"tweet_id","table":{"name":"tweet_hashtag","schema":"public"}}}}],"object_relationships":[{"name":"tweet_user","using":{"foreign_key_constraint_on":"author_id"}}],"table":{"name":"tweet","schema":"public"}},{"object_relationships":[{"name":"hashtag","using":{"foreign_key_constraint_on":"hashtag_id"}},{"name":"tweet","using":{"foreign_key_constraint_on":"tweet_id"}}],"table":{"name":"tweet_hashtag","schema":"public"}},{"array_relationships":[{"name":"followers","using":{"foreign_key_constraint_on":{"column":"follower_id","table":{"name":"follower","schema":"public"}}}},{"name":"followersByUserId","using":{"foreign_key_constraint_on":{"column":"user_id","table":{"name":"follower","schema":"public"}}}},{"name":"likes","using":{"foreign_key_constraint_on":{"column":"user_id","table":{"name":"like","schema":"public"}}}},{"name":"mentions","using":{"foreign_key_constraint_on":{"column":"user_id","table":{"name":"mention","schema":"public"}}}},{"name":"retweets","using":{"foreign_key_constraint_on":{"column":"user_id","table":{"name":"retweet","schema":"public"}}}},{"name":"tweets","using":{"foreign_key_constraint_on":{"column":"author_id","table":{"name":"tweet","schema":"public"}}}}],"select_permissions":[{"permission":{"columns":["premium","bio","email","location","name","password","profile_picture_url","username","website","created_at","id"],"filter":{"id":{"_eq":"X-Hasura-User-Id"}}},"role":"user"}],"table":{"name":"user","schema":"public"},"update_permissions":[{"permission":{"check":null,"columns":["id","username","email","password","bio","profile_picture_url","website","location","created_at","name","premium"],"filter":{"id":{"_eq":"X-Hasura-User-Id"}}},"role":"user"}]}]}],"version":3}	49
 \.
 
 
 --
--- TOC entry 3206 (class 0 OID 16502)
+-- TOC entry 3187 (class 0 OID 16502)
 -- Dependencies: 210
 -- Data for Name: hdb_scheduled_event_invocation_logs; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
@@ -541,7 +514,7 @@ COPY hdb_catalog.hdb_scheduled_event_invocation_logs (id, event_id, status, requ
 
 
 --
--- TOC entry 3205 (class 0 OID 16488)
+-- TOC entry 3186 (class 0 OID 16488)
 -- Dependencies: 209
 -- Data for Name: hdb_scheduled_events; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
@@ -551,18 +524,18 @@ COPY hdb_catalog.hdb_scheduled_events (id, webhook_conf, scheduled_time, retry_c
 
 
 --
--- TOC entry 3207 (class 0 OID 16517)
+-- TOC entry 3188 (class 0 OID 16517)
 -- Dependencies: 211
 -- Data for Name: hdb_schema_notifications; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
 COPY hdb_catalog.hdb_schema_notifications (id, notification, resource_version, instance_id, updated_at) FROM stdin;
-1	{"metadata":false,"remote_schemas":[],"sources":[],"data_connectors":[]}	86	84245bfe-6212-4089-aded-25b268d0d71b	2023-03-25 11:12:51.931196+00
+1	{"metadata":false,"remote_schemas":[],"sources":["main"],"data_connectors":[]}	49	3b55ba47-97f5-4132-a2d1-f60779572cca	2023-03-25 11:12:51.931196+00
 \.
 
 
 --
--- TOC entry 3200 (class 0 OID 16423)
+-- TOC entry 3181 (class 0 OID 16423)
 -- Dependencies: 204
 -- Data for Name: hdb_version; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
@@ -573,61 +546,37 @@ COPY hdb_catalog.hdb_version (hasura_uuid, version, upgraded_on, cli_state, cons
 
 
 --
--- TOC entry 3216 (class 0 OID 24868)
+-- TOC entry 3197 (class 0 OID 24868)
 -- Dependencies: 220
 -- Data for Name: conversation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.conversation (id, user1_id, user2_id) FROM stdin;
-a6ee364d-cacf-4679-93d9-0f4b611da7b7	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	6e621ebe-c0b1-4877-8244-5e581f25d878
 \.
 
 
 --
--- TOC entry 3210 (class 0 OID 16557)
+-- TOC entry 3191 (class 0 OID 16557)
 -- Dependencies: 214
 -- Data for Name: follower; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.follower (id, user_id, follower_id, created_at) FROM stdin;
-f0a35f90-27e1-4723-84a4-521f53b9036e	6e621ebe-c0b1-4877-8244-5e581f25d878	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	2023-04-01 22:26:11.968107+00
-05aedb1d-a8f4-4a0d-a4d3-b3d2cf36b6a8	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	6e621ebe-c0b1-4877-8244-5e581f25d878	2023-04-01 22:33:13.002125+00
+COPY public.follower (id, user_id, follower_id) FROM stdin;
 \.
 
 
 --
--- TOC entry 3213 (class 0 OID 16608)
+-- TOC entry 3194 (class 0 OID 16608)
 -- Dependencies: 217
 -- Data for Name: hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.hashtag (id, text) FROM stdin;
-16429971-a8ff-44d6-afc0-5b2095d6b245	#faute
-dd40e0f4-b0c5-4cf2-adc9-b154154c7eab	#hastag
-1a76d01f-e2a4-47fe-8e21-2ca769ee1438	#testdesvrai
-39af38fc-45c3-4d3e-ae3b-5156cab0e87e	#testdesvrairt
-9c5f1fec-ffca-4d62-b9b1-cc229905e23a	#test
-3038e2f9-716c-43cf-9bd6-916f7c5521be	#rien
-f1f75f28-6878-4978-aa8d-88aa3f4ddbb8	#salutca
-842ec305-87ed-4028-8d25-8480704ee3e8	#c
-4bb14102-8cd1-47bb-a46e-871b8023eabe	#39
-3e0a62d4-6eb6-4e30-8909-1d9bd9e90d8b	#deprime
-a32bd55b-d319-4222-96a2-b3493440f469	#jetweet
 \.
 
 
 --
--- TOC entry 3218 (class 0 OID 24917)
--- Dependencies: 222
--- Data for Name: image; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.image (id, tweet_id, data, description, title, user_id) FROM stdin;
-\.
-
-
---
--- TOC entry 3211 (class 0 OID 16573)
+-- TOC entry 3192 (class 0 OID 16573)
 -- Dependencies: 215
 -- Data for Name: like; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -641,26 +590,14 @@ f628bb2d-d3a3-4a5e-b14f-52065c56ac75	2c13461f-7c04-4376-9f2e-15d2443a3a03	fe3610
 abb26249-6f96-463d-8ccf-4766b53f1443	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	cb614ba2-b1c2-44dc-a551-a8b3dd809379	2023-03-28 17:47:38.271065+00
 881cff80-bc67-42fd-91ec-ab0bffd77e3c	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	c3a1adde-714d-49c4-ae93-401626cc1f19	2023-03-28 17:47:56.321308+00
 76813cf1-e8d9-42bf-a1da-7ba9dbb91aa6	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	15cd1872-3f5e-4f4b-ae29-57d277cc3ae4	2023-03-28 17:48:00.629655+00
+b55b40aa-8484-43e2-82dd-db23190facba	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	fe3610d5-5a5e-48e1-b59f-5a39c9b0f208	2023-03-28 18:16:47.139261+00
 bb72bc24-238f-40c4-9b6e-a8ef7cc1876c	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	e1188ff9-a3b1-41eb-a9bb-9808463bac45	2023-03-28 19:17:03.205819+00
 68b20039-a853-46fe-92b0-80aaf7765caf	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	d6a52a6f-9c9a-47b9-ae22-697d5a5a5dcf	2023-03-28 19:17:05.20424+00
-d18d4671-6edd-4c66-814e-b1a274a64937	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	68467af0-a65e-4443-a0c4-16acbd3eb77d	2023-03-31 18:49:16.612193+00
-e03895c6-f2d2-4e38-8181-77e43091254d	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	eada2b15-0fe2-4249-9b0b-d134f97c3fcf	2023-04-01 15:32:22.844293+00
-66062449-1db8-4976-b8e4-9fb28b4714b6	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	8146dec6-fae8-498e-8b10-c544483ea8ff	2023-04-01 15:34:32.349404+00
-6f56520e-6d99-4d0e-9d0d-d8f986dfc7e9	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	6882f9fa-7a03-416a-a15c-01043084e698	2023-04-01 16:00:27.966108+00
-3f2bd35b-7161-4f3f-bb48-c5a4dc3771bc	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	7549b8e6-1768-4845-ad2e-74316870193e	2023-04-01 16:00:29.4218+00
-14c97afc-7972-4012-8417-20780fff9412	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	1d0342d9-b726-4c2a-9f69-c6c09b6f30c8	2023-04-01 16:00:43.470749+00
-5ee0931f-99ec-4944-a3ed-00c6ffc4472f	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	39214c57-19d5-41cd-9f53-a03c52309d59	2023-04-01 16:01:42.487596+00
-4fc80642-6ed4-4e51-949a-473714134cc2	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	9cc97b3c-6453-4c12-b2f0-e3c2a902ff2c	2023-04-01 16:05:16.524721+00
-7e4d3ac8-9bd8-4c83-a53c-08df8620b919	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	9e4fcbf1-db7e-4ed4-bc3b-8f78fb53b6b7	2023-04-01 16:56:15.664507+00
-7f0d855f-9074-4443-a95f-431d64726de1	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	15f8d2f0-db07-4c72-85e6-23507cb289da	2023-04-01 17:06:31.206355+00
-917c83ff-6103-417e-a113-dd2427378199	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	e7061617-6e92-460e-a968-ea80c71dc886	2023-04-01 18:58:18.611136+00
-2179fb44-aca4-4b8f-92ff-e0447cb4f7e0	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	172718dc-f927-4e5a-8eb1-065798283aa0	2023-04-01 18:58:21.44183+00
-49b945b6-c3a3-4627-b243-c0e5142d74d1	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	64ad5ef5-5133-4e28-a68c-fdb6b4c46e1f	2023-04-01 21:53:01.095645+00
 \.
 
 
 --
--- TOC entry 3215 (class 0 OID 16633)
+-- TOC entry 3196 (class 0 OID 16633)
 -- Dependencies: 219
 -- Data for Name: mention; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -670,100 +607,56 @@ COPY public.mention (id, user_id, tweet_id, created_at) FROM stdin;
 
 
 --
--- TOC entry 3217 (class 0 OID 24884)
+-- TOC entry 3198 (class 0 OID 24884)
 -- Dependencies: 221
 -- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.message (id, sender_id, recipient_id, content, created_at, conversation_id) FROM stdin;
-3d3b01ee-7c84-4d0b-b31b-c6fdd2d9cd6a	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	6e621ebe-c0b1-4877-8244-5e581f25d878	salut mon pote ca va ?	2023-04-01 21:51:55.261933+00	a6ee364d-cacf-4679-93d9-0f4b611da7b7
-5f6bc0ff-6320-4afc-b5bb-61737e43570f	6e621ebe-c0b1-4877-8244-5e581f25d878	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	bien et toi ?	2023-04-01 21:52:23.69688+00	a6ee364d-cacf-4679-93d9-0f4b611da7b7
-2e36bee1-b967-4258-9cb9-1032debe4bd4	6e621ebe-c0b1-4877-8244-5e581f25d878	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	trkl	2023-04-01 22:33:55.862543+00	a6ee364d-cacf-4679-93d9-0f4b611da7b7
-6f7657e0-aaa5-4321-b56d-8d3e2c6f9d3b	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	6e621ebe-c0b1-4877-8244-5e581f25d878	fff	2023-04-01 22:37:54.132471+00	a6ee364d-cacf-4679-93d9-0f4b611da7b7
+COPY public.message (id, conversation_id, sender_id, recipient_id, content, created_at) FROM stdin;
 \.
 
 
 --
--- TOC entry 3212 (class 0 OID 16592)
+-- TOC entry 3193 (class 0 OID 16592)
 -- Dependencies: 216
 -- Data for Name: retweet; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.retweet (user_id, tweet_id, created_at, id) FROM stdin;
-6b2f8c43-8d7f-4d05-878c-923f6d74cd67	eada2b15-0fe2-4249-9b0b-d134f97c3fcf	2023-04-01 17:06:20.277825+00	0856677e-c3f2-4b34-897c-1ffbb04e745d
-6b2f8c43-8d7f-4d05-878c-923f6d74cd67	82535ae5-d550-4021-9c41-0b4e00adf211	2023-04-01 17:06:25.117769+00	25a17366-ccae-4c2c-b6f4-2769df3a8dea
-6b2f8c43-8d7f-4d05-878c-923f6d74cd67	e7061617-6e92-460e-a968-ea80c71dc886	2023-04-01 17:06:30.165123+00	c0f82a2c-ef3f-4713-8738-d6ce5441eb3b
-6b2f8c43-8d7f-4d05-878c-923f6d74cd67	172718dc-f927-4e5a-8eb1-065798283aa0	2023-04-01 18:58:20.235661+00	6c0e6301-f818-4b49-bbba-9c87681c8b3f
 \.
 
 
 --
--- TOC entry 3209 (class 0 OID 16542)
+-- TOC entry 3190 (class 0 OID 16542)
 -- Dependencies: 213
 -- Data for Name: tweet; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tweet (id, author_id, content, created_at, image_url) FROM stdin;
-1d0342d9-b726-4c2a-9f69-c6c09b6f30c8	2c13461f-7c04-4376-9f2e-15d2443a3a03	I love Hasura!	2022-01-02 00:00:00+00	\N
-d58e0e09-e8f3-4fb7-9cf4-c431df7b8d4e	1ce2b46d-c92c-4fd4-a1e3-b4d4e2074815	GraphQL is amazing!	2022-01-03 00:00:00+00	\N
-fe3610d5-5a5e-48e1-b59f-5a39c9b0f208	336bf68a-d72e-40ed-82ec-75a573e7ab78	Just had a great meeting with the team	2022-01-04 00:00:00+00	\N
-d6a52a6f-9c9a-47b9-ae22-697d5a5a5dcf	48f7d933-aa75-422a-ae14-29eb8c880de1	Excited to start my new job next week	2022-01-05 00:00:00+00	\N
-e1188ff9-a3b1-41eb-a9bb-9808463bac45	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	Salut c'est un test de tweet	2023-03-28 15:15:40.703273+00	\N
-15cd1872-3f5e-4f4b-ae29-57d277cc3ae4	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	oui j'arrive	2023-03-28 15:19:24.587484+00	\N
-c3a1adde-714d-49c4-ae93-401626cc1f19	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	salut	2023-03-28 15:22:15.327641+00	\N
-cb614ba2-b1c2-44dc-a551-a8b3dd809379	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	comment ca va ?	2023-03-28 17:13:31.012208+00	\N
-6882f9fa-7a03-416a-a15c-01043084e698	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	ca va et toi #fatigué, #rien	2023-03-29 17:18:55.888699+00	\N
-7549b8e6-1768-4845-ad2e-74316870193e	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	salut #test	2023-03-29 17:58:36.047198+00	\N
-45eb4e70-d2fa-4ca8-84ef-034e0b91e8e0	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	salut #test cava #faute	2023-03-29 18:00:21.279962+00	\N
-a0af770f-4de4-4b29-930c-31b6509121a1	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	Test #hastag	2023-03-29 18:36:20.885765+00	\N
-63888231-19dd-43ad-b632-43b9f7adf5bb	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	test des vrai_ #testdesvrai	2023-03-29 19:05:16.492529+00	\N
-39214c57-19d5-41cd-9f53-a03c52309d59	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	test des vrai_ #testdesvrairt	2023-03-29 19:07:22.765717+00	\N
-6bc94cd2-1c89-4669-ba4e-57345a270b35	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	test des vrai_ #testdesvrairt	2023-03-29 19:07:57.291211+00	\N
-1bf3de46-3282-49c7-8024-4c474590ffaa	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	#test	2023-03-29 19:11:10.239892+00	\N
-8c28cb8b-e454-4fea-ac0a-7b1783eeb964	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	#test	2023-03-29 19:15:37.216834+00	\N
-0606f502-5af2-417f-bdf0-edc70c152e1f	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	#test	2023-03-29 19:15:58.30673+00	\N
-77863df5-8023-4256-92ee-47d7b333e81d	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	#test	2023-03-29 19:17:06.045412+00	\N
-1091b696-1f34-4e99-8b82-756bb7ce5f1a	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	#test	2023-03-29 19:18:18.458183+00	\N
-15976796-505e-41cf-a346-ac9235c59821	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	#rien	2023-03-29 19:29:08.77773+00	\N
-895506cb-4093-4c8b-9831-bb264ae3d58d	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	#salutca va ?	2023-03-29 19:31:25.706548+00	\N
-172718dc-f927-4e5a-8eb1-065798283aa0	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	#salutca test2	2023-03-29 19:39:28.942101+00	\N
-68467af0-a65e-4443-a0c4-16acbd3eb77d	6e621ebe-c0b1-4877-8244-5e581f25d878	Nouveau su twitter #c&#39;estbien	2023-03-31 18:49:03.62858+00	\N
-e7061617-6e92-460e-a968-ea80c71dc886	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	test	2023-03-31 19:25:25.191537+00	\N
-15f8d2f0-db07-4c72-85e6-23507cb289da	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	rien de spécial	2023-03-31 19:27:58.811557+00	\N
-7f98107f-73e8-4c86-af84-28144ff61d74	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	test image	2023-03-31 19:29:44.931393+00	\N
-3a96781f-6b5d-4b60-9b72-a151b9122edf	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	star wars	2023-03-31 19:30:55.631829+00	\N
-8eaa756f-625a-4773-af90-2c8a72c35586	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	rin de special test n°2589 #deprime	2023-03-31 19:35:59.208257+00	\N
-8735b68d-0704-46ba-9982-845c8673d5dd	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	rin de special test n°2589 #deprime	2023-03-31 19:38:20.005217+00	\N
-82535ae5-d550-4021-9c41-0b4e00adf211	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	y	2023-03-31 19:39:26.625965+00	\N
-8146dec6-fae8-498e-8b10-c544483ea8ff	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	fff	2023-03-31 19:41:00.591665+00	\N
-9e4fcbf1-db7e-4ed4-bc3b-8f78fb53b6b7	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	xee	2023-03-31 19:44:00.686149+00	\N
-eada2b15-0fe2-4249-9b0b-d134f97c3fcf	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	fffrerqer	2023-03-31 19:44:46.079371+00	\N
-9cc97b3c-6453-4c12-b2f0-e3c2a902ff2c	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	ddd	2023-03-31 19:46:39.561589+00	\N
-e05ec5dc-f8d4-4f0d-b05c-1a511a8e372a	1ce2b46d-c92c-4fd4-a1e3-b4d4e2074815	Hello world!	2022-01-01 00:00:00+00	["/main/FpkMFTpX0AABs_O.jpg"]
-64ad5ef5-5133-4e28-a68c-fdb6b4c46e1f	6e621ebe-c0b1-4877-8244-5e581f25d878	#jetweet lol	2023-04-01 21:52:44.226216+00	"null"
+COPY public.tweet (id, author_id, content, image_url, created_at) FROM stdin;
+e05ec5dc-f8d4-4f0d-b05c-1a511a8e372a	1ce2b46d-c92c-4fd4-a1e3-b4d4e2074815	Hello world!	\N	2022-01-01 00:00:00+00
+1d0342d9-b726-4c2a-9f69-c6c09b6f30c8	2c13461f-7c04-4376-9f2e-15d2443a3a03	I love Hasura!	\N	2022-01-02 00:00:00+00
+d58e0e09-e8f3-4fb7-9cf4-c431df7b8d4e	1ce2b46d-c92c-4fd4-a1e3-b4d4e2074815	GraphQL is amazing!	\N	2022-01-03 00:00:00+00
+fe3610d5-5a5e-48e1-b59f-5a39c9b0f208	336bf68a-d72e-40ed-82ec-75a573e7ab78	Just had a great meeting with the team	\N	2022-01-04 00:00:00+00
+d6a52a6f-9c9a-47b9-ae22-697d5a5a5dcf	48f7d933-aa75-422a-ae14-29eb8c880de1	Excited to start my new job next week	\N	2022-01-05 00:00:00+00
+e1188ff9-a3b1-41eb-a9bb-9808463bac45	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	Salut c'est un test de tweet	null	2023-03-28 15:15:40.703273+00
+15cd1872-3f5e-4f4b-ae29-57d277cc3ae4	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	oui j'arrive	null	2023-03-28 15:19:24.587484+00
+c3a1adde-714d-49c4-ae93-401626cc1f19	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	salut	null	2023-03-28 15:22:15.327641+00
+cb614ba2-b1c2-44dc-a551-a8b3dd809379	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	comment ca va ?	null	2023-03-28 17:13:31.012208+00
 \.
 
 
 --
--- TOC entry 3214 (class 0 OID 16617)
+-- TOC entry 3195 (class 0 OID 16617)
 -- Dependencies: 218
 -- Data for Name: tweet_hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.tweet_hashtag (id, tweet_id, hashtag_id) FROM stdin;
-84e382d2-ddff-4606-9555-28862558e0ce	15976796-505e-41cf-a346-ac9235c59821	3038e2f9-716c-43cf-9bd6-916f7c5521be
-2d355c31-73fe-45c4-984d-63d49f79dc96	895506cb-4093-4c8b-9831-bb264ae3d58d	f1f75f28-6878-4978-aa8d-88aa3f4ddbb8
-9c196932-614d-4072-b154-13e1f0299e76	172718dc-f927-4e5a-8eb1-065798283aa0	f1f75f28-6878-4978-aa8d-88aa3f4ddbb8
-ac794654-df94-43d9-bdef-199f0fe9411d	68467af0-a65e-4443-a0c4-16acbd3eb77d	842ec305-87ed-4028-8d25-8480704ee3e8
-f070e435-469f-4ea9-8421-3a8e857463ba	68467af0-a65e-4443-a0c4-16acbd3eb77d	4bb14102-8cd1-47bb-a46e-871b8023eabe
-e6b31864-f681-4b03-ab68-83e8f9bf9396	8eaa756f-625a-4773-af90-2c8a72c35586	3e0a62d4-6eb6-4e30-8909-1d9bd9e90d8b
-2f25bf75-5d97-496f-99b4-1752a3a53b77	8735b68d-0704-46ba-9982-845c8673d5dd	3e0a62d4-6eb6-4e30-8909-1d9bd9e90d8b
-5295febf-d1e9-4e26-8f1a-9ec1b646a8d4	64ad5ef5-5133-4e28-a68c-fdb6b4c46e1f	a32bd55b-d319-4222-96a2-b3493440f469
 \.
 
 
 --
--- TOC entry 3208 (class 0 OID 16528)
+-- TOC entry 3189 (class 0 OID 16528)
 -- Dependencies: 212
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -773,13 +666,12 @@ COPY public."user" (id, username, email, password, bio, profile_picture_url, web
 48f7d933-aa75-422a-ae14-29eb8c880de1	david	david@example.com	password4	'	\N	\N	\N	2023-03-25 12:33:35.914806+00	David	f	2001-02-01
 336bf68a-d72e-40ed-82ec-75a573e7ab78	charlie	charlie@example.com	password3	'	\N	\N	\N	2023-03-25 12:33:35.914806+00	Charlie	f	2001-02-01
 2c13461f-7c04-4376-9f2e-15d2443a3a03	bob	bob@example.com	password2	'	\N	\N	\N	2023-03-25 12:33:35.914806+00	Bob	f	2001-02-01
-6e621ebe-c0b1-4877-8244-5e581f25d878	krateros	spelfard74@gmail.com	$2a$10$fRoFKWfHn2O4PWECO7OqPOSf4VC.XkH1hhZwyl8M6v2/A2Ar1cZGm	'	\N	\N	\N	2023-03-31 18:48:24.121525+00	Krateros Wallace	f	1992-03-12
-6b2f8c43-8d7f-4d05-878c-923f6d74cd67	nelda	adlencherif29@gmail.com	$2a$10$MGql3FiTb539DPCWnjCdauBJqm3lvDiFrA67cUmYPyTzU9ZctTALq	'	http://127.0.0.1:9000/main/FpkMFTpX0AABs_O.jpg	\N	\N	2023-03-28 10:54:55.805202+00	Adlen CHERIF	t	2002-07-29
+6b2f8c43-8d7f-4d05-878c-923f6d74cd67	nelda	adlencherif29@gmail.com	$2a$10$MGql3FiTb539DPCWnjCdauBJqm3lvDiFrA67cUmYPyTzU9ZctTALq	'	\N	\N	\N	2023-03-28 10:54:55.805202+00	Adlen CHERIF	t	2002-07-29
 \.
 
 
 --
--- TOC entry 3001 (class 2606 OID 16456)
+-- TOC entry 2994 (class 2606 OID 16456)
 -- Name: hdb_action_log hdb_action_log_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -788,7 +680,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_action_log
 
 
 --
--- TOC entry 3008 (class 2606 OID 16481)
+-- TOC entry 3001 (class 2606 OID 16481)
 -- Name: hdb_cron_event_invocation_logs hdb_cron_event_invocation_logs_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -797,7 +689,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_cron_event_invocation_logs
 
 
 --
--- TOC entry 3004 (class 2606 OID 16469)
+-- TOC entry 2997 (class 2606 OID 16469)
 -- Name: hdb_cron_events hdb_cron_events_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -806,7 +698,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_cron_events
 
 
 --
--- TOC entry 2997 (class 2606 OID 16443)
+-- TOC entry 2990 (class 2606 OID 16443)
 -- Name: hdb_metadata hdb_metadata_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -815,7 +707,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_metadata
 
 
 --
--- TOC entry 2999 (class 2606 OID 16445)
+-- TOC entry 2992 (class 2606 OID 16445)
 -- Name: hdb_metadata hdb_metadata_resource_version_key; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -824,7 +716,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_metadata
 
 
 --
--- TOC entry 3013 (class 2606 OID 16511)
+-- TOC entry 3006 (class 2606 OID 16511)
 -- Name: hdb_scheduled_event_invocation_logs hdb_scheduled_event_invocation_logs_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -833,7 +725,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_scheduled_event_invocation_logs
 
 
 --
--- TOC entry 3011 (class 2606 OID 16500)
+-- TOC entry 3004 (class 2606 OID 16500)
 -- Name: hdb_scheduled_events hdb_scheduled_events_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -842,7 +734,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_scheduled_events
 
 
 --
--- TOC entry 3015 (class 2606 OID 16527)
+-- TOC entry 3008 (class 2606 OID 16527)
 -- Name: hdb_schema_notifications hdb_schema_notifications_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -851,7 +743,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_schema_notifications
 
 
 --
--- TOC entry 2995 (class 2606 OID 16433)
+-- TOC entry 2988 (class 2606 OID 16433)
 -- Name: hdb_version hdb_version_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -860,7 +752,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_version
 
 
 --
--- TOC entry 3047 (class 2606 OID 24947)
+-- TOC entry 3034 (class 2606 OID 24873)
 -- Name: conversation conversation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -869,16 +761,7 @@ ALTER TABLE ONLY public.conversation
 
 
 --
--- TOC entry 3049 (class 2606 OID 24939)
--- Name: conversation conversation_user1_id_user2_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.conversation
-    ADD CONSTRAINT conversation_user1_id_user2_id_key UNIQUE (user1_id, user2_id);
-
-
---
--- TOC entry 3025 (class 2606 OID 16562)
+-- TOC entry 3018 (class 2606 OID 16562)
 -- Name: follower follower_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -887,16 +770,7 @@ ALTER TABLE ONLY public.follower
 
 
 --
--- TOC entry 3027 (class 2606 OID 24954)
--- Name: follower follower_user_id_follower_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.follower
-    ADD CONSTRAINT follower_user_id_follower_id_key UNIQUE (user_id, follower_id);
-
-
---
--- TOC entry 3039 (class 2606 OID 16616)
+-- TOC entry 3028 (class 2606 OID 16616)
 -- Name: hashtag hashtag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -905,25 +779,7 @@ ALTER TABLE ONLY public.hashtag
 
 
 --
--- TOC entry 3041 (class 2606 OID 24916)
--- Name: hashtag hashtag_text_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.hashtag
-    ADD CONSTRAINT hashtag_text_key UNIQUE (text);
-
-
---
--- TOC entry 3053 (class 2606 OID 24925)
--- Name: image image_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.image
-    ADD CONSTRAINT image_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3029 (class 2606 OID 24910)
+-- TOC entry 3020 (class 2606 OID 24910)
 -- Name: like like_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -932,7 +788,7 @@ ALTER TABLE ONLY public."like"
 
 
 --
--- TOC entry 3031 (class 2606 OID 24912)
+-- TOC entry 3022 (class 2606 OID 24912)
 -- Name: like like_user_id_tweet_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -941,7 +797,7 @@ ALTER TABLE ONLY public."like"
 
 
 --
--- TOC entry 3045 (class 2606 OID 16639)
+-- TOC entry 3032 (class 2606 OID 16639)
 -- Name: mention mention_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -950,7 +806,7 @@ ALTER TABLE ONLY public.mention
 
 
 --
--- TOC entry 3051 (class 2606 OID 24893)
+-- TOC entry 3036 (class 2606 OID 24893)
 -- Name: message message_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -959,7 +815,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 3033 (class 2606 OID 16654)
+-- TOC entry 3024 (class 2606 OID 16654)
 -- Name: retweet retweet_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -968,7 +824,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3035 (class 2606 OID 16660)
+-- TOC entry 3026 (class 2606 OID 16660)
 -- Name: retweet retweet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -977,16 +833,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3037 (class 2606 OID 24937)
--- Name: retweet retweet_user_id_tweet_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.retweet
-    ADD CONSTRAINT retweet_user_id_tweet_id_key UNIQUE (user_id, tweet_id);
-
-
---
--- TOC entry 3043 (class 2606 OID 16622)
+-- TOC entry 3030 (class 2606 OID 16622)
 -- Name: tweet_hashtag tweet_hashtag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -995,7 +842,7 @@ ALTER TABLE ONLY public.tweet_hashtag
 
 
 --
--- TOC entry 3023 (class 2606 OID 16551)
+-- TOC entry 3016 (class 2606 OID 16551)
 -- Name: tweet tweet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1004,7 +851,7 @@ ALTER TABLE ONLY public.tweet
 
 
 --
--- TOC entry 3017 (class 2606 OID 16541)
+-- TOC entry 3010 (class 2606 OID 16541)
 -- Name: user user_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1013,7 +860,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 3019 (class 2606 OID 16537)
+-- TOC entry 3012 (class 2606 OID 16537)
 -- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1022,7 +869,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 3021 (class 2606 OID 16539)
+-- TOC entry 3014 (class 2606 OID 16539)
 -- Name: user user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1031,7 +878,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 3006 (class 1259 OID 16487)
+-- TOC entry 2999 (class 1259 OID 16487)
 -- Name: hdb_cron_event_invocation_event_id; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1039,7 +886,7 @@ CREATE INDEX hdb_cron_event_invocation_event_id ON hdb_catalog.hdb_cron_event_in
 
 
 --
--- TOC entry 3002 (class 1259 OID 16470)
+-- TOC entry 2995 (class 1259 OID 16470)
 -- Name: hdb_cron_event_status; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1047,7 +894,7 @@ CREATE INDEX hdb_cron_event_status ON hdb_catalog.hdb_cron_events USING btree (s
 
 
 --
--- TOC entry 3005 (class 1259 OID 16471)
+-- TOC entry 2998 (class 1259 OID 16471)
 -- Name: hdb_cron_events_unique_scheduled; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1055,7 +902,7 @@ CREATE UNIQUE INDEX hdb_cron_events_unique_scheduled ON hdb_catalog.hdb_cron_eve
 
 
 --
--- TOC entry 3009 (class 1259 OID 16501)
+-- TOC entry 3002 (class 1259 OID 16501)
 -- Name: hdb_scheduled_event_status; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1063,7 +910,7 @@ CREATE INDEX hdb_scheduled_event_status ON hdb_catalog.hdb_scheduled_events USIN
 
 
 --
--- TOC entry 2993 (class 1259 OID 16434)
+-- TOC entry 2986 (class 1259 OID 16434)
 -- Name: hdb_version_one_row; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1071,7 +918,7 @@ CREATE UNIQUE INDEX hdb_version_one_row ON hdb_catalog.hdb_version USING btree (
 
 
 --
--- TOC entry 3054 (class 2606 OID 16482)
+-- TOC entry 3037 (class 2606 OID 16482)
 -- Name: hdb_cron_event_invocation_logs hdb_cron_event_invocation_logs_event_id_fkey; Type: FK CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1080,7 +927,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_cron_event_invocation_logs
 
 
 --
--- TOC entry 3055 (class 2606 OID 16512)
+-- TOC entry 3038 (class 2606 OID 16512)
 -- Name: hdb_scheduled_event_invocation_logs hdb_scheduled_event_invocation_logs_event_id_fkey; Type: FK CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1089,7 +936,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_scheduled_event_invocation_logs
 
 
 --
--- TOC entry 3067 (class 2606 OID 24874)
+-- TOC entry 3050 (class 2606 OID 24874)
 -- Name: conversation conversation_user1_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1098,7 +945,7 @@ ALTER TABLE ONLY public.conversation
 
 
 --
--- TOC entry 3068 (class 2606 OID 24879)
+-- TOC entry 3051 (class 2606 OID 24879)
 -- Name: conversation conversation_user2_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1107,7 +954,7 @@ ALTER TABLE ONLY public.conversation
 
 
 --
--- TOC entry 3057 (class 2606 OID 16568)
+-- TOC entry 3040 (class 2606 OID 16568)
 -- Name: follower follower_follower_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1116,7 +963,7 @@ ALTER TABLE ONLY public.follower
 
 
 --
--- TOC entry 3058 (class 2606 OID 16563)
+-- TOC entry 3041 (class 2606 OID 16563)
 -- Name: follower follower_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1125,25 +972,7 @@ ALTER TABLE ONLY public.follower
 
 
 --
--- TOC entry 3072 (class 2606 OID 24926)
--- Name: image image_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.image
-    ADD CONSTRAINT image_tweet_id_fkey FOREIGN KEY (tweet_id) REFERENCES public.tweet(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- TOC entry 3073 (class 2606 OID 24931)
--- Name: image image_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.image
-    ADD CONSTRAINT image_user_id_fkey FOREIGN KEY (user_id) REFERENCES public."user"(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- TOC entry 3059 (class 2606 OID 16585)
+-- TOC entry 3042 (class 2606 OID 16585)
 -- Name: like like_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1152,7 +981,7 @@ ALTER TABLE ONLY public."like"
 
 
 --
--- TOC entry 3060 (class 2606 OID 16580)
+-- TOC entry 3043 (class 2606 OID 16580)
 -- Name: like like_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1161,7 +990,7 @@ ALTER TABLE ONLY public."like"
 
 
 --
--- TOC entry 3065 (class 2606 OID 16645)
+-- TOC entry 3048 (class 2606 OID 16645)
 -- Name: mention mention_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1170,7 +999,7 @@ ALTER TABLE ONLY public.mention
 
 
 --
--- TOC entry 3066 (class 2606 OID 16640)
+-- TOC entry 3049 (class 2606 OID 16640)
 -- Name: mention mention_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1179,7 +1008,7 @@ ALTER TABLE ONLY public.mention
 
 
 --
--- TOC entry 3069 (class 2606 OID 24948)
+-- TOC entry 3052 (class 2606 OID 24904)
 -- Name: message message_conversation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1188,7 +1017,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 3070 (class 2606 OID 24899)
+-- TOC entry 3053 (class 2606 OID 24899)
 -- Name: message message_recipient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1197,7 +1026,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 3071 (class 2606 OID 24894)
+-- TOC entry 3054 (class 2606 OID 24894)
 -- Name: message message_sender_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1206,7 +1035,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 3061 (class 2606 OID 16598)
+-- TOC entry 3044 (class 2606 OID 16598)
 -- Name: retweet retweet_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1215,7 +1044,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3062 (class 2606 OID 16603)
+-- TOC entry 3045 (class 2606 OID 16603)
 -- Name: retweet retweet_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1224,7 +1053,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3056 (class 2606 OID 16552)
+-- TOC entry 3039 (class 2606 OID 16552)
 -- Name: tweet tweet_author_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1233,7 +1062,7 @@ ALTER TABLE ONLY public.tweet
 
 
 --
--- TOC entry 3063 (class 2606 OID 16628)
+-- TOC entry 3046 (class 2606 OID 16628)
 -- Name: tweet_hashtag tweet_hashtag_hashtag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1242,7 +1071,7 @@ ALTER TABLE ONLY public.tweet_hashtag
 
 
 --
--- TOC entry 3064 (class 2606 OID 16623)
+-- TOC entry 3047 (class 2606 OID 16623)
 -- Name: tweet_hashtag tweet_hashtag_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1251,7 +1080,7 @@ ALTER TABLE ONLY public.tweet_hashtag
 
 
 --
--- TOC entry 3224 (class 0 OID 0)
+-- TOC entry 3204 (class 0 OID 0)
 -- Dependencies: 7
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -1260,7 +1089,7 @@ REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2023-04-02 00:40:58
+-- Completed on 2023-03-29 13:08:39
 
 --
 -- PostgreSQL database dump complete

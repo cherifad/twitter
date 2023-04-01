@@ -42,4 +42,37 @@ function extractHashTags(text) {
   return text.match(/#[a-zA-Z0-9]+/g);
 }
 
-export { formatCount, timeSince, extractHashTags };
+function formatDate(dateParam) {
+  const date = new Date(dateParam);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  const isToday = date.getDate() === today.getDate()
+    && date.getMonth() === today.getMonth()
+    && date.getFullYear() === today.getFullYear();
+
+  const isYesterday = date.getDate() === yesterday.getDate()
+    && date.getMonth() === yesterday.getMonth()
+    && date.getFullYear() === yesterday.getFullYear();
+
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = monthNames[date.getMonth()];
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  const time = date.toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'});
+  const meridian = time.slice(-2);
+  const formattedTime = time.slice(0, -3) + ':' + meridian;
+
+  if (isToday) {
+    return 'Today, ' + formattedTime;
+  } else if (isYesterday) {
+    return 'Yesterday, ' + formattedTime;
+  } else {
+    return `${month} ${day}, ${year}, ${formattedTime}`;
+  }
+}
+
+export { formatCount, timeSince, extractHashTags, formatDate };

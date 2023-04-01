@@ -4,9 +4,9 @@
       <span class="text-xl font-bold">Home</span>
     </div>
     <NewTweet v-if="auths.isAuthenticated" :author_id="auths.user.id" :avatar="auths.user.profile_picture_url" />
-    <div class="flex-1">
+    <div :class="['flex-1', state.tweets.length <= 0 ? 'flex justify-center items-center' : '']">
       <SingleTweet
-        v-if="state.tweets"
+        v-if="state.tweets.length > 0"
         v-for="tweet in state.tweets"
         :tweet-author="tweet.tweet_user.name"
         :tweet-media="null"
@@ -27,6 +27,9 @@
         :tweet-views="25874123"
         :tweet-id="tweet.id"
         :tweet-thread="false"
+        :user-id="auths.user? auths.user.id : null"
+        :users-liked="tweet.tweet_likes_aggregate.nodes.map((like) => like.user_id)"
+        :users-retweeted="tweet.tweet_retweets_aggregate.nodes.map((retweet) => retweet.user_id)"
       />
       <Loading v-else />
     </div>

@@ -1,5 +1,5 @@
 {
-  "resource_version": 50,
+  "resource_version": 86,
   "metadata": {
     "version": 3,
     "sources": [
@@ -11,7 +11,44 @@
             "table": {
               "name": "conversation",
               "schema": "public"
-            }
+            },
+            "object_relationships": [
+              {
+                "name": "conversation_user",
+                "using": {
+                  "foreign_key_constraint_on": "user2_id"
+                }
+              },
+              {
+                "name": "conversation_user2",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "user1_id": "id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
+                      "name": "user",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "conversation_messages",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "conversation_id",
+                    "table": {
+                      "name": "message",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
           },
           {
             "table": {
@@ -23,6 +60,21 @@
                 "name": "user",
                 "using": {
                   "foreign_key_constraint_on": "follower_id"
+                }
+              },
+              {
+                "name": "user2",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "user_id": "id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
+                      "name": "user",
+                      "schema": "public"
+                    }
+                  }
                 }
               },
               {
@@ -49,6 +101,20 @@
                       "schema": "public"
                     }
                   }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "image",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "image_tweet",
+                "using": {
+                  "foreign_key_constraint_on": "tweet_id"
                 }
               }
             ]
@@ -134,6 +200,18 @@
             ],
             "array_relationships": [
               {
+                "name": "tweet_images",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tweet_id",
+                    "table": {
+                      "name": "image",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
                 "name": "tweet_likes",
                 "using": {
                   "foreign_key_constraint_on": {
@@ -210,11 +288,26 @@
             },
             "array_relationships": [
               {
-                "name": "followers",
+                "name": "follower",
                 "using": {
                   "foreign_key_constraint_on": {
                     "column": "follower_id",
                     "table": {
+                      "name": "follower",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "followers",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "id": "follower_id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
                       "name": "follower",
                       "schema": "public"
                     }
@@ -227,6 +320,21 @@
                   "foreign_key_constraint_on": {
                     "column": "user_id",
                     "table": {
+                      "name": "follower",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "following",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "id": "user_id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
                       "name": "follower",
                       "schema": "public"
                     }
@@ -276,6 +384,30 @@
                     "column": "author_id",
                     "table": {
                       "name": "tweet",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "user_conversations",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user1_id",
+                    "table": {
+                      "name": "conversation",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "user_conversations_2",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user2_id",
+                    "table": {
+                      "name": "conversation",
                       "schema": "public"
                     }
                   }

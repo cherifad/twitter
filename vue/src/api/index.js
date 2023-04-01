@@ -6,7 +6,7 @@ import { extractHashTags } from "../utils/helpers";
 const GET_TWEETS = () => {
   const query = gql`
     subscription {
-      tweet(order_by: { created_at: desc }) {
+      tweet(order_by: {created_at: desc}) {
         created_at
         content
         id
@@ -14,6 +14,9 @@ const GET_TWEETS = () => {
         tweet_likes_aggregate {
           aggregate {
             count
+          }
+          nodes {
+            user_id
           }
         }
         tweet_user {
@@ -26,6 +29,9 @@ const GET_TWEETS = () => {
         tweet_retweets_aggregate {
           aggregate {
             count
+          }
+          nodes {
+            user_id
           }
         }
       }
@@ -75,6 +81,11 @@ const GET_USER_WITH_USERNAME = async (username) => {
         followers_aggregate {
           aggregate {
             count(distinct: true)
+          }
+        }
+        following_aggregate {
+          aggregate {
+            count
           }
         }
       }
@@ -283,11 +294,13 @@ const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
     const response = await apolloProvider.mutate({ mutation });
     const tweet = response.data.insert_tweet.returning[0];
     const hashtags = extractHashTags(content);
-    hashtags ? hashtags.forEach(async (hashtag) => {
-      const hashtagResponse = await CREATE_HASHTAG(hashtag);
-      console.log(tweet, hashtagResponse);
-      await CREATE_TWEET_HASHTAG(tweet.id, hashtagResponse.id);
-    }) : null;
+    hashtags
+      ? hashtags.forEach(async (hashtag) => {
+          const hashtagResponse = await CREATE_HASHTAG(hashtag);
+          console.log(tweet, hashtagResponse);
+          await CREATE_TWEET_HASHTAG(tweet.id, hashtagResponse.id);
+        })
+      : null;
     return tweet;
   } catch (error) {
     console.error(error);
@@ -341,29 +354,370 @@ const CREATE_NEW_LIKE = async (tweet_id, user_id) => {
 
 const CREATE_NEW_RETWEET = async (tweet_id, user_id) => {
   const mutation = gql`
-    mutation {
+    mutation createNewRetweet($tweet_id: uuid!, $user_id: uuid!) {
       insert_retweet(
+        objects: { tweet_id: $tweet_id, user_id: $user_id }
+        on_conflict: {
+          constraint: retweet_user_id_tweet_id_key
+          update_columns: []
+        }
+      ) {
+        affected_rows
+      }
+    }
+  `;
+
+  const deleteMutation = gql`
+    mutation deleteRetweet($tweet_id: uuid!, $user_id: uuid!) {
+      delete_retweet(
+        where: { tweet_id: { _eq: $tweet_id }, user_id: { _eq: $user_id } }
+      ) {
+        affected_rows
+      }
+    }
+  `;
+
+  try {
+    const response = await apolloProvider.mutate({
+      mutation,
+      variables: { tweet_id, user_id },
+    });
+    if (response.data.insert_retweet.affected_rows === 0) {
+      // if there is a conflict, delete the conflicted row and create a new one
+      await apolloProvider.mutate({
+        mutation: deleteMutation,
+        variables: { tweet_id, user_id },
+      });
+    }
+    return response;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const UPLOAD_IMAGE = async (
+  data,
+  tweet_id,
+  user_id,
+  title = null,
+  description = null
+) => {
+  const mutation = gql`
+    mutation uploadImage(
+      $data: bytea!
+      $tweet_id: uuid!
+      $user_id: uuid!
+      $title: String
+      $description: String
+    ) {
+      insert_image(
         objects: {
-          tweet_id: "${tweet_id}"
-          user_id: "${user_id}"
+          data: $data
+          tweet_id: $tweet_id
+          user_id: $user_id
+          title: $title
+          description: $description
         }
       ) {
         returning {
           id
-          tweet_id
+          image
+          title
+          description
+        }
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({
+      mutation,
+      variables: {
+        data: new Uint8Array(data),
+        tweet_id,
+        user_id,
+        title,
+        description,
+      },
+    });
+    const image = response.data.insert_image.returning[0];
+    return image;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const GET_CONVERSATION_OF_USER = (user_id) => {
+  const query = gql`
+  subscription getConversationsOfUser($user_id: uuid!) {
+    user_by_pk(id: $user_id) {
+      user_conversations_2 {
+        id
+        user1_id
+        user2_id
+        conversation_messages(limit: 1, order_by: {created_at: desc}) {
+          content
+          created_at
+        }
+        conversation_user {
+          id
+          username
+          profile_picture_url
+          premium
+          name
+        }
+        conversation_user2 {
+          id
+          name
+          premium
+          profile_picture_url
+          username
+        }
+      }
+      user_conversations {
+        id
+        user1_id
+        user2_id
+        conversation_messages(limit: 1, order_by: {created_at: desc}) {
+          content
+          created_at
+        }
+        conversation_user {
+          id
+          username
+          profile_picture_url
+          premium
+          name
+        }
+        conversation_user2 {
+          id
+          name
+          premium
+          profile_picture_url
+          username
+        }
+      }
+    }
+  }
+  `;
+  
+  return apolloProvider.subscribe({ query, variables: { user_id } });
+};
+
+const GET_MESSAGES_OF_CONVERSATION = (conversation_id) => {
+  const query = gql`
+    subscription getMessagesOfConversation($conversation_id: uuid!) {
+      conversation_by_pk(id: $conversation_id) {
+        conversation_messages {
+          content
+          created_at
+          recipient_id
+          sender_id
+        }
+        conversation_user {
+          id
+          bio
+          created_at
+          name
+          premium
+          profile_picture_url
+          username
+          followers_aggregate {
+            aggregate {
+              count
+            }
+          }
+        }
+        conversation_user2 {
+          id
+          bio
+          created_at
+          name
+          premium
+          profile_picture_url
+          username
+          followers_aggregate {
+            aggregate {
+              count
+            }
+          }
+        }
+      }
+    }
+  `;
+  
+  return apolloProvider.subscribe({ query, variables: { conversation_id } });
+};
+
+const POST_NEW_MESSAGE = async (content, sender_id, recipient_id, conversation_id) => {
+  const mutation = gql`
+    mutation postNewMessage(
+      $content: String!
+      $sender_id: uuid!
+      $recipient_id: uuid!
+      $conversation_id: uuid!
+    ) {
+      insert_message(
+        objects: {
+          content: $content
+          sender_id: $sender_id
+          recipient_id: $recipient_id
+          conversation_id: $conversation_id
+        }
+      ) {
+        returning {
+          content
+          created_at
+          recipient_id
+          sender_id
+        }
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({
+      mutation,
+      variables: {
+        content,
+        sender_id,
+        recipient_id,
+        conversation_id,
+      },
+    });
+    const message = response.data.insert_message.returning[0];
+    return message;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const CREATE_CONVERSATION = async (user1_id, user2_id) => {
+  const mutation = gql`
+    mutation createConversation($user1_id: uuid!, $user2_id: uuid!) {
+      insert_conversation(
+        objects: { user1_id: $user1_id, user2_id: $user2_id }
+      ) {
+        returning {
+          id
+        }
+      }
+    }
+  `;
+  const query = gql`
+    query getConversation($user1_id: uuid!, $user2_id: uuid!) {
+      conversation(
+        where: {
+          _or: [
+            { _and: [{ user1_id: { _eq: $user1_id } }, { user2_id: { _eq: $user2_id } }] }
+            { _and: [{ user1_id: { _eq: $user2_id } }, { user2_id: { _eq: $user1_id } }] }
+          ]
+        }
+      ) {
+        id
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.query({
+      query,
+      variables: {
+        user1_id,
+        user2_id,
+      },
+    });
+    const conversation = response.data.conversation[0];
+    if (conversation) {
+      return conversation;
+    }
+    const response2 = await apolloProvider.mutate({
+      mutation,
+      variables: {
+        user1_id,
+        user2_id,
+      },
+    });
+    const conversation2 = response2.data.insert_conversation.returning[0];
+    return conversation2;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const FOLLOW_UNFOLLOW_USER = async (follower_id, user_id) => {
+  const mutation = gql`
+    mutation followUnfollowUser($follower_id: uuid!, $user_id: uuid!) {
+      insert_follower(
+        objects: { follower_id: $follower_id, user_id: $user_id }
+        on_conflict: {
+          constraint: follower_user_id_follower_id_key
+          update_columns: []
+        }
+      ) {
+        returning {
+          created_at
+          follower_id
+          user_id
+        }
+      }
+    }
+  `;
+
+  const mutation2 = gql`
+    mutation followUnfollowUser($follower_id: uuid!, $user_id: uuid!) {
+      delete_follower(
+        where: { follower_id: { _eq: $follower_id }, user_id: { _eq: $user_id } }
+      ) {
+        returning {
+          created_at
+          follower_id
           user_id
         }
       }
     }
   `;
   try {
-    const response = await apolloProvider.mutate({ mutation });
-    const retweet = response.data.insert_retweet.returning[0];
-    return retweet;
+    const response = await apolloProvider.mutate({
+      mutation,
+      variables: {
+        follower_id,
+        user_id,
+      },
+    });
+    const follow = response.data.insert_follower.returning[0];
+    if (follow) {
+      return follow;
+    }
+    const response2 = await apolloProvider.mutate({
+      mutation: mutation2,
+      variables: {
+        follower_id,
+        user_id,
+      },
+    });
+    const unfollow = response2.data.delete_follower.returning[0];
+    return unfollow;
   } catch (error) {
     console.error(error);
     return [];
   }
+};
+
+const DOES_FOLLOW_USER = (follower_id, user_id) => {
+  const query = gql`
+    subscription doesFollowUser($follower_id: uuid!, $user_id: uuid!) {
+      follower(
+        where: { follower_id: { _eq: $follower_id }, user_id: { _eq: $user_id } }
+      ) {
+        created_at
+        follower_id
+        user_id
+      }
+    }
+  `;
+  return apolloProvider.subscribe({ query, variables: { follower_id, user_id } });
 };
 
 export {
@@ -375,4 +729,12 @@ export {
   CREATE_NEW_LIKE,
   GET_USER_WITH_USERNAME,
   GET_TWEETS_OF_HASHTAG,
+  CREATE_NEW_RETWEET,
+  UPLOAD_IMAGE,
+  GET_CONVERSATION_OF_USER,
+  GET_MESSAGES_OF_CONVERSATION,
+  POST_NEW_MESSAGE,
+  CREATE_CONVERSATION,
+  FOLLOW_UNFOLLOW_USER,
+  DOES_FOLLOW_USER,
 };

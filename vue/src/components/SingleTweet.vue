@@ -84,6 +84,8 @@
         </div>
         <div
           id="retweet"
+          @click="retweetTweet"
+          :class="userId ? usersRetweeted.includes(userId) ? 'text-[#00BA7C]' : '' : ''"
           class="text-gray-light flex items-center gap-2 hover:text-[#00BA7C] cursor-pointer"
         >
           <div class="rounded-full w-9 h-9 flex items-center justify-center">
@@ -94,12 +96,13 @@
         <div
           @click="likeDislikeTweet"
           id="like"
+          :class="userId ? usersLiked.includes(userId) ? 'text-[#F91880]' : '' : ''"
           class="text-gray-light flex items-center gap-2 hover:text-[#F91880] cursor-pointer"
         >
           <div
-            class="rounded-full w-9 h-9 flex items-center justify-center hover:bg-[rgba(224, 36, 94, 0.1)]"
+            class="rounded-full w-9 h-9 flex items-center justify-center hover:bg-[rgba(224, 36, 94, 0.1)] active:scale-75 transition-transform"
           >
-            <IconLike />
+            <IconLike :liked="userId ? usersLiked.includes(userId) : false" />
           </div>
           {{ formatCount(tweetLikes) }}
         </div>
@@ -126,7 +129,7 @@ import IconReply from "./icons/IconReply.vue";
 import IconVerified from "./icons/IconVerified.vue";
 import IconViewsCount from "./icons/IconViewsCount.vue";
 import { formatCount, timeSince } from "../utils/helpers.js";
-import { CREATE_NEW_LIKE } from "../api";
+import { CREATE_NEW_LIKE, CREATE_NEW_RETWEET } from "../api";
 import { useAuthStore } from "../stores/authStore";
 import { ref, computed } from "vue";
 import { RouterLink } from "vue-router";
@@ -225,14 +228,28 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  userId: {
+    type: String,
+    required: false,
+  },
+  usersLiked: {
+    type: Array,
+    default: [],
+  },
+  usersRetweeted: {
+    type: Array,
+    default: [],
+  },
 });
 
 const time = ref(timeSince(props.tweetDate));
 
 const likeDislikeTweet = async () => {
-  const response = await CREATE_NEW_LIKE(props.tweetId, auth.user.id);
-  const data = response;
-  console.log(data);
+  await CREATE_NEW_LIKE(props.tweetId, auth.user.id);
+};
+
+const retweetTweet = async () => {
+  await CREATE_NEW_RETWEET(props.tweetId, auth.user.id);
 };
 
 const affectToTime = () => {
