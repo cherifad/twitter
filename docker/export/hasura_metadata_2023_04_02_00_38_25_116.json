@@ -1,0 +1,491 @@
+{
+  "resource_version": 86,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "main",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "name": "conversation",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "conversation_user",
+                "using": {
+                  "foreign_key_constraint_on": "user2_id"
+                }
+              },
+              {
+                "name": "conversation_user2",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "user1_id": "id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
+                      "name": "user",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "conversation_messages",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "conversation_id",
+                    "table": {
+                      "name": "message",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "follower",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "follower_id"
+                }
+              },
+              {
+                "name": "user2",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "user_id": "id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
+                      "name": "user",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "userByUserId",
+                "using": {
+                  "foreign_key_constraint_on": "user_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "hashtag",
+              "schema": "public"
+            },
+            "array_relationships": [
+              {
+                "name": "tweet_hashtags",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "hashtag_id",
+                    "table": {
+                      "name": "tweet_hashtag",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "image",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "image_tweet",
+                "using": {
+                  "foreign_key_constraint_on": "tweet_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "like",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "tweet",
+                "using": {
+                  "foreign_key_constraint_on": "tweet_id"
+                }
+              },
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "user_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "mention",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "tweet",
+                "using": {
+                  "foreign_key_constraint_on": "tweet_id"
+                }
+              },
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "user_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "message",
+              "schema": "public"
+            }
+          },
+          {
+            "table": {
+              "name": "retweet",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "tweet",
+                "using": {
+                  "foreign_key_constraint_on": "tweet_id"
+                }
+              },
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "user_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "tweet",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "tweet_user",
+                "using": {
+                  "foreign_key_constraint_on": "author_id"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "tweet_images",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tweet_id",
+                    "table": {
+                      "name": "image",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "tweet_likes",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tweet_id",
+                    "table": {
+                      "name": "like",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "tweet_mentions",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tweet_id",
+                    "table": {
+                      "name": "mention",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "tweet_retweets",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tweet_id",
+                    "table": {
+                      "name": "retweet",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "tweet_tweet_hashtags",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tweet_id",
+                    "table": {
+                      "name": "tweet_hashtag",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "tweet_hashtag",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "hashtag",
+                "using": {
+                  "foreign_key_constraint_on": "hashtag_id"
+                }
+              },
+              {
+                "name": "tweet",
+                "using": {
+                  "foreign_key_constraint_on": "tweet_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "user",
+              "schema": "public"
+            },
+            "array_relationships": [
+              {
+                "name": "follower",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "follower_id",
+                    "table": {
+                      "name": "follower",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "followers",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "id": "follower_id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
+                      "name": "follower",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "followersByUserId",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user_id",
+                    "table": {
+                      "name": "follower",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "following",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "id": "user_id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
+                      "name": "follower",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "likes",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user_id",
+                    "table": {
+                      "name": "like",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "mentions",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user_id",
+                    "table": {
+                      "name": "mention",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "retweets",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user_id",
+                    "table": {
+                      "name": "retweet",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "tweets",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "author_id",
+                    "table": {
+                      "name": "tweet",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "user_conversations",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user1_id",
+                    "table": {
+                      "name": "conversation",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "user_conversations_2",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user2_id",
+                    "table": {
+                      "name": "conversation",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "premium",
+                    "bio",
+                    "email",
+                    "location",
+                    "name",
+                    "password",
+                    "profile_picture_url",
+                    "username",
+                    "website",
+                    "created_at",
+                    "id"
+                  ],
+                  "filter": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "username",
+                    "email",
+                    "password",
+                    "bio",
+                    "profile_picture_url",
+                    "website",
+                    "location",
+                    "created_at",
+                    "name",
+                    "premium"
+                  ],
+                  "filter": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "check": null
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "database_url": "postgres://postgres:postgrespassword@postgres:5432/postgres",
+            "isolation_level": "read-committed",
+            "use_prepared_statements": false
+          }
+        }
+      }
+    ],
+    "network": {
+      "tls_allowlist": [
+        {
+          "host": "vuejs.com",
+          "permissions": [
+            "self-signed"
+          ],
+          "suffix": "5136"
+        }
+      ]
+    }
+  }
+}
