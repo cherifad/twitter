@@ -720,6 +720,35 @@ const DOES_FOLLOW_USER = (follower_id, user_id) => {
   return apolloProvider.subscribe({ query, variables: { follower_id, user_id } });
 };
 
+const GET_UNFOLLOWED_USERS = (user_id) => {
+  const query = gql`
+    subscription getUnfollowedUsers($user_id: uuid!) {
+      user(
+        where: {
+          _and: [
+            { id: { _neq: $user_id } }
+            {
+              _not: {
+                _or: [
+                  { followers: { follower_id: { _eq: $user_id } } }
+                  { id: { _eq: $user_id } }
+                ]
+              }
+            }
+          ]
+        },
+        limit: 3
+      ) {
+        id
+        username
+        name
+        profile_picture_url
+      }
+    }
+  `;
+  return apolloProvider.subscribe({ query, variables: { user_id } });
+};
+
 export {
   GET_TWEETS,
   GET_USER,
@@ -737,4 +766,5 @@ export {
   CREATE_CONVERSATION,
   FOLLOW_UNFOLLOW_USER,
   DOES_FOLLOW_USER,
+  GET_UNFOLLOWED_USERS,
 };

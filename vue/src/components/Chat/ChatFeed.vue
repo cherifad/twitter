@@ -1,9 +1,9 @@
 <template>
   <div
     v-if="Object.keys(state.current_user).length != 0"
-    class="flex relative flex-col flex-1 max-h-screen"
+    class="flex relative flex-col flex-1 h-screen"
   >
-    <div class="flex overflow-scroll justify-between px-4 flex-col flex-1 max-h-full">
+    <div class="flex justify-between px-4 flex-col flex-1 max-h-full">
       <RouterLink :to="`/${state.current_user.username}`"
         class="mb-4 border-b-[1px] cursor-pointer dark:hover:bg-zinc-800 border-gray dark:border-zinc-800 py-5 px-4 flex flex-col items-center"
       >
@@ -40,7 +40,7 @@
           </span>
         </div>
       </RouterLink>
-      <div class="pb-7 flex h-fit flex-col justify-end overflow-scroll">
+      <div class="pb-7 flex flex-col justify-end flex-1 overflow-scroll">
         <SingleChat
           v-for="message in state.messages.conversation_messages"
           :content="message.content"

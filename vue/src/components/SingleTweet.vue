@@ -85,10 +85,10 @@
         <div
           id="retweet"
           @click="retweetTweet"
-          :class="userId ? usersRetweeted.includes(userId) ? 'text-[#00BA7C]' : '' : ''"
-          class="text-gray-light flex items-center gap-2 hover:text-[#00BA7C] cursor-pointer"
+          :class="userId ? usersRetweeted.includes(userId) ? 'text-[#00BA7C]' : 'text-gray-light' : 'text-gray-light'"
+          class=" flex items-center gap-2 hover:text-[#00BA7C] cursor-pointer"
         >
-          <div class="rounded-full w-9 h-9 flex items-center justify-center">
+          <div class="rounded-full w-9 h-9 flex items-center justify-center active:scale-75 transition-transform">
             <IconRetweet />
           </div>
           {{ formatCount(tweetRetweets) }}
@@ -96,8 +96,8 @@
         <div
           @click="likeDislikeTweet"
           id="like"
-          :class="userId ? usersLiked.includes(userId) ? 'text-[#F91880]' : '' : ''"
-          class="text-gray-light flex items-center gap-2 hover:text-[#F91880] cursor-pointer"
+          :class="userId ? usersLiked.includes(userId) ? 'text-[#F91880]' : 'text-gray-light' : 'text-gray-light'"
+          class=" flex items-center gap-2 hover:text-[#F91880] cursor-pointer"
         >
           <div
             class="rounded-full w-9 h-9 flex items-center justify-center hover:bg-[rgba(224, 36, 94, 0.1)] active:scale-75 transition-transform"
