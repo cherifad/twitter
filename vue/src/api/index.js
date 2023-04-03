@@ -1,7 +1,7 @@
 import { apolloProvider } from "./apolloProvider";
 import { gql } from "graphql-tag";
 import bcrypt from "bcryptjs";
-import { extractHashTags } from "../utils/helpers";
+import { extractHashTags, extractMentions } from "../utils/helpers";
 
 const GET_TWEETS = () => {
   const query = gql`
@@ -376,7 +376,43 @@ const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
           await CREATE_TWEET_HASHTAG(tweet.id, hashtagResponse.id);
         })
       : null;
+    const mentions = extractMentions(content);
+    mentions ? mentions.forEach(async (mention) => {
+      const username = mention.substring(1);
+      const userResponse = await GET_USER_WITH_USERNAME(username);
+      if (userResponse) {
+        await CREATE_MENTION(tweet.id, userResponse.id);
+      }
+    }) : null;
     return tweet;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const CREATE_MENTION = async (tweet_id, user_id) => {
+  const mutation = gql`
+    mutation {
+      insert_mention(
+        objects: { tweet_id: "${tweet_id}", user_id: "${user_id}" }
+        on_conflict: {
+          constraint: mention_user_id_tweet_id_key
+          update_columns: [tweet_id, user_id]
+        }
+      ) {
+        returning {
+          id
+          tweet_id
+          user_id
+        }
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({ mutation });
+    const mention = response.data.insert_mention.returning[0];
+    return mention;
   } catch (error) {
     console.error(error);
     return [];
@@ -527,7 +563,7 @@ const GET_CONVERSATION_OF_USER = (user_id) => {
   const query = gql`
   subscription getConversationsOfUser($user_id: uuid!) {
     user_by_pk(id: $user_id) {
-      user_conversations_2 {
+      user_conversations_2(order_by: {conversation_messages_aggregate: {max: {created_at: desc}}}) {
         id
         user1_id
         user2_id
@@ -550,7 +586,7 @@ const GET_CONVERSATION_OF_USER = (user_id) => {
           username
         }
       }
-      user_conversations {
+      user_conversations(order_by: {conversation_messages_aggregate: {max: {created_at: desc}}}) {
         id
         user1_id
         user2_id

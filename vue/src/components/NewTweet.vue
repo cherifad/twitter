@@ -73,7 +73,6 @@
               : 'text-[#71767B]'
           "
           class="bg-transparent flex-1 min-h-[24px] w-full break-all border-0 outline-none text-xl"
-          placeholder="What’s happening?"
         >
         </span>
       </div>
@@ -116,7 +115,6 @@ import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { ref, watch, onMounted } from "vue";
 import Button from "./Button.vue";
 import { CREATE_NEW_TWEET } from "../api";
-import { uploadFile } from "../api/minio";
 
 const props = defineProps({
   avatar: {
@@ -176,16 +174,17 @@ const sanitizedString = (str) => {
 };
 
 const postNewTweet = async () => {
+  if (tweetText.value.length === 0) return;
+  if (tweetText.value.length > 280) return;
   await CREATE_NEW_TWEET(
     sanitizedString(tweetText.value),
     props.author_id,
     null
   )
     .then(async () => {
-      // for (let i = 0; i < selectedFiles.value.length; i++) {
-      //   const file = selectedFiles.value[i];
-      //   await uploadFile(file);
-      // }
+      tweetText.value = "What’s happening?";
+      tweet.value.innerText = "What’s happening?";
+      tweet.value.style.height = "auto";
     })
     .catch((err) => {
       console.log(err);

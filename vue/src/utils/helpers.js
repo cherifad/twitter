@@ -42,6 +42,10 @@ function extractHashTags(text) {
   return text.match(/#[a-zA-Z0-9]+/g);
 }
 
+function extractMentions(text) {
+  return text.match(/@[a-zA-Z0-9]+/g);
+}
+
 function formatDate(dateParam) {
   const date = new Date(dateParam);
   const today = new Date();
@@ -85,4 +89,4 @@ function convertDate(dateString) {
   return date
 }
 
-export { formatCount, timeSince, extractHashTags, formatDate, convertDate };
+export { formatCount, timeSince, extractHashTags, formatDate, convertDate, extractMentions };

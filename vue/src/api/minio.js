@@ -1,20 +1,17 @@
-//import * as Minio from "minio";
+import axios from "axios";
 
-// const minioClient = new Minio.Client({
-//   url: "http://127.0.0.1:9001",
-//   accessKey: "76bVAD7wjaZw1UZH",
-//   secretKey: "2kbNgm9ZzQIxDGkZ2UHMuMcgET1TRzAM",
-//   api: "s3v4",
-//   path: "auto",
-// });
+const MINIO_ENDPOINT = 'http://localhost:9000'
+const MINIO_ACCESS_KEY = 'your-access-key'
+const MINIO_SECRET_KEY = 'your-secret-key'
 
-async function uploadFile(file) {
-  // const metadata = { "Content-Type": file.type };
-  // const bucketName = "your-bucket-name";
-  // const objectName = file.name;
-  // const stream = file.stream();
+const filePath = '/path/to/your/file'
+const bucketName = 'your-bucket-name'
+const objectName = 'your-object-name'
 
-  // await minioClient.putObject(bucketName, objectName, stream, metadata);
+const url = `${MINIO_ENDPOINT}/${bucketName}/${objectName}`
+const headers = {
+  'Content-Type': 'application/octet-stream',
+  'x-amz-acl': 'public-read',
+  'x-amz-storage-class': 'STANDARD',
+  'Authorization': `AWS ${MINIO_ACCESS_KEY}:${MINIO_SECRET_KEY}`
 }
-
-export { uploadFile };

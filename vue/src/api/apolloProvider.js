@@ -8,7 +8,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { onError } from "@apollo/client/link/error"
 
-const baseIp = "10.103.60.24:8080";
+const baseIp = "192.168.1.120:8080";
 
 // HTTP connection to the API
 const httpLink = createHttpLink({

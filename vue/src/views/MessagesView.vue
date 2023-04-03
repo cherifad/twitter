@@ -3,7 +3,6 @@ import IconSettings from "../components/icons/IconSettings.vue";
 import IconSearch from "../components/icons/IconSearch.vue";
 import IconNewMessage from "../components/icons/IconNewMessage.vue";
 import SingleMessage from "../components/SingleMessage.vue";
-import SingleChatMessage from "../components/SingleChatMessage.vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import Button from "../components/Button.vue";
 import ChatFeed from "../components/Chat/ChatFeed.vue";

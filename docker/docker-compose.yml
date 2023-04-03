@@ -56,22 +56,22 @@ services:
   #   networks:
   #     - db_net
 
-  traefik:
-    image: traefik:v1.1.2-alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
-      - ./ssl:/etc/traefik/ssl
-      - ./acme:/etc/traefik/acme
-    command: --web -c /dev/null  --docker --logLevel=INFO --docker.watch --acme --acme.OnHostRule=true --acme.storage=/etc/traefik/acme/acme.json --acme.email=aurelien@lavoweb.net --acme.entryPoint=https --entryPoints='Name:http Address::80' --entryPoints='Name:https Address::443 TLS' --defaultentrypoints=http,https --acme.domains="unstickers.com"
-    restart: always
-    environment:
-      - "affinity:container!=traefik*"
-    networks:
-      - web
+  # traefik:
+  #   image: traefik:v1.1.2-alpine
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - /dev/null:/traefik.toml
+  #     - ./ssl:/etc/traefik/ssl
+  #     - ./acme:/etc/traefik/acme
+  #   command: --web -c /dev/null  --docker --logLevel=INFO --docker.watch --acme --acme.OnHostRule=true --acme.storage=/etc/traefik/acme/acme.json --acme.email=aurelien@lavoweb.net --acme.entryPoint=https --entryPoints='Name:http Address::80' --entryPoints='Name:https Address::443 TLS' --defaultentrypoints=http,https --acme.domains="unstickers.com"
+  #   restart: always
+  #   environment:
+  #     - "affinity:container!=traefik*"
+  #   networks:
+  #     - web
 
 networks:
   db_net:

@@ -258,7 +258,12 @@ const affectToTime = () => {
 
 function formatTweetContent(tweetContent) {
   // Find all hashtags and wrap them in a span with a CSS class
-  return tweetContent.replace(/#([\p{L}\p{Mn}\p{Pc}]+)/ug, '<a href="/search?q=%23$1" class="text-blue cursor-pointer hover:underline">#$1</a>');
+  tweetContent = tweetContent.replace(/#([\p{L}\p{Mn}\p{Pc}]+)/ug, '<a href="/search?q=%23$1" class="text-blue cursor-pointer hover:underline">#$1</a>');
+  // Find all mentions and wrap them in a span with a CSS class
+  tweetContent = tweetContent.replace(/@([\p{L}\p{Mn}\p{Pc}]+)/ug, '<a href="/$1" class="text-blue cursor-pointer hover:underline">@$1</a>');
+  // Find all URLs and wrap them in a span with a CSS class
+  tweetContent = tweetContent.replace(/(https?:\/\/[^\s]+)/ug, '<a href="$1" class="text-blue cursor-pointer hover:underline">$1</a>');
+  return tweetContent;
 }
 
 setInterval(affectToTime, 10000);
