@@ -40,7 +40,7 @@
           </span>
         </div>
       </RouterLink>
-      <div class="pb-7 flex flex-col justify-end flex-1 overflow-scroll">
+      <div class="pb-7 flex flex-col justify-end flex-1 overflow-y-scroll">
         <SingleChat
           v-for="message in state.messages.conversation_messages"
           :content="message.content"
@@ -52,7 +52,7 @@
     <div class="border-t-[1px] absolute bottom-0 w-full cursor-pointer border-gray dark:border-zinc-800">
       <form
         @submit="sendMessage"
-        class="flex gap-2 mx-4 my-1 bg-[rgb(32,35,39)] p-1 rounded-2xl"
+        class="flex gap-2 mx-4 my-1 dark:bg-[rgb(32,35,39)] bg-[rgb(239,243,244)] p-1 rounded-2xl"
       >
         <div class="flex items-center">
           <label for="dropzone-file">
@@ -76,7 +76,7 @@
         <input
           type="text"
           v-model="messageContent"
-          class="flex-1 bg-transparent outline-none text-white"
+          class="flex-1 bg-transparent outline-none dark:text-white"
           placeholder="Type a message"
         />
         <button

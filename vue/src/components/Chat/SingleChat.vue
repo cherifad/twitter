@@ -3,7 +3,7 @@
     <div class="pb-6">
         <div :class="fromUser ? 'flex justify-end text-right' : ''">
             <div :class="['w-[87.5%] pr-3', fromUser ? 'flex justify-end' : 'flex']">
-                <div :class="['px-4 py-3 rounded-t-3xl ', fromUser ? 'rounded-br-[4px] rounded-bl-3xl bg-blue' : 'rounded-bl-[4px] rounded-br-3xl dark:bg-[rgb(47,51,54)]']">
+                <div :class="['px-4 py-3 rounded-t-3xl ', fromUser ? 'rounded-br-[4px] dark:text-black text-white rounded-bl-3xl bg-blue' : 'rounded-bl-[4px] text-black rounded-br-3xl bg-[rgb(239,243,244)] dark:bg-[rgb(47,51,54)]']">
                     <div class="break-words">
                         {{ content }}
                     </div>

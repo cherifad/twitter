@@ -28,7 +28,7 @@
       <div class="px-4 pt-3">
         <div class="flex items-center justify-end gap-2">
           <button
-            v-if="user.id != authStore.user.id"
+            v-if="authStore.user && user.id != authStore.user.id"
             @click="createConversation"
             class="rounded-full flex items-center justify-center dark:border-[rgb(83,100,113)] border-zinc-200 dark:text-white border-[1px] dark:hover:bg-zinc-800 font-bold h-[34px] w-[34px] hover:bg-slate-100"
           >
@@ -249,18 +249,20 @@ const username = ref(route.params.username);
 
 onMounted(async () => {
   user.value = await GET_USER_WITH_USERNAME(username.value);
-  const subscription = DOES_FOLLOW_USER(authStore.user.id, user.value.id);
 
-  subscription.subscribe({
-    next: ({ data }) => {
-      state.doesFollow = data.follower.length > 0;
-      textBtn.value = btnTextToDisplay();
-    },
-    error: (error) => {
-      console.error(error);
-    },
-    
-  });
+  if (authStore.user) {
+    const subscription = DOES_FOLLOW_USER(authStore.user.id, user.value.id);
+  
+    subscription.subscribe({
+      next: ({ data }) => {
+        state.doesFollow = data.follower.length > 0;
+        textBtn.value = btnTextToDisplay();
+      },
+      error: (error) => {
+        console.error(error);
+      },    
+    });
+  }
 
   textBtn.value = btnTextToDisplay();
 
