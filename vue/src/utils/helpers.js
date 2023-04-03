@@ -75,4 +75,14 @@ function formatDate(dateParam) {
   }
 }
 
-export { formatCount, timeSince, extractHashTags, formatDate };
+function convertDate(dateString) {
+  console.log(dateString);
+  const parts = dateString.split("-"); // split the string into an array of year, month, and day parts
+  const year = parseInt(parts[0], 10); // extract year and convert it to a number
+  const month = parseInt(parts[1], 10) - 1; // extract month and convert it to a number (subtract 1 as month is zero-indexed)
+  const day = parseInt(parts[2], 10); // extract day and convert it to a number
+  const date = new Date(year, month, day); // create a Date object using the extracted year, month, and day
+  return date
+}
+
+export { formatCount, timeSince, extractHashTags, formatDate, convertDate };

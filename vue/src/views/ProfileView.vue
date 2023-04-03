@@ -56,8 +56,14 @@
           >@{{ user.username }}</span
         >
       </div>
-      <div class="mb-3">
+      <div class=" flex mb-3">
         <span class="text-slate-700 dark:text-zinc-500 gap-2 flex items-center">
+          <IconBorn class="w-[19px] h-[19px]" /> Born
+          {{ convertDate(user.date_of_birth).getDay() }}
+          {{ monthNames[convertDate(user.date_of_birth).getMonth()] }}
+          {{ convertDate(user.date_of_birth).getFullYear() }}
+        </span>
+        <span class="text-slate-700 dark:text-zinc-500 gap-2 flex items-center ml-5">
           <IconCalendar class="w-[19px] h-[19px]" /> Joinded
           {{ monthNames[new Date(user.created_at).getMonth()] }}
           {{ new Date(user.created_at).getFullYear() }}
@@ -90,7 +96,7 @@
             ]"
           >
             <div class="w-fit flex flex-col">
-              <span class="py-3">Likes</span>
+              <span class="py-3">Tweets</span>
               <div
                 v-if="selected"
                 class="rounded-full bg-blue h-1 w-full"
@@ -108,7 +114,7 @@
             ]"
           >
             <div class="w-fit flex flex-col">
-              <span class="py-3">Likes</span>
+              <span class="py-3">Replies</span>
               <div
                 v-if="selected"
                 class="rounded-full bg-blue h-1 w-full"
@@ -126,7 +132,7 @@
             ]"
           >
             <div class="w-fit flex flex-col">
-              <span class="py-3">Likes</span>
+              <span class="py-3">Media</span>
               <div
                 v-if="selected"
                 class="rounded-full bg-blue h-1 w-full"
@@ -134,21 +140,70 @@
             </div>
           </div>
         </Tab>
+         <Tab v-slot="{ selected }" class="flex-1 outline-none">
+          <div
+            :class="[
+              'flex justify-center items-center px-4 h-[53px] min-w-[56px] flex-1 hover:bg-[rgb(15,20,25)]/10',
+              selected
+                ? 'text-black dark:text-white font-extrabold'
+                : 'text-gray-light dark:text-zinc-500',
+            ]"
+          >
+            <div class="w-fit flex flex-col">
+              <span class="py-3">Likes  </span>
+              <div
+                v-if="selected"
+                class="rounded-full bg-blue h-1 w-full"
+              ></div>
+            </div>
+          </div>
+        </Tab>  
       </TabList>
       <TabPanels class="px-4">
-        <TabPanel class="pt-3">Content 1</TabPanel>
+        <TabPanel class="pt-3">
+          <SingleTweet
+          v-if="state.tweets.length > 0"
+          v-for="tweet in state.tweets"
+          :tweet-author="tweet.tweet_user.name"
+          :tweet-media="null"
+          :tweet-media-count="0"
+          :tweet-author-avatar="tweet.tweet_user.profile_picture_url"
+          :tweet-author-username="tweet.tweet_user.username"
+          :tweet-author-verified="tweet.tweet_user.premium"
+          :tweet-content="tweet.content"
+          :tweet-date="tweet.created_at"
+          :tweet-likes="tweet.tweet_likes_aggregate.aggregate.count"
+          :tweet-retweets="tweet.tweet_retweets_aggregate.aggregate.count"
+          :tweet-replies="2547"
+          :tweet-bookmarked="false"
+          :tweet-liked="true"
+          :tweet-retweeted="false"
+          :tweet-replied="false"
+          tweet-media="258"
+          :tweet-views="25874123"
+          :tweet-id="tweet.id"
+          :tweet-thread="false"
+          :user-id="authStore.user? authStore.user.id : null"
+          :users-liked="tweet.tweet_likes_aggregate.nodes.map((like) => like.user_id)"
+          :users-retweeted="tweet.tweet_retweets_aggregate.nodes.map((retweet) => retweet.user_id)"
+        />
+      </TabPanel>
         <TabPanel class="pt-3">Content 2</TabPanel>
         <TabPanel class="pt-3">Content 3</TabPanel>
+        <TabPanel class="pt-3">Content 4</TabPanel>
       </TabPanels>
     </TabGroup>
   </div>
 </template>
 
 <script setup>
+import SingleTweet from "../components/SingleTweet.vue";
+import { GET_TWEETS } from "../api";
 import { useAuthStore } from "../stores/authStore";
 import IconLeft from "../components/icons/IconLeft.vue";
 import IconVerified from "../components/icons/IconVerified.vue";
 import IconCalendar from "../components/icons/IconCalendar.vue";
+import IconBorn from "../components/icons/IconBorn.vue";
 import IconMessage from "../components/icons/IconMessage.vue";
 import { useRouter, useRoute } from "vue-router";
 import { ref, onMounted, reactive } from "vue";
@@ -157,8 +212,10 @@ import {
   CREATE_CONVERSATION,
   FOLLOW_UNFOLLOW_USER,
   DOES_FOLLOW_USER,
+  GET_TWEETS_BY_USER,
 } from "../api";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import { convertDate} from "../utils/helpers"
 
 const monthNames = [
   "January",
@@ -183,7 +240,10 @@ const textBtn = ref("Follow");
 
 const state = reactive({
   doesFollow: false,
+  tweets: [],
 });
+
+
 
 const username = ref(route.params.username);
 
@@ -199,9 +259,21 @@ onMounted(async () => {
     error: (error) => {
       console.error(error);
     },
+    
   });
 
   textBtn.value = btnTextToDisplay();
+
+  const subscriptionTweets = GET_TWEETS_BY_USER(user.value.id);
+
+  subscriptionTweets.subscribe({
+    next: ({ data }) => {
+      state.tweets = data.tweet;
+    },
+    error: (error) => {
+      console.error(error);
+    },
+  });
 });
 
 const followUnfollow = async () => {

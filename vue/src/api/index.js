@@ -41,6 +41,43 @@ const GET_TWEETS = () => {
   return apolloProvider.subscribe({ query });
 };
 
+const GET_TWEETS_BY_USER = (author_id) =>{
+  const query = gql`
+  subscription getUnfollowedUsers($author_id: uuid!) {
+      tweet(where: {author_id: {_eq: $author_id }}, order_by: {created_at: desc}) {
+        created_at
+        content
+        id
+        image_url
+        tweet_likes_aggregate {
+          aggregate {
+            count
+          }
+          nodes {
+            user_id
+          }
+        }
+        tweet_user {
+          name
+          username
+          profile_picture_url
+          premium
+          id
+        }
+        tweet_retweets_aggregate {
+          aggregate {
+            count
+          }
+          nodes {
+            user_id
+          }
+        }
+      }
+    }
+  `;
+  return apolloProvider.subscribe({ query, variables: { author_id } });
+}
+
 const GET_USER = async (id) => {
   const query = gql`
     query {
@@ -78,6 +115,7 @@ const GET_USER_WITH_USERNAME = async (username) => {
         location
         website
         created_at
+        date_of_birth
         followers_aggregate {
           aggregate {
             count(distinct: true)
@@ -767,4 +805,5 @@ export {
   FOLLOW_UNFOLLOW_USER,
   DOES_FOLLOW_USER,
   GET_UNFOLLOWED_USERS,
+  GET_TWEETS_BY_USER,
 };
