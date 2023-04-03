@@ -8,15 +8,17 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { onError } from "@apollo/client/link/error"
 
+const baseIp = "10.103.60.24:8080";
+
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: "http://localhost:8080/v1/graphql",
+  uri: "http://" + baseIp + "/v1/graphql",
 });
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: "ws://localhost:8080/v1/graphql",
+  uri: "ws://" + baseIp + "/v1/graphql",
   options: {
     reconnect: true,
     lazy: true,

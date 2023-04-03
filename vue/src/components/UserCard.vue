@@ -10,14 +10,14 @@
                 </div>
                 <img src="/solutions.jpg" alt="" />
             </PopoverPanel>
-            <PopoverButton class="" :class="`top-[-${toAddHeight + 5}px]`">
+            <PopoverButton class="" :class="`top-[-${toAddHeight + 5}px] w-full`">
                 {{ toAddHeight }}
                 <div
                     class="rounded-full hover:bg-gray dark:hover:bg-gray-hover flex w-full items-center justify-between p-3 cursor-pointer">
                     <div class="flex items-center gap-3">
                         <img class="rounded-full w-10 h-10" :src="avatar ? avatar : '/src/assets/img/default-avatar.webp'"
                             :alt="name">
-                        <div>
+                        <div class="flex flex-col items-start">
                             <p class="flex items-center gap-2">{{ name }}
                                 <IconVerified v-if="verified" />
                             </p>

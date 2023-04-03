@@ -45,6 +45,7 @@ services:
       MINIO_ROOT_USER: masoud
       MINIO_ROOT_PASSWORD: Strong#Pass#2022
     command: server --console-address ":9001" /data
+    
   # vue-app:
   #   build: ../vue
   #   restart: always
@@ -54,37 +55,30 @@ services:
   #     - "graphql-engine"
   #   networks:
   #     - db_net
-  
-  # swag:
-  #   image: lscr.io/linuxserver/swag
-  #   container_name: swag
-  #   cap_add:
-  #     - NET_ADMIN
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Europe/Paris
-  #     - URL=localhost
-  #     - SUBDOMAINS=www,
-  #     - VALIDATION=http
-  #     - CERTPROVIDER= #optional
-  #     - DNSPLUGIN=cloudflare #optional
-  #     - DUCKDNSTOKEN=<token> #optional
-  #     - EMAIL=<e-mail> #optional
-  #     - ONLY_SUBDOMAINS=false #optional
-  #     - EXTRA_DOMAINS=<extradomains> #optional
-  #     - STAGING=false #optional
-  #   volumes:
-  #     - ./proxy:/config
-  #   ports:
-  #     - 5002:443
-  #     - 5001:80
-  #   restart: unless-stopped
 
+  traefik:
+    image: traefik:v1.1.2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+      - ./ssl:/etc/traefik/ssl
+      - ./acme:/etc/traefik/acme
+    command: --web -c /dev/null  --docker --logLevel=INFO --docker.watch --acme --acme.OnHostRule=true --acme.storage=/etc/traefik/acme/acme.json --acme.email=aurelien@lavoweb.net --acme.entryPoint=https --entryPoints='Name:http Address::80' --entryPoints='Name:https Address::443 TLS' --defaultentrypoints=http,https --acme.domains="unstickers.com"
+    restart: always
+    environment:
+      - "affinity:container!=traefik*"
+    networks:
+      - web
 
 networks:
   db_net:
     driver: bridge
+  web:
+    external:
+      name: web
 
 volumes:
   db_data:
