@@ -190,7 +190,34 @@
       </TabPanel>
         <TabPanel class="pt-3">Content 2</TabPanel>
         <TabPanel class="pt-3">Content 3</TabPanel>
-        <TabPanel class="pt-3">Content 4</TabPanel>
+        <TabPanel class="pt-3">
+          <SingleTweet
+          v-if="state.tweetsLiked.length > 0"
+          v-for="tweet in state.tweetsLiked"
+          :tweet-author="tweetsLiked.tweet_user.name"
+          :tweet-media="null"
+          :tweet-media-count="0"
+          :tweet-author-avatar="tweetsLiked.tweet_user.profile_picture_url"
+          :tweet-author-username="tweetsLiked.tweet_user.username"
+          :tweet-author-verified="tweetsLiked.tweet_user.premium"
+          :tweet-content="tweetsLiked.content"
+          :tweet-date="tweetsLiked.created_at"
+          :tweet-likes="tweetsLiked.tweet_likes_aggregate.aggregate.count"
+          :tweet-retweets="tweetsLiked.tweet_retweets_aggregate.aggregate.count"
+          :tweet-replies="2547"
+          :tweet-bookmarked="false"
+          :tweet-liked="true"
+          :tweet-retweeted="false"
+          :tweet-replied="false"
+          tweet-media="258"
+          :tweet-views="25874123"
+          :tweet-id="tweetsLiked.id"
+          :tweet-thread="false"
+          :user-id="authStore.user? authStore.user.id : null"
+          :users-liked="tweetsLiked.tweet_likes_aggregate.nodes.map((like) => like.user_id)"
+          :users-retweeted="tweetsLiked.tweet_retweets_aggregate.nodes.map((retweet) => retweet.user_id)"
+        />
+        </TabPanel>
       </TabPanels>
     </TabGroup>
   </div>
@@ -213,6 +240,7 @@ import {
   FOLLOW_UNFOLLOW_USER,
   DOES_FOLLOW_USER,
   GET_TWEETS_BY_USER,
+  GET_TWEET_BY_USER_LIKE,
 } from "../api";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { convertDate} from "../utils/helpers"
@@ -241,6 +269,7 @@ const textBtn = ref("Follow");
 const state = reactive({
   doesFollow: false,
   tweets: [],
+  tweetsLiked: [],
 });
 
 
@@ -271,6 +300,19 @@ onMounted(async () => {
   subscriptionTweets.subscribe({
     next: ({ data }) => {
       state.tweets = data.tweet;
+    },
+    error: (error) => {
+      console.error(error);
+    },
+  });
+
+  textBtn.value = btnTextToDisplay();
+
+  const subscriptionLikeTweets = GET_TWEET_BY_USER_LIKE(user.value.id);
+
+  subscriptionLikeTweets.subscribe({
+    next: ({ data }) => {
+      state.tweetsLiked = data.tweet;
     },
     error: (error) => {
       console.error(error);
