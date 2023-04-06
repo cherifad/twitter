@@ -36,7 +36,7 @@ const text = ref(null);
 
 function truncateText() {
     const containerWidth = container.value.offsetWidth; // get the width of the container
-    const textWidth = text.value.offsetWidth; // get the width of the text
+    var textWidth = text.value.offsetWidth; // get the width of the text
     const lastMessage = props.lastMessage; // get the text
     if (textWidth > containerWidth) {
       let truncatedText = lastMessage;

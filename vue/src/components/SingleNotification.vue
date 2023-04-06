@@ -36,12 +36,15 @@ onMounted(async () => {
       <IconNotificationUser />
     </div>
     <div class="w-5/6 items-center" v-if="!loading">
-        <div>
-            <img :src="state.user.profile_picture_url ? state.user.profile_picture_url : '/src/assets/img/default-avatar.webp'" class="w-12 h-12 rounded-full" />
-            <h1 class="mt-5 text-xl text-white">{{ state.user }}</h1>
+        <div class="flex items-center gap-2">
+            <img :src="state.user.value[0].profile_picture_url ? state.user.value[0].profile_picture_url : '/src/assets/img/default-avatar.webp'" class="w-12 h-12 rounded-full" />
+            <div>
+              <h1 class="dark:text-white">{{ state.user.value[0].name }}</h1>
+              <span class="dark:text-white">@{{ state.user.value[0].username }}</span>
+            </div>
         </div>
       <div class="ml-2">
-        <h1 class="mt-5 text-zinc-700 dark:text-white font-bold">{{ contentNotif }}</h1>
+        <h1 class="mt-5 text-zinc-700 dark:text-white font-bold text-lg">{{ contentNotif }}</h1>
       </div>
     </div>
   </div>

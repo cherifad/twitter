@@ -97,6 +97,90 @@ const LISTEN_TO_NOTIFICATIONS = (user_id) => {
   return apolloProvider.subscribe({ query, variables: { user_id } });
 };
 
+const GET_TRENDING_HASHTAGS = () => {
+  const query = gql`
+    subscription {
+      hashtag(order_by: {number_of_tweets: desc}) {
+        text
+        id
+        number_of_tweets
+      }
+    }
+  `;
+  return apolloProvider.subscribe({ query });
+};
+
+const SEARCH_USERS = (username) => {
+  const query = gql`
+    subscription searchUsers($username: String!) {
+      user(where: { username: { _ilike: $username } }) {
+        id
+        name
+        username
+        profile_picture_url
+        premium
+      }
+    }
+  `;
+  return apolloProvider.subscribe({ query, variables: { username } });
+};
+
+const SEARCH = (search) => {
+  const query = gql`
+    query {
+      user(where: { username: { _ilike: "%${search}%" } }) {
+        id
+        name
+        username
+        profile_picture_url
+        premium
+      }
+      hashtag(where: { text: { _ilike: "%${search}%" } }) {
+        id
+        text
+        number_of_tweets
+      }
+      tweet(where: { content: { _ilike: "%${search}%" } }) {
+        created_at
+        content
+        id
+        image_url
+        parent_tweet_id
+        tweet_likes_aggregate {
+          aggregate {
+            count
+          }
+          nodes {
+            user_id
+          }
+        }
+        tweet_user {
+          name
+          username
+          profile_picture_url
+          premium
+          id
+        }
+        tweet_retweets_aggregate {
+          aggregate {
+            count
+          }
+          nodes {
+            user_id
+          }
+        }
+      }
+    }
+  `;
+  
+  try {
+    return apolloProvider.query({ query });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 const GET_SINGLE_TWEET = (id) => {
   const query = gql`
     subscription getSingleTweet($id: uuid!) {
@@ -209,36 +293,67 @@ const GET_TWEETS_BY_USER = (author_id) => {
 const GET_TWEET_BY_USER_LIKE = (author_id) => {
   const query = gql`
     subscription getUnfollowedUsers($author_id: uuid!) {
-      tweet(
-        where: { author_id: { _eq: $author_id } }
-        _and: { tweet_likes: { id: { _eq: $author_id } } }
-        order_by: { created_at: desc }
-      ) {
-        created_at
-        content
-        id
-        image_url
-        tweet_likes_aggregate {
-          aggregate {
-            count
-          }
-          nodes {
-            user_id
-          }
-        }
-        tweet_user {
-          name
-          username
-          profile_picture_url
-          premium
-          id
-        }
-        tweet_retweets_aggregate {
-          aggregate {
-            count
-          }
-          nodes {
-            user_id
+      user_by_pk(id: $author_id) {
+        likes(order_by: {created_at: desc}) {
+          tweet {
+            created_at
+            content
+            id
+            image_url
+            parent_tweet_id
+            tweet_user {
+              name
+              username
+              profile_picture_url
+              premium
+              id
+            }
+            tweet_retweets_aggregate {
+              aggregate {
+                count
+              }
+              nodes {
+                user_id
+              }
+            }
+            tweet_replies {
+              created_at
+              content
+              id
+              image_url
+              parent_tweet_id
+              tweet_likes_aggregate {
+                aggregate {
+                  count
+                }
+                nodes {
+                  user_id
+                }
+              }
+              tweet_user {
+                name
+                username
+                profile_picture_url
+                premium
+                id
+              }
+              tweet_retweets_aggregate {
+                aggregate {
+                  count
+                }
+                nodes {
+                  user_id
+                }
+              }
+            }
+            tweet_likes_aggregate {
+              aggregate {
+                count
+              }
+              nodes {
+                user_id
+              }
+            }
           }
         }
       }
@@ -1093,4 +1208,7 @@ export {
   POST_NEW_REPLY,
   LISTEN_TO_NOTIFICATIONS,
   GET_SINGLE_TWEET,
+  GET_TRENDING_HASHTAGS,
+  SEARCH,
+  SEARCH_USERS,
 };

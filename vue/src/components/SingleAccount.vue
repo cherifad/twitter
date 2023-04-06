@@ -7,6 +7,7 @@ import {
   DOES_FOLLOW_USER,
 } from "../api";
 import { useAuthStore } from "../stores/authStore";
+import { RouterLink } from "vue-router";
 
 const props = defineProps({
   accountPictureAuthor: {
@@ -78,7 +79,7 @@ const followUnfollow = async () => {
         />
       </div>
       <div class="ml-4">
-        <h1 class="text-sl font-black">{{ accountAuthor }}</h1>
+        <RouterLink :to="`/${accountUserAuthor}`" class="text-sl font-black hover:underline">{{ accountAuthor }}</RouterLink>
         <h1 class="text-sl font-normal text-gray-light">
           @{{ accountUserAuthor }}
         </h1>

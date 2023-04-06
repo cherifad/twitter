@@ -18,7 +18,7 @@ const state = reactive({
     doesFollow: false,
 });
 
-const subscription = GET_UNFOLLOWED_USERS(authStore.user.id);
+const subscription = GET_UNFOLLOWED_USERS(authStore.user ? authStore.user.id : "");
 
 subscription.subscribe({
     next: ({ data }) => {

@@ -366,7 +366,7 @@ const createConversation = async () => {
 };
 
 const btnTextToDisplay = (hover = false) => {
-  if (user.value && user.value.id === authStore.user.id) {
+  if (user.value && user.value.id === authStore.user?.id) {
     return "Edit Profile";
   } else if (state.doesFollow) {
     return hover ? "Unfollow" : "Following";

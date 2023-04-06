@@ -13,11 +13,8 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
-# Build the application
-RUN npm run build
+# expose 5173 port
+EXPOSE 5173
 
-# Expose the port on which the application will run
-EXPOSE 8080
-
-# Start the application
-CMD [ "npm", "run", "serve" ]
+# run the application in development mode in 5173 port
+CMD [ "npm", "run", "dev", "--", "--port", "5173" ]
