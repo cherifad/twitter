@@ -80,7 +80,6 @@ function formatDate(dateParam) {
 }
 
 function convertDate(dateString) {
-  console.log(dateString);
   const parts = dateString.split("-"); // split the string into an array of year, month, and day parts
   const year = parseInt(parts[0], 10); // extract year and convert it to a number
   const month = parseInt(parts[1], 10) - 1; // extract month and convert it to a number (subtract 1 as month is zero-indexed)

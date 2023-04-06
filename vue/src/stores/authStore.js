@@ -9,12 +9,14 @@ export const useAuthStore = defineStore("auth", {
       expires: 1800,
     }),
     twitterAuthErrors: [],
+    notifications: [],
   }),
   getters: {
     user: (state) => state.twitterUser,
     errors: (state) => state.twitterAuthErrors,
     isAuthenticated: (state) => state.user !== null,
     isPremium: (state) => state.user !== null && state.user.premium,
+    notifications: (state) => state.notifications,
   },
   actions: {
     async login(email, password) {

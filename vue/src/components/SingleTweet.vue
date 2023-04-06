@@ -73,6 +73,8 @@
       <div class="flex mt-3 text-sm font-normal w-10/12 justify-between">
         <div
           id="reply"
+          v-if="withResponse"
+          @click="toShow = true"
           class="text-gray-light flex items-center gap-2 hover:text-blue cursor-pointer"
         >
           <div
@@ -119,6 +121,7 @@
         </div>
       </div>
     </div>
+    <AddReply @close="toShow=false" :original-tweet-id="tweetId" :to-show="toShow" v-bind:original-tweet-content="tweetContent" :original-tweet-author-picture="tweetAuthorAvatar" :original-tweet-author="tweetAuthor" :original-tweet-author-username="tweetAuthorUsername" :original-tweet-date="tweetDate" />
   </div>
 </template>
 
@@ -133,14 +136,21 @@ import { CREATE_NEW_LIKE, CREATE_NEW_RETWEET } from "../api";
 import { useAuthStore } from "../stores/authStore";
 import { ref, computed } from "vue";
 import { RouterLink } from "vue-router";
+import AddReply from "./AddReply.vue";
 
 const auth = useAuthStore();
+
+const toShow = ref(false);
 
 const props = defineProps({
   tweetAuthor: {
     type: String,
     default: "",
     required: true,
+  },
+  withResponse: {
+    type: Boolean,
+    default: true,
   },
   tweetAuthorId: {
     type: String,
@@ -260,9 +270,10 @@ function formatTweetContent(tweetContent) {
   // Find all hashtags and wrap them in a span with a CSS class
   tweetContent = tweetContent.replace(/#([\p{L}\p{Mn}\p{Pc}]+)/ug, '<a href="/search?q=%23$1" class="text-blue cursor-pointer hover:underline">#$1</a>');
   // Find all mentions and wrap them in a span with a CSS class
-  tweetContent = tweetContent.replace(/@([\p{L}\p{Mn}\p{Pc}]+)/ug, '<a href="/$1" class="text-blue cursor-pointer hover:underline">@$1</a>');
+  tweetContent = tweetContent.replace(/@([\p{L}\p{Mn}\p{Pc}-]+)/ug, '<a href="/$1" class="text-blue cursor-pointer hover:underline">@$1</a>');
   // Find all URLs and wrap them in a span with a CSS class
   tweetContent = tweetContent.replace(/(https?:\/\/[^\s]+)/ug, '<a href="$1" class="text-blue cursor-pointer hover:underline">$1</a>');
+
   return tweetContent;
 }
 

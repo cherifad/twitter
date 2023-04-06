@@ -10,9 +10,11 @@
             </TabList>
             <TabPanels>
                 <TabPanel>
-                    <SingleNotificationTwitter contentNotif="There was a login to your account @JulesSil1 from a new device on 22 mars 2023. Review it now."/>
-                    <SingleNotificationTwitter contentNotif="There was a login to your account @JulesSil1 from a new device on 22 mars 2023. Review it now."/>
-                    <SingleNotification accountPictureUser="../src/assets/img/mk.jpg" accountNameUser="Miakalifa3" contentNotif="Go to my bed ?"/>
+                    <div v-for="notification in notificationStore.getNotifications" :key="notification.id">
+                        <SingleNotificationTwitter v-if="notification.type.toUpperCase() != 'MESSAGE'" :contentNotif="notification.message" />
+                        <SingleNotification v-if="notification.type.toUpperCase() == 'MESSAGE'" :from="notification.sender_id" :contentNotif="notification.message"/>
+                        <MentionNotification v-if="notification.type.toUpperCase() == 'MENTION'" :tweet-id="notification.sender_id" />
+                    </div>
                     <SingleNotificationTwitter contentNotif="There was a login to your account @JulesSil1 from a new device on 21 mars 2023. Review it now."/>
                 </TabPanel>
                 <TabPanel>
@@ -51,5 +53,11 @@ import IconSettings from '../components/icons/IconSettings.vue';
 import SingleNotificationTwitter from '../components/SingleNotificationTwitter.vue';
 import SingleNotification from '../components/SingleNotification.vue';
 import SingleMention from '../components/SingleMention.vue';
+import { watch, reactive } from "vue";
+import { useAuthStore } from '../stores/authStore';
+import { useNotificationStore } from '../stores/notifications';
+import MentionNotification from '../components/Notifications/MentionNotification.vue';
+
+const notificationStore = useNotificationStore();
 
 </script>

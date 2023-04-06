@@ -38,7 +38,11 @@
             @click="followUnfollow"
             @mouseover="textBtn = btnTextToDisplay(true)"
             @mouseleave="textBtn = btnTextToDisplay(false)"
-            :class="state.doesFollow ? 'hover:text-red-500 hover:border-red-500' : 'border-zinc-200 dark:border-[rgb(83,100,113)] hover:bg-slate-100 dark:hover:bg-zinc-800'"
+            :class="
+              state.doesFollow
+                ? 'hover:text-red-500 hover:border-red-500'
+                : 'border-zinc-200 dark:border-[rgb(83,100,113)] hover:bg-slate-100 dark:hover:bg-zinc-800'
+            "
             class="dark:text-white rounded-full border-[1px] font-bold min-h-[36px] px-4"
           >
             {{ textBtn }}
@@ -56,14 +60,16 @@
           >@{{ user.username }}</span
         >
       </div>
-      <div class=" flex mb-3">
+      <div class="flex mb-3">
         <span class="text-slate-700 dark:text-zinc-500 gap-2 flex items-center">
           <IconBorn class="w-[19px] h-[19px]" /> Born
           {{ convertDate(user.date_of_birth).getDay() }}
           {{ monthNames[convertDate(user.date_of_birth).getMonth()] }}
           {{ convertDate(user.date_of_birth).getFullYear() }}
         </span>
-        <span class="text-slate-700 dark:text-zinc-500 gap-2 flex items-center ml-5">
+        <span
+          class="text-slate-700 dark:text-zinc-500 gap-2 flex items-center ml-5"
+        >
           <IconCalendar class="w-[19px] h-[19px]" /> Joinded
           {{ monthNames[new Date(user.created_at).getMonth()] }}
           {{ new Date(user.created_at).getFullYear() }}
@@ -140,7 +146,7 @@
             </div>
           </div>
         </Tab>
-         <Tab v-slot="{ selected }" class="flex-1 outline-none">
+        <Tab v-slot="{ selected }" class="flex-1 outline-none">
           <div
             :class="[
               'flex justify-center items-center px-4 h-[53px] min-w-[56px] flex-1 hover:bg-[rgb(15,20,25)]/10',
@@ -150,76 +156,103 @@
             ]"
           >
             <div class="w-fit flex flex-col">
-              <span class="py-3">Likes  </span>
+              <span class="py-3">Likes </span>
               <div
                 v-if="selected"
                 class="rounded-full bg-blue h-1 w-full"
               ></div>
             </div>
           </div>
-        </Tab>  
+        </Tab>
       </TabList>
       <TabPanels class="px-4">
         <TabPanel class="pt-3">
           <SingleTweet
-          v-if="state.tweets.length > 0"
-          v-for="tweet in state.tweets"
-          :tweet-author="tweet.tweet_user.name"
-          :tweet-media="null"
-          :tweet-media-count="0"
-          :tweet-author-avatar="tweet.tweet_user.profile_picture_url"
-          :tweet-author-username="tweet.tweet_user.username"
-          :tweet-author-verified="tweet.tweet_user.premium"
-          :tweet-content="tweet.content"
-          :tweet-date="tweet.created_at"
-          :tweet-likes="tweet.tweet_likes_aggregate.aggregate.count"
-          :tweet-retweets="tweet.tweet_retweets_aggregate.aggregate.count"
-          :tweet-replies="2547"
-          :tweet-bookmarked="false"
-          :tweet-liked="true"
-          :tweet-retweeted="false"
-          :tweet-replied="false"
-          tweet-media="258"
-          :tweet-views="25874123"
-          :tweet-id="tweet.id"
-          :tweet-thread="false"
-          :user-id="authStore.user? authStore.user.id : null"
-          :users-liked="tweet.tweet_likes_aggregate.nodes.map((like) => like.user_id)"
-          :users-retweeted="tweet.tweet_retweets_aggregate.nodes.map((retweet) => retweet.user_id)"
-        />
-      </TabPanel>
+            v-if="state.tweets.length > 0"
+            v-for="tweet in state.tweets"
+            :tweet-author="tweet.tweet_user.name"
+            :tweet-media="null"
+            :tweet-media-count="0"
+            :tweet-author-avatar="tweet.tweet_user.profile_picture_url"
+            :tweet-author-username="tweet.tweet_user.username"
+            :tweet-author-verified="tweet.tweet_user.premium"
+            :tweet-content="tweet.content"
+            :tweet-date="tweet.created_at"
+            :tweet-likes="tweet.tweet_likes_aggregate.aggregate.count"
+            :tweet-retweets="tweet.tweet_retweets_aggregate.aggregate.count"
+            :tweet-replies="2547"
+            :tweet-bookmarked="false"
+            :tweet-liked="true"
+            :tweet-retweeted="false"
+            :tweet-replied="false"
+            tweet-media="258"
+            :tweet-views="25874123"
+            :tweet-id="tweet.id"
+            :tweet-thread="false"
+            :user-id="authStore.user ? authStore.user.id : null"
+            :users-liked="
+              tweet.tweet_likes_aggregate.nodes.map((like) => like.user_id)
+            "
+            :users-retweeted="
+              tweet.tweet_retweets_aggregate.nodes.map(
+                (retweet) => retweet.user_id
+              )
+            "
+          />
+          <Loading v-else />
+        </TabPanel>
         <TabPanel class="pt-3">Content 2</TabPanel>
         <TabPanel class="pt-3">Content 3</TabPanel>
         <TabPanel class="pt-3">
           <SingleTweet
-          v-if="state.tweetsLiked.length > 0"
-          v-for="tweet in state.tweetsLiked"
-          :tweet-author="tweetsLiked.tweet_user.name"
-          :tweet-media="null"
-          :tweet-media-count="0"
-          :tweet-author-avatar="tweetsLiked.tweet_user.profile_picture_url"
-          :tweet-author-username="tweetsLiked.tweet_user.username"
-          :tweet-author-verified="tweetsLiked.tweet_user.premium"
-          :tweet-content="tweetsLiked.content"
-          :tweet-date="tweetsLiked.created_at"
-          :tweet-likes="tweetsLiked.tweet_likes_aggregate.aggregate.count"
-          :tweet-retweets="tweetsLiked.tweet_retweets_aggregate.aggregate.count"
-          :tweet-replies="2547"
-          :tweet-bookmarked="false"
-          :tweet-liked="true"
-          :tweet-retweeted="false"
-          :tweet-replied="false"
-          tweet-media="258"
-          :tweet-views="25874123"
-          :tweet-id="tweetsLiked.id"
-          :tweet-thread="false"
-          :user-id="authStore.user? authStore.user.id : null"
-          :users-liked="tweetsLiked.tweet_likes_aggregate.nodes.map((like) => like.user_id)"
-          :users-retweeted="tweetsLiked.tweet_retweets_aggregate.nodes.map((retweet) => retweet.user_id)"
-        />
+            v-if="state.tweetsLiked.length > 0"
+            v-for="tweet in state.tweetsLiked"
+            :tweet-author="tweetsLiked.tweet_user.name"
+            :tweet-media="null"
+            :tweet-media-count="0"
+            :tweet-author-avatar="tweetsLiked.tweet_user.profile_picture_url"
+            :tweet-author-username="tweetsLiked.tweet_user.username"
+            :tweet-author-verified="tweetsLiked.tweet_user.premium"
+            :tweet-content="tweetsLiked.content"
+            :tweet-date="tweetsLiked.created_at"
+            :tweet-likes="tweetsLiked.tweet_likes_aggregate.aggregate.count"
+            :tweet-retweets="
+              tweetsLiked.tweet_retweets_aggregate.aggregate.count
+            "
+            :tweet-replies="2547"
+            :tweet-bookmarked="false"
+            :tweet-liked="true"
+            :tweet-retweeted="false"
+            :tweet-replied="false"
+            tweet-media="258"
+            :tweet-views="25874123"
+            :tweet-id="tweetsLiked.id"
+            :tweet-thread="false"
+            :user-id="authStore.user ? authStore.user.id : null"
+            :users-liked="
+              tweetsLiked.tweet_likes_aggregate.nodes.map(
+                (like) => like.user_id
+              )
+            "
+            :users-retweeted="
+              tweetsLiked.tweet_retweets_aggregate.nodes.map(
+                (retweet) => retweet.user_id
+              )
+            "
+          />
         </TabPanel>
       </TabPanels>
     </TabGroup>
+  </div>
+  <div
+    v-else-if="user == undefined"
+    class="flex-1 flex items-center justify-center"
+  >
+    <h1 class="text-2xl font-bold">User not found</h1>
+    <Button text="Go back home" class="mt-4" @click="router.push('/')"></Button>
+  </div>
+  <div v-else class="flex-1 flex items-center justify-center">
+    <Loading />
   </div>
 </template>
 
@@ -232,7 +265,9 @@ import IconVerified from "../components/icons/IconVerified.vue";
 import IconCalendar from "../components/icons/IconCalendar.vue";
 import IconBorn from "../components/icons/IconBorn.vue";
 import IconMessage from "../components/icons/IconMessage.vue";
+import Button from "../components/Button.vue";
 import { useRouter, useRoute } from "vue-router";
+import Loading from "../components/Loading.vue";
 import { ref, onMounted, reactive } from "vue";
 import {
   GET_USER_WITH_USERNAME,
@@ -243,7 +278,7 @@ import {
   GET_TWEET_BY_USER_LIKE,
 } from "../api";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
-import { convertDate} from "../utils/helpers"
+import { convertDate } from "../utils/helpers";
 
 const monthNames = [
   "January",
@@ -272,16 +307,16 @@ const state = reactive({
   tweetsLiked: [],
 });
 
-
-
 const username = ref(route.params.username);
 
 onMounted(async () => {
+  console.log(user.value);
   user.value = await GET_USER_WITH_USERNAME(username.value);
+  console.log(user.value);
 
-  if (authStore.user) {
+  if (authStore.user && user.value) {
     const subscription = DOES_FOLLOW_USER(authStore.user.id, user.value.id);
-  
+
     subscription.subscribe({
       next: ({ data }) => {
         state.doesFollow = data.follower.length > 0;
@@ -289,35 +324,36 @@ onMounted(async () => {
       },
       error: (error) => {
         console.error(error);
-      },    
+      },
     });
   }
 
   textBtn.value = btnTextToDisplay();
 
-  const subscriptionTweets = GET_TWEETS_BY_USER(user.value.id);
+  if (user.value) {
+    const subscriptionTweets = GET_TWEETS_BY_USER(user.value.id);
 
-  subscriptionTweets.subscribe({
-    next: ({ data }) => {
-      state.tweets = data.tweet;
-    },
-    error: (error) => {
-      console.error(error);
-    },
-  });
+    subscriptionTweets.subscribe({
+      next: ({ data }) => {
+        state.tweets = data.tweet;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+    const subscriptionLikeTweets = GET_TWEET_BY_USER_LIKE(user.value.id);
+
+    subscriptionLikeTweets.subscribe({
+      next: ({ data }) => {
+        state.tweetsLiked = data.tweet;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
 
   textBtn.value = btnTextToDisplay();
-
-  const subscriptionLikeTweets = GET_TWEET_BY_USER_LIKE(user.value.id);
-
-  subscriptionLikeTweets.subscribe({
-    next: ({ data }) => {
-      state.tweetsLiked = data.tweet;
-    },
-    error: (error) => {
-      console.error(error);
-    },
-  });
 });
 
 const followUnfollow = async () => {
@@ -330,7 +366,7 @@ const createConversation = async () => {
 };
 
 const btnTextToDisplay = (hover = false) => {
-  if (user.value.id === authStore.user.id) {
+  if (user.value && user.value.id === authStore.user.id) {
     return "Edit Profile";
   } else if (state.doesFollow) {
     return hover ? "Unfollow" : "Following";

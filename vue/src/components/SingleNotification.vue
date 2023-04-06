@@ -1,38 +1,48 @@
 <script setup>
-    import IconNotificationUser from './icons/IconNotificationUser.vue';
+import IconNotificationUser from "./icons/IconNotificationUser.vue";
+import { GET_USER } from "../api";
+import { onMounted, ref, reactive } from "vue";
 
-    defineProps({
-        contentNotif: {
-            type: String,
-            default: "",
-            required: true,
-        },
-        accountPictureUser: {
-            type: String,
-            default: "",
-            required: true,
-        },
-        accountNameUser: {
-            type: String,
-            default: "",
-            required: true,
-        },
-    }
-    );
+const props = defineProps({
+  contentNotif: {
+    type: String,
+    default: "",
+    required: true,
+  },
+  from: {
+    type: String,
+    default: "",
+    required: true,
+  },
+});
+
+const state = reactive({
+  user: {},
+});
+
+const loading = ref(true);
+
+onMounted(async () => {
+    state.user.value = await GET_USER(props.from);
+    loading.value = false;
+});
 </script>
 
-
 <template>
-    <div class="flex border-b-[1px] border-current dark:border-zinc-800 border-zinc-200 p-2 text-sm">
-        <div class=" relative justify-center flex w-2/12 items-center">
-            <IconNotificationUser/>
-        </div>
-        <div class=" w-5/6 items-center">
-            <img :src=accountPictureUser class="w-12 h-12 rounded-full">
-            <div class=" ml-2">
-                <h1 class=" mt-5">{{ accountNameUser }}</h1>
-                <h1 class=" mt-5 text-zinc-700 font-bold">{{ contentNotif }}</h1>
-            </div>
-        </div>
+  <div
+    class="flex border-b-[1px] border-current dark:border-zinc-800 border-zinc-200 p-2 text-sm"
+  >
+    <div class="relative justify-center flex w-2/12 items-center">
+      <IconNotificationUser />
     </div>
+    <div class="w-5/6 items-center" v-if="!loading">
+        <div>
+            <img :src="state.user.profile_picture_url ? state.user.profile_picture_url : '/src/assets/img/default-avatar.webp'" class="w-12 h-12 rounded-full" />
+            <h1 class="mt-5 text-xl text-white">{{ state.user }}</h1>
+        </div>
+      <div class="ml-2">
+        <h1 class="mt-5 text-zinc-700 dark:text-white font-bold">{{ contentNotif }}</h1>
+      </div>
+    </div>
+  </div>
 </template>

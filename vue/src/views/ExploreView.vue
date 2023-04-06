@@ -10,6 +10,7 @@ import SingleTweet from "../components/SingleTweet.vue";
 const route = useRoute();
 const formInput = ref("");
 const searchFocus = ref(false);
+const tendanceFor = ref("you");
 
 const state = reactive({
   tweets: [],
@@ -19,6 +20,8 @@ const searchFun = async () => {
   if (route.query.q && route.name == "Search") {
     formInput.value = route.query.q;
     const subscription = GET_TWEETS_OF_HASHTAG(formInput.value);
+
+    tendanceFor.value = formInput.value;
 
     subscription.subscribe({
       next: ({ data }) => {
@@ -65,8 +68,8 @@ onMounted(() => {
       <IconSettings class="absolute top-7 right-5" />
     </form>
     <div>
-      <h1 class="relative font-extrabold text-xl top-3 left-5">
-        Tendances pour vous
+      <h1 class="relative font-extrabold text-xl top-3 left-5 mb-3">
+        Trendings for {{ tendanceFor }}
       </h1>
     </div>
     <div class="mt-5" v-if="route.name != 'Search'">

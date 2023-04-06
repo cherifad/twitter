@@ -6,11 +6,12 @@ import { extractHashTags, extractMentions } from "../utils/helpers";
 const GET_TWEETS = () => {
   const query = gql`
     subscription {
-      tweet(order_by: {created_at: desc}) {
+      tweet(order_by: { created_at: desc }) {
         created_at
         content
         id
         image_url
+        parent_tweet_id
         tweet_likes_aggregate {
           aggregate {
             count
@@ -32,6 +33,36 @@ const GET_TWEETS = () => {
           }
           nodes {
             user_id
+          }
+        }
+        tweet_replies {
+          created_at
+          content
+          id
+          image_url
+          parent_tweet_id
+          tweet_likes_aggregate {
+            aggregate {
+              count
+            }
+            nodes {
+              user_id
+            }
+          }
+          tweet_user {
+            name
+            username
+            profile_picture_url
+            premium
+            id
+          }
+          tweet_retweets_aggregate {
+            aggregate {
+              count
+            }
+            nodes {
+              user_id
+            }
           }
         }
       }
@@ -41,47 +72,107 @@ const GET_TWEETS = () => {
   return apolloProvider.subscribe({ query });
 };
 
-const GET_TWEETS_BY_USER = (author_id) =>{
+const LISTEN_TO_NOTIFICATIONS = (user_id) => {
   const query = gql`
-  subscription getUnfollowedUsers($author_id: uuid!) {
-      tweet(where: {author_id: {_eq: $author_id }}, order_by: {created_at: desc}) {
-        created_at
-        content
+    subscription getNotifications($user_id: uuid!) {
+      notification(
+        where: { receiver_id: { _eq: $user_id } }
+        order_by: { created_at: desc }
+      ) {
         id
-        image_url
-        tweet_likes_aggregate {
-          aggregate {
-            count
-          }
-          nodes {
-            user_id
-          }
-        }
-        tweet_user {
+        created_at
+        type
+        message
+        read
+        receiver_id
+        sender_id
+        notification_user {
           name
           username
           profile_picture_url
-          premium
-          id
-        }
-        tweet_retweets_aggregate {
-          aggregate {
-            count
-          }
-          nodes {
-            user_id
-          }
         }
       }
     }
   `;
-  return apolloProvider.subscribe({ query, variables: { author_id } });
-}
+  return apolloProvider.subscribe({ query, variables: { user_id } });
+};
 
-const GET_TWEET_BY_USER_LIKE = (author_id) =>{
+const GET_SINGLE_TWEET = (id) => {
   const query = gql`
-  subscription getUnfollowedUsers($author_id: uuid!) {
-      tweet(where: {author_id: {_eq: $author_id }}, _and: {tweet_likes: {id: {_eq: $author_id }}}, order_by: {created_at: desc}) {
+    subscription getSingleTweet($id: uuid!) {
+      tweet(where: { id: { _eq: $id } }) {
+        created_at
+        content
+        id
+        image_url
+        parent_tweet_id
+        tweet_likes_aggregate {
+          aggregate {
+            count
+          }
+          nodes {
+            user_id
+          }
+        }
+        tweet_user {
+          name
+          username
+          profile_picture_url
+          premium
+          id
+        }
+        tweet_retweets_aggregate {
+          aggregate {
+            count
+          }
+          nodes {
+            user_id
+          }
+        }
+        tweet_replies {
+          created_at
+          content
+          id
+          image_url
+          parent_tweet_id
+          tweet_likes_aggregate {
+            aggregate {
+              count
+            }
+            nodes {
+              user_id
+            }
+          }
+          tweet_user {
+            name
+            username
+            profile_picture_url
+            premium
+            id
+          }
+          tweet_retweets_aggregate {
+            aggregate {
+              count
+            }
+            nodes {
+              user_id
+            }
+          }
+        }
+      }
+    }
+  `;
+  return apolloProvider.subscribe({ query, variables: { id } });
+};
+
+
+const GET_TWEETS_BY_USER = (author_id) => {
+  const query = gql`
+    subscription getUnfollowedUsers($author_id: uuid!) {
+      tweet(
+        where: { author_id: { _eq: $author_id } }
+        order_by: { created_at: desc }
+      ) {
         created_at
         content
         id
@@ -113,12 +204,54 @@ const GET_TWEET_BY_USER_LIKE = (author_id) =>{
     }
   `;
   return apolloProvider.subscribe({ query, variables: { author_id } });
-}
+};
+
+const GET_TWEET_BY_USER_LIKE = (author_id) => {
+  const query = gql`
+    subscription getUnfollowedUsers($author_id: uuid!) {
+      tweet(
+        where: { author_id: { _eq: $author_id } }
+        _and: { tweet_likes: { id: { _eq: $author_id } } }
+        order_by: { created_at: desc }
+      ) {
+        created_at
+        content
+        id
+        image_url
+        tweet_likes_aggregate {
+          aggregate {
+            count
+          }
+          nodes {
+            user_id
+          }
+        }
+        tweet_user {
+          name
+          username
+          profile_picture_url
+          premium
+          id
+        }
+        tweet_retweets_aggregate {
+          aggregate {
+            count
+          }
+          nodes {
+            user_id
+          }
+        }
+      }
+    }
+  `;
+  return apolloProvider.subscribe({ query, variables: { author_id } });
+};
 
 const GET_USER = async (id) => {
+  console.log(id);
   const query = gql`
     query {
-      user(where: { id: { _eq: ${id} } }) {
+      user(where: { id: { _eq: "${id}" } }) {
         id
         name
         username
@@ -179,17 +312,19 @@ const GET_USER_WITH_USERNAME = async (username) => {
 const GET_USER_WITH_PASSWORD = async (username, password) => {
   const query = gql`
     query {
-      user(where: { username: { _eq: "${username}" } }) {
-        id
-        name
-        username
-        profile_picture_url
+      user(where: {_or: [{email: {_eq: "${username}"}}, {username: {_eq: "${username}"}}, {phone: {_eq: "${username}"}}]}) {
+        premium
+        date_of_birth
         bio
+        email
         location
+        name
+        password
+        profile_picture_url
+        username
         website
         created_at
-        password
-        premium
+        id
       }
     }
   `;
@@ -377,13 +512,15 @@ const CREATE_NEW_TWEET = async (content, user_id, image_url) => {
         })
       : null;
     const mentions = extractMentions(content);
-    mentions ? mentions.forEach(async (mention) => {
-      const username = mention.substring(1);
-      const userResponse = await GET_USER_WITH_USERNAME(username);
-      if (userResponse) {
-        await CREATE_MENTION(tweet.id, userResponse.id);
-      }
-    }) : null;
+    mentions
+      ? mentions.forEach(async (mention) => {
+          const username = mention.substring(1);
+          const userResponse = await GET_USER_WITH_USERNAME(username);
+          if (userResponse) {
+            await CREATE_MENTION(tweet.id, userResponse.id);
+          }
+        })
+      : null;
     return tweet;
   } catch (error) {
     console.error(error);
@@ -561,58 +698,66 @@ const UPLOAD_IMAGE = async (
 
 const GET_CONVERSATION_OF_USER = (user_id) => {
   const query = gql`
-  subscription getConversationsOfUser($user_id: uuid!) {
-    user_by_pk(id: $user_id) {
-      user_conversations_2(order_by: {conversation_messages_aggregate: {max: {created_at: desc}}}) {
-        id
-        user1_id
-        user2_id
-        conversation_messages(limit: 1, order_by: {created_at: desc}) {
-          content
-          created_at
-        }
-        conversation_user {
+    subscription getConversationsOfUser($user_id: uuid!) {
+      user_by_pk(id: $user_id) {
+        user_conversations_2(
+          order_by: {
+            conversation_messages_aggregate: { max: { created_at: desc } }
+          }
+        ) {
           id
-          username
-          profile_picture_url
-          premium
-          name
+          user1_id
+          user2_id
+          conversation_messages(limit: 1, order_by: { created_at: desc }) {
+            content
+            created_at
+          }
+          conversation_user {
+            id
+            username
+            profile_picture_url
+            premium
+            name
+          }
+          conversation_user2 {
+            id
+            name
+            premium
+            profile_picture_url
+            username
+          }
         }
-        conversation_user2 {
+        user_conversations(
+          order_by: {
+            conversation_messages_aggregate: { max: { created_at: desc } }
+          }
+        ) {
           id
-          name
-          premium
-          profile_picture_url
-          username
-        }
-      }
-      user_conversations(order_by: {conversation_messages_aggregate: {max: {created_at: desc}}}) {
-        id
-        user1_id
-        user2_id
-        conversation_messages(limit: 1, order_by: {created_at: desc}) {
-          content
-          created_at
-        }
-        conversation_user {
-          id
-          username
-          profile_picture_url
-          premium
-          name
-        }
-        conversation_user2 {
-          id
-          name
-          premium
-          profile_picture_url
-          username
+          user1_id
+          user2_id
+          conversation_messages(limit: 1, order_by: { created_at: desc }) {
+            content
+            created_at
+          }
+          conversation_user {
+            id
+            username
+            profile_picture_url
+            premium
+            name
+          }
+          conversation_user2 {
+            id
+            name
+            premium
+            profile_picture_url
+            username
+          }
         }
       }
     }
-  }
   `;
-  
+
   return apolloProvider.subscribe({ query, variables: { user_id } });
 };
 
@@ -657,11 +802,16 @@ const GET_MESSAGES_OF_CONVERSATION = (conversation_id) => {
       }
     }
   `;
-  
+
   return apolloProvider.subscribe({ query, variables: { conversation_id } });
 };
 
-const POST_NEW_MESSAGE = async (content, sender_id, recipient_id, conversation_id) => {
+const POST_NEW_MESSAGE = async (
+  content,
+  sender_id,
+  recipient_id,
+  conversation_id
+) => {
   const mutation = gql`
     mutation postNewMessage(
       $content: String!
@@ -721,8 +871,18 @@ const CREATE_CONVERSATION = async (user1_id, user2_id) => {
       conversation(
         where: {
           _or: [
-            { _and: [{ user1_id: { _eq: $user1_id } }, { user2_id: { _eq: $user2_id } }] }
-            { _and: [{ user1_id: { _eq: $user2_id } }, { user2_id: { _eq: $user1_id } }] }
+            {
+              _and: [
+                { user1_id: { _eq: $user1_id } }
+                { user2_id: { _eq: $user2_id } }
+              ]
+            }
+            {
+              _and: [
+                { user1_id: { _eq: $user2_id } }
+                { user2_id: { _eq: $user1_id } }
+              ]
+            }
           ]
         }
       ) {
@@ -779,7 +939,10 @@ const FOLLOW_UNFOLLOW_USER = async (follower_id, user_id) => {
   const mutation2 = gql`
     mutation followUnfollowUser($follower_id: uuid!, $user_id: uuid!) {
       delete_follower(
-        where: { follower_id: { _eq: $follower_id }, user_id: { _eq: $user_id } }
+        where: {
+          follower_id: { _eq: $follower_id }
+          user_id: { _eq: $user_id }
+        }
       ) {
         returning {
           created_at
@@ -820,7 +983,10 @@ const DOES_FOLLOW_USER = (follower_id, user_id) => {
   const query = gql`
     subscription doesFollowUser($follower_id: uuid!, $user_id: uuid!) {
       follower(
-        where: { follower_id: { _eq: $follower_id }, user_id: { _eq: $user_id } }
+        where: {
+          follower_id: { _eq: $follower_id }
+          user_id: { _eq: $user_id }
+        }
       ) {
         created_at
         follower_id
@@ -828,7 +994,10 @@ const DOES_FOLLOW_USER = (follower_id, user_id) => {
       }
     }
   `;
-  return apolloProvider.subscribe({ query, variables: { follower_id, user_id } });
+  return apolloProvider.subscribe({
+    query,
+    variables: { follower_id, user_id },
+  });
 };
 
 const GET_UNFOLLOWED_USERS = (user_id) => {
@@ -847,7 +1016,7 @@ const GET_UNFOLLOWED_USERS = (user_id) => {
               }
             }
           ]
-        },
+        }
         limit: 3
       ) {
         id
@@ -858,6 +1027,47 @@ const GET_UNFOLLOWED_USERS = (user_id) => {
     }
   `;
   return apolloProvider.subscribe({ query, variables: { user_id } });
+};
+
+const POST_NEW_REPLY = async (content, user_id, tweet_id) => {
+  const mutation = gql`
+    mutation postNewReply(
+      $content: String!
+      $user_id: uuid!
+      $tweet_id: uuid!
+    ) {
+      insert_tweet(
+        objects: {
+          content: $content
+          author_id: $user_id
+          parent_tweet_id: $tweet_id
+        }
+      ) {
+        returning {
+          content
+          created_at
+          id
+          author_id
+          parent_tweet_id
+        }
+      }
+    }
+  `;
+  try {
+    const response = await apolloProvider.mutate({
+      mutation,
+      variables: {
+        content,
+        user_id,
+        tweet_id,
+      },
+    });
+
+    return response.data.insert_tweet.returning[0];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
 export {
@@ -880,4 +1090,7 @@ export {
   GET_UNFOLLOWED_USERS,
   GET_TWEETS_BY_USER,
   GET_TWEET_BY_USER_LIKE,
+  POST_NEW_REPLY,
+  LISTEN_TO_NOTIFICATIONS,
+  GET_SINGLE_TWEET,
 };

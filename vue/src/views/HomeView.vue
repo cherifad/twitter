@@ -5,32 +5,33 @@
     </div>
     <NewTweet v-if="auths.isAuthenticated" :author_id="auths.user.id" :avatar="auths.user.profile_picture_url" />
     <div :class="['flex-1', state.tweets.length <= 0 ? 'flex justify-center items-center' : '']">
-      <SingleTweet
-        v-if="state.tweets.length > 0"
-        v-for="tweet in state.tweets"
-        :tweet-author="tweet.tweet_user.name"
-        :tweet-media="null"
-        :tweet-media-count="0"
-        :tweet-author-avatar="tweet.tweet_user.profile_picture_url"
-        :tweet-author-username="tweet.tweet_user.username"
-        :tweet-author-verified="tweet.tweet_user.premium"
-        :tweet-content="tweet.content"
-        :tweet-date="tweet.created_at"
-        :tweet-likes="tweet.tweet_likes_aggregate.aggregate.count"
-        :tweet-retweets="tweet.tweet_retweets_aggregate.aggregate.count"
-        :tweet-replies="2547"
-        :tweet-bookmarked="false"
-        :tweet-liked="true"
-        :tweet-retweeted="false"
-        :tweet-replied="false"
-        tweet-media="258"
-        :tweet-views="25874123"
-        :tweet-id="tweet.id"
-        :tweet-thread="false"
-        :user-id="auths.user? auths.user.id : null"
-        :users-liked="tweet.tweet_likes_aggregate.nodes.map((like) => like.user_id)"
-        :users-retweeted="tweet.tweet_retweets_aggregate.nodes.map((retweet) => retweet.user_id)"
-      />
+      <div v-for="tweet in state.tweets" v-if="state.tweets.length > 0">
+        <SingleTweet
+          v-if="tweet.parent_tweet_id == null"
+          :tweet-author="tweet.tweet_user.name"
+          :tweet-media="null"
+          :tweet-media-count="0"
+          :tweet-author-avatar="tweet.tweet_user.profile_picture_url"
+          :tweet-author-username="tweet.tweet_user.username"
+          :tweet-author-verified="tweet.tweet_user.premium"
+          :tweet-content="tweet.content"
+          :tweet-date="tweet.created_at"
+          :tweet-likes="tweet.tweet_likes_aggregate.aggregate.count"
+          :tweet-retweets="tweet.tweet_retweets_aggregate.aggregate.count"
+          :tweet-replies="2547"
+          :tweet-bookmarked="false"
+          :tweet-liked="true"
+          :tweet-retweeted="false"
+          :tweet-replied="false"
+          tweet-media="258"
+          :tweet-views="25874123"
+          :tweet-id="tweet.id"
+          :tweet-thread="false"
+          :user-id="auths.user? auths.user.id : null"
+          :users-liked="tweet.tweet_likes_aggregate.nodes.map((like) => like.user_id)"
+          :users-retweeted="tweet.tweet_retweets_aggregate.nodes.map((retweet) => retweet.user_id)"
+        />      
+      </div>
       <Loading v-else />
     </div>
   </div>
