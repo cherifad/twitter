@@ -1,17 +1,10 @@
-# twitter-best-clone
+# Twitter clone
 Best of the best
 
 Groupe : 
 Adlen CHERIF
 Baptiste REYDET
 Jules SILVESTRI
-
-
-# Project Title
-
-A brief description of what this project does and who it's for
-
-
 
 
 ## Deployment
