@@ -56,6 +56,18 @@ services:
     networks:
       - db_net
 
+  proxy:
+    image: nginx
+    ports:
+      - "5001:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - "graphql-engine"
+      - "vue-app"
+    networks:
+      - db_net
+
 networks:
   db_net:
     driver: bridge
