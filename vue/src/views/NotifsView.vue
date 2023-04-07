@@ -38,8 +38,6 @@
                         Use the action menu — those three little dots on a Tweet — to untag yourself and leave a conversation. <span role="button" tabindex="0" class="css-18t94o4 css-901oao css-16my406 r-1nao33i r-poiln3 r-1b43r93 r-b88u0q r-1cwl3u0 r-bcqeeo r-1ddef8g r-tjvw6i r-3s2u2q r-qvutc0"><span class="css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0">Learn more</span></span>
                     </div>
                     </div>
-                    <SingleMention contentNotif="Do you want to come in my bed ?" account="JulosSs_05" accountName="Mia Kalifa" accountNameUser="miakalifa3" accountPictureUser="../src/assets/img/mk.jpg" tweetReplies="5" tweetRetweets="120" tweetLikes="15000"/>
-                    <SingleMention contentNotif="Do you want to come in my bed ?" account="JulosSs_05" accountName="Adriana Chechik" accountNameUser="CheckikTv" accountPictureUser="../src/assets/img/ac.jpg" tweetReplies="8963" tweetRetweets="13000" tweetLikes="370000"/>
                 </TabPanel>
             </TabPanels>
         </TabGroup>
