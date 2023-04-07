@@ -399,11 +399,21 @@ const monthsIndex = [
 ];
 
 const registerUser = (event) => {
+  event.preventDefault();
   const dateGenerated = `${date.value.year}-${
     monthsIndex.indexOf(date.value.month) + 1
   }-${date.value.day}`;
-  console.log(dateGenerated);
-  event.preventDefault();
+  
+  const dateCheck = new Date(dateGenerated);
+
+  if (dateCheck.toString() === "Invalid Date") {
+    // check if error is already in the array
+    if (!authStore.twitterAuthErrors.includes("Invalid date")) {
+      authStore.twitterAuthErrors.push("Invalid date");
+    }
+    return;
+  }
+
   const response = authStore.register(
     registerForm.value.name,
     registerForm.value.email,
@@ -412,6 +422,10 @@ const registerUser = (event) => {
     registerForm.value.username,
     dateGenerated
   );
+
+  if (response) {
+    isOpen.value = false;
+  }
 };
 
 const registerForm = ref({

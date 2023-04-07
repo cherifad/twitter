@@ -3,9 +3,9 @@
 --
 
 -- Dumped from database version 12.14 (Debian 12.14-1.pgdg110+1)
--- Dumped by pg_dump version 15.0
+-- Dumped by pg_dump version 13.2
 
--- Started on 2023-04-06 06:21:21
+-- Started on 2023-04-07 12:58:49
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -29,16 +29,6 @@ CREATE SCHEMA hdb_catalog;
 ALTER SCHEMA hdb_catalog OWNER TO postgres;
 
 --
--- TOC entry 7 (class 2615 OID 2200)
--- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
---
-
--- *not* creating schema, since initdb creates it
-
-
-ALTER SCHEMA public OWNER TO postgres;
-
---
 -- TOC entry 2 (class 3079 OID 16385)
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -47,7 +37,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 
 --
--- TOC entry 3293 (class 0 OID 0)
+-- TOC entry 3292 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
 --
@@ -68,7 +58,7 @@ CREATE FUNCTION hdb_catalog.gen_hasura_uuid() RETURNS uuid
 ALTER FUNCTION hdb_catalog.gen_hasura_uuid() OWNER TO postgres;
 
 --
--- TOC entry 278 (class 1255 OID 33210)
+-- TOC entry 277 (class 1255 OID 16423)
 -- Name: insert_event_log(text, text, text, text, json); Type: FUNCTION; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -117,7 +107,7 @@ $$;
 ALTER FUNCTION hdb_catalog.insert_event_log(schema_name text, table_name text, trigger_name text, op text, row_data json) OWNER TO postgres;
 
 --
--- TOC entry 279 (class 1255 OID 33229)
+-- TOC entry 278 (class 1255 OID 16424)
 -- Name: notify_trigger(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -149,7 +139,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 217 (class 1259 OID 16608)
+-- TOC entry 204 (class 1259 OID 16425)
 -- Name: hashtag; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -162,8 +152,8 @@ CREATE TABLE public.hashtag (
 ALTER TABLE public.hashtag OWNER TO postgres;
 
 --
--- TOC entry 3294 (class 0 OID 0)
--- Dependencies: 217
+-- TOC entry 3293 (class 0 OID 0)
+-- Dependencies: 204
 -- Name: TABLE hashtag; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -171,7 +161,7 @@ COMMENT ON TABLE public.hashtag IS 'Hashtag table';
 
 
 --
--- TOC entry 265 (class 1255 OID 24956)
+-- TOC entry 279 (class 1255 OID 16432)
 -- Name: number_of_tweets(public.hashtag); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -187,7 +177,7 @@ $$;
 ALTER FUNCTION public.number_of_tweets(hashtag_row public.hashtag) OWNER TO postgres;
 
 --
--- TOC entry 226 (class 1259 OID 33199)
+-- TOC entry 205 (class 1259 OID 16433)
 -- Name: event_invocation_logs; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -205,7 +195,7 @@ CREATE TABLE hdb_catalog.event_invocation_logs (
 ALTER TABLE hdb_catalog.event_invocation_logs OWNER TO postgres;
 
 --
--- TOC entry 225 (class 1259 OID 33183)
+-- TOC entry 206 (class 1259 OID 16441)
 -- Name: event_log; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -228,7 +218,7 @@ CREATE TABLE hdb_catalog.event_log (
 ALTER TABLE hdb_catalog.event_log OWNER TO postgres;
 
 --
--- TOC entry 206 (class 1259 OID 16446)
+-- TOC entry 207 (class 1259 OID 16453)
 -- Name: hdb_action_log; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -250,7 +240,7 @@ CREATE TABLE hdb_catalog.hdb_action_log (
 ALTER TABLE hdb_catalog.hdb_action_log OWNER TO postgres;
 
 --
--- TOC entry 208 (class 1259 OID 16472)
+-- TOC entry 208 (class 1259 OID 16462)
 -- Name: hdb_cron_event_invocation_logs; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -267,7 +257,7 @@ CREATE TABLE hdb_catalog.hdb_cron_event_invocation_logs (
 ALTER TABLE hdb_catalog.hdb_cron_event_invocation_logs OWNER TO postgres;
 
 --
--- TOC entry 207 (class 1259 OID 16457)
+-- TOC entry 209 (class 1259 OID 16470)
 -- Name: hdb_cron_events; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -286,7 +276,7 @@ CREATE TABLE hdb_catalog.hdb_cron_events (
 ALTER TABLE hdb_catalog.hdb_cron_events OWNER TO postgres;
 
 --
--- TOC entry 227 (class 1259 OID 33211)
+-- TOC entry 210 (class 1259 OID 16481)
 -- Name: hdb_event_log_cleanups; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -304,7 +294,7 @@ CREATE TABLE hdb_catalog.hdb_event_log_cleanups (
 ALTER TABLE hdb_catalog.hdb_event_log_cleanups OWNER TO postgres;
 
 --
--- TOC entry 205 (class 1259 OID 16435)
+-- TOC entry 211 (class 1259 OID 16489)
 -- Name: hdb_metadata; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -318,7 +308,7 @@ CREATE TABLE hdb_catalog.hdb_metadata (
 ALTER TABLE hdb_catalog.hdb_metadata OWNER TO postgres;
 
 --
--- TOC entry 210 (class 1259 OID 16502)
+-- TOC entry 212 (class 1259 OID 16496)
 -- Name: hdb_scheduled_event_invocation_logs; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -335,7 +325,7 @@ CREATE TABLE hdb_catalog.hdb_scheduled_event_invocation_logs (
 ALTER TABLE hdb_catalog.hdb_scheduled_event_invocation_logs OWNER TO postgres;
 
 --
--- TOC entry 209 (class 1259 OID 16488)
+-- TOC entry 213 (class 1259 OID 16504)
 -- Name: hdb_scheduled_events; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -358,7 +348,7 @@ CREATE TABLE hdb_catalog.hdb_scheduled_events (
 ALTER TABLE hdb_catalog.hdb_scheduled_events OWNER TO postgres;
 
 --
--- TOC entry 211 (class 1259 OID 16517)
+-- TOC entry 214 (class 1259 OID 16515)
 -- Name: hdb_schema_notifications; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -375,7 +365,7 @@ CREATE TABLE hdb_catalog.hdb_schema_notifications (
 ALTER TABLE hdb_catalog.hdb_schema_notifications OWNER TO postgres;
 
 --
--- TOC entry 224 (class 1259 OID 33176)
+-- TOC entry 215 (class 1259 OID 16524)
 -- Name: hdb_source_catalog_version; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -388,7 +378,7 @@ CREATE TABLE hdb_catalog.hdb_source_catalog_version (
 ALTER TABLE hdb_catalog.hdb_source_catalog_version OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 16423)
+-- TOC entry 216 (class 1259 OID 16530)
 -- Name: hdb_version; Type: TABLE; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -404,7 +394,7 @@ CREATE TABLE hdb_catalog.hdb_version (
 ALTER TABLE hdb_catalog.hdb_version OWNER TO postgres;
 
 --
--- TOC entry 220 (class 1259 OID 24868)
+-- TOC entry 217 (class 1259 OID 16539)
 -- Name: conversation; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -419,8 +409,8 @@ CREATE TABLE public.conversation (
 ALTER TABLE public.conversation OWNER TO postgres;
 
 --
--- TOC entry 3295 (class 0 OID 0)
--- Dependencies: 220
+-- TOC entry 3294 (class 0 OID 0)
+-- Dependencies: 217
 -- Name: TABLE conversation; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -428,7 +418,7 @@ COMMENT ON TABLE public.conversation IS 'Conversation table';
 
 
 --
--- TOC entry 214 (class 1259 OID 16557)
+-- TOC entry 218 (class 1259 OID 16544)
 -- Name: follower; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -443,8 +433,8 @@ CREATE TABLE public.follower (
 ALTER TABLE public.follower OWNER TO postgres;
 
 --
--- TOC entry 3296 (class 0 OID 0)
--- Dependencies: 214
+-- TOC entry 3295 (class 0 OID 0)
+-- Dependencies: 218
 -- Name: TABLE follower; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -452,7 +442,7 @@ COMMENT ON TABLE public.follower IS 'Follower table';
 
 
 --
--- TOC entry 222 (class 1259 OID 24917)
+-- TOC entry 219 (class 1259 OID 16549)
 -- Name: image; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -469,8 +459,8 @@ CREATE TABLE public.image (
 ALTER TABLE public.image OWNER TO postgres;
 
 --
--- TOC entry 3297 (class 0 OID 0)
--- Dependencies: 222
+-- TOC entry 3296 (class 0 OID 0)
+-- Dependencies: 219
 -- Name: TABLE image; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -478,7 +468,7 @@ COMMENT ON TABLE public.image IS 'Image table';
 
 
 --
--- TOC entry 215 (class 1259 OID 16573)
+-- TOC entry 220 (class 1259 OID 16556)
 -- Name: like; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -493,8 +483,8 @@ CREATE TABLE public."like" (
 ALTER TABLE public."like" OWNER TO postgres;
 
 --
--- TOC entry 3298 (class 0 OID 0)
--- Dependencies: 215
+-- TOC entry 3297 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: TABLE "like"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -502,7 +492,7 @@ COMMENT ON TABLE public."like" IS 'Like table';
 
 
 --
--- TOC entry 219 (class 1259 OID 16633)
+-- TOC entry 221 (class 1259 OID 16561)
 -- Name: mention; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -517,8 +507,8 @@ CREATE TABLE public.mention (
 ALTER TABLE public.mention OWNER TO postgres;
 
 --
--- TOC entry 3299 (class 0 OID 0)
--- Dependencies: 219
+-- TOC entry 3298 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: TABLE mention; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -526,7 +516,7 @@ COMMENT ON TABLE public.mention IS 'Mention table';
 
 
 --
--- TOC entry 221 (class 1259 OID 24884)
+-- TOC entry 222 (class 1259 OID 16566)
 -- Name: message; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -543,8 +533,8 @@ CREATE TABLE public.message (
 ALTER TABLE public.message OWNER TO postgres;
 
 --
--- TOC entry 3300 (class 0 OID 0)
--- Dependencies: 221
+-- TOC entry 3299 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: TABLE message; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -552,7 +542,7 @@ COMMENT ON TABLE public.message IS 'Message table';
 
 
 --
--- TOC entry 223 (class 1259 OID 33156)
+-- TOC entry 223 (class 1259 OID 16574)
 -- Name: notification; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -570,7 +560,7 @@ CREATE TABLE public.notification (
 ALTER TABLE public.notification OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 16592)
+-- TOC entry 224 (class 1259 OID 16583)
 -- Name: retweet; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -585,8 +575,8 @@ CREATE TABLE public.retweet (
 ALTER TABLE public.retweet OWNER TO postgres;
 
 --
--- TOC entry 3301 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 3300 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: TABLE retweet; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -594,7 +584,7 @@ COMMENT ON TABLE public.retweet IS 'Retweet table';
 
 
 --
--- TOC entry 213 (class 1259 OID 16542)
+-- TOC entry 225 (class 1259 OID 16588)
 -- Name: tweet; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -611,8 +601,8 @@ CREATE TABLE public.tweet (
 ALTER TABLE public.tweet OWNER TO postgres;
 
 --
--- TOC entry 3302 (class 0 OID 0)
--- Dependencies: 213
+-- TOC entry 3301 (class 0 OID 0)
+-- Dependencies: 225
 -- Name: TABLE tweet; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -620,7 +610,7 @@ COMMENT ON TABLE public.tweet IS 'Tweet table';
 
 
 --
--- TOC entry 218 (class 1259 OID 16617)
+-- TOC entry 226 (class 1259 OID 16596)
 -- Name: tweet_hashtag; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -634,8 +624,8 @@ CREATE TABLE public.tweet_hashtag (
 ALTER TABLE public.tweet_hashtag OWNER TO postgres;
 
 --
--- TOC entry 3303 (class 0 OID 0)
--- Dependencies: 218
+-- TOC entry 3302 (class 0 OID 0)
+-- Dependencies: 226
 -- Name: TABLE tweet_hashtag; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -643,7 +633,7 @@ COMMENT ON TABLE public.tweet_hashtag IS 'Tweet-Hashtag table';
 
 
 --
--- TOC entry 212 (class 1259 OID 16528)
+-- TOC entry 227 (class 1259 OID 16600)
 -- Name: user; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -667,8 +657,8 @@ CREATE TABLE public."user" (
 ALTER TABLE public."user" OWNER TO postgres;
 
 --
--- TOC entry 3304 (class 0 OID 0)
--- Dependencies: 212
+-- TOC entry 3303 (class 0 OID 0)
+-- Dependencies: 227
 -- Name: TABLE "user"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -676,8 +666,8 @@ COMMENT ON TABLE public."user" IS 'User table';
 
 
 --
--- TOC entry 3285 (class 0 OID 33199)
--- Dependencies: 226
+-- TOC entry 3264 (class 0 OID 16433)
+-- Dependencies: 205
 -- Data for Name: event_invocation_logs; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -687,8 +677,8 @@ COPY hdb_catalog.event_invocation_logs (id, trigger_name, event_id, status, requ
 
 
 --
--- TOC entry 3284 (class 0 OID 33183)
--- Dependencies: 225
+-- TOC entry 3265 (class 0 OID 16441)
+-- Dependencies: 206
 -- Data for Name: event_log; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -698,8 +688,8 @@ afcd8c6c-d13d-4ca0-acab-8dd13260b6d5	public	follower	follow_notification	{"op": 
 
 
 --
--- TOC entry 3265 (class 0 OID 16446)
--- Dependencies: 206
+-- TOC entry 3266 (class 0 OID 16453)
+-- Dependencies: 207
 -- Data for Name: hdb_action_log; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -708,7 +698,7 @@ COPY hdb_catalog.hdb_action_log (id, action_name, input_payload, request_headers
 
 
 --
--- TOC entry 3267 (class 0 OID 16472)
+-- TOC entry 3267 (class 0 OID 16462)
 -- Dependencies: 208
 -- Data for Name: hdb_cron_event_invocation_logs; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
@@ -718,8 +708,8 @@ COPY hdb_catalog.hdb_cron_event_invocation_logs (id, event_id, status, request, 
 
 
 --
--- TOC entry 3266 (class 0 OID 16457)
--- Dependencies: 207
+-- TOC entry 3268 (class 0 OID 16470)
+-- Dependencies: 209
 -- Data for Name: hdb_cron_events; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -728,8 +718,8 @@ COPY hdb_catalog.hdb_cron_events (id, trigger_name, scheduled_time, status, trie
 
 
 --
--- TOC entry 3286 (class 0 OID 33211)
--- Dependencies: 227
+-- TOC entry 3269 (class 0 OID 16481)
+-- Dependencies: 210
 -- Data for Name: hdb_event_log_cleanups; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -738,8 +728,8 @@ COPY hdb_catalog.hdb_event_log_cleanups (id, trigger_name, scheduled_at, deleted
 
 
 --
--- TOC entry 3264 (class 0 OID 16435)
--- Dependencies: 205
+-- TOC entry 3270 (class 0 OID 16489)
+-- Dependencies: 211
 -- Data for Name: hdb_metadata; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -749,8 +739,8 @@ COPY hdb_catalog.hdb_metadata (id, metadata, resource_version) FROM stdin;
 
 
 --
--- TOC entry 3269 (class 0 OID 16502)
--- Dependencies: 210
+-- TOC entry 3271 (class 0 OID 16496)
+-- Dependencies: 212
 -- Data for Name: hdb_scheduled_event_invocation_logs; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -759,8 +749,8 @@ COPY hdb_catalog.hdb_scheduled_event_invocation_logs (id, event_id, status, requ
 
 
 --
--- TOC entry 3268 (class 0 OID 16488)
--- Dependencies: 209
+-- TOC entry 3272 (class 0 OID 16504)
+-- Dependencies: 213
 -- Data for Name: hdb_scheduled_events; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -769,8 +759,8 @@ COPY hdb_catalog.hdb_scheduled_events (id, webhook_conf, scheduled_time, retry_c
 
 
 --
--- TOC entry 3270 (class 0 OID 16517)
--- Dependencies: 211
+-- TOC entry 3273 (class 0 OID 16515)
+-- Dependencies: 214
 -- Data for Name: hdb_schema_notifications; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -780,8 +770,8 @@ COPY hdb_catalog.hdb_schema_notifications (id, notification, resource_version, i
 
 
 --
--- TOC entry 3283 (class 0 OID 33176)
--- Dependencies: 224
+-- TOC entry 3274 (class 0 OID 16524)
+-- Dependencies: 215
 -- Data for Name: hdb_source_catalog_version; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -791,19 +781,19 @@ COPY hdb_catalog.hdb_source_catalog_version (version, upgraded_on) FROM stdin;
 
 
 --
--- TOC entry 3263 (class 0 OID 16423)
--- Dependencies: 204
+-- TOC entry 3275 (class 0 OID 16530)
+-- Dependencies: 216
 -- Data for Name: hdb_version; Type: TABLE DATA; Schema: hdb_catalog; Owner: postgres
 --
 
 COPY hdb_catalog.hdb_version (hasura_uuid, version, upgraded_on, cli_state, console_state) FROM stdin;
-4eac0206-3a75-44d0-a80d-17db64dd9cc7	47	2023-03-25 10:51:57.485849+00	{}	{"console_notifications": {"admin": {"date": "2023-04-05T12:38:16.435Z", "read": "default", "showBadge": false}}, "telemetryNotificationShown": true}
+4eac0206-3a75-44d0-a80d-17db64dd9cc7	47	2023-03-25 10:51:57.485849+00	{}	{"console_notifications": {"admin": {"date": "2023-04-07T10:48:49.952Z", "read": "default", "showBadge": false}}, "telemetryNotificationShown": true}
 \.
 
 
 --
--- TOC entry 3279 (class 0 OID 24868)
--- Dependencies: 220
+-- TOC entry 3276 (class 0 OID 16539)
+-- Dependencies: 217
 -- Data for Name: conversation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -815,8 +805,8 @@ e89a2ab0-d575-4773-887e-d87380d19dac	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	1ce2b4
 
 
 --
--- TOC entry 3273 (class 0 OID 16557)
--- Dependencies: 214
+-- TOC entry 3277 (class 0 OID 16544)
+-- Dependencies: 218
 -- Data for Name: follower; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -828,12 +818,14 @@ ff244b42-5dca-4982-b2dd-7a242cad1777	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	2a4d15
 4e2f6321-96ed-4669-a9f4-51183ee452f6	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	2023-04-03 20:01:20.516485+00
 0f5bf4f9-43b5-4297-be3a-38a0c1c064cd	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	6e621ebe-c0b1-4877-8244-5e581f25d878	2023-04-04 08:03:06.908719+00
 2814c41d-7884-4fa1-8ac6-e067e1a57aef	336bf68a-d72e-40ed-82ec-75a573e7ab78	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	2023-04-05 12:39:56.871642+00
+de643197-3cf7-494f-83cf-b3c19e4fe71e	6e621ebe-c0b1-4877-8244-5e581f25d878	6936b4b4-1453-4202-879f-763be55d5bbd	2023-04-07 10:14:10.044991+00
+130d4153-5792-4abe-81d4-78cd706cae5c	c5b2ab53-64eb-410d-964c-1ca6df21b0c0	6936b4b4-1453-4202-879f-763be55d5bbd	2023-04-07 10:21:16.442286+00
 \.
 
 
 --
--- TOC entry 3276 (class 0 OID 16608)
--- Dependencies: 217
+-- TOC entry 3263 (class 0 OID 16425)
+-- Dependencies: 204
 -- Data for Name: hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -855,8 +847,8 @@ cde4c72c-bd31-4bb1-92f0-12d287632eea	#salut
 
 
 --
--- TOC entry 3281 (class 0 OID 24917)
--- Dependencies: 222
+-- TOC entry 3278 (class 0 OID 16549)
+-- Dependencies: 219
 -- Data for Name: image; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -865,8 +857,8 @@ COPY public.image (id, tweet_id, data, description, title, user_id) FROM stdin;
 
 
 --
--- TOC entry 3274 (class 0 OID 16573)
--- Dependencies: 215
+-- TOC entry 3279 (class 0 OID 16556)
+-- Dependencies: 220
 -- Data for Name: like; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -896,16 +888,8 @@ e03895c6-f2d2-4e38-8181-77e43091254d	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	eada2b
 79c3b3c3-50ea-4fdd-8a2d-b025a818eb9f	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	3a96781f-6b5d-4b60-9b72-a151b9122edf	2023-04-02 14:00:52.148327+00
 b4a57269-f392-4cbf-8898-61385aafcbc2	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	9cc97b3c-6453-4c12-b2f0-e3c2a902ff2c	2023-04-02 14:02:06.398955+00
 1dcf346d-48da-4b42-80a6-d0940bd59efb	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	a23481d1-53b1-41cd-81b9-c7f4583862e6	2023-04-03 19:21:35.441008+00
-360029ec-a102-4065-be19-5f595eb4a35a	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	b7f8e609-8ddf-4a22-9a35-701a4348f82e	2023-04-03 19:25:46.844414+00
-021b0581-ed68-4b31-b510-88f6866e0ab7	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	b7f8e609-8ddf-4a22-9a35-701a4348f82e	2023-04-03 19:26:01.299565+00
-3cbbc3be-7799-4e55-bf30-8830e2962e4f	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	146c8078-8f13-457e-b841-b25b088da11c	2023-04-03 19:26:43.091901+00
-0ee92e0c-a48a-4b40-976a-0cc225d6be92	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	4a96d7c1-efdf-4b3d-8ef6-d24695ac7a96	2023-04-03 19:26:43.887727+00
 6f500451-0efb-4946-9066-8820557de237	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	c6692b06-2e10-4b5d-ac0f-73da09e7489b	2023-04-03 19:30:51.509358+00
-1dbf708e-d1c9-4190-8451-bad42082733c	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	e1022b7e-a872-47e9-9da1-2bc0d21debd0	2023-04-03 19:30:53.053218+00
-11e6650d-61cd-48a0-8072-75cdef6ad696	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	146c8078-8f13-457e-b841-b25b088da11c	2023-04-03 19:30:54.04604+00
-a07d9352-af05-44f2-adb5-16a0fe45e8b1	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	4a96d7c1-efdf-4b3d-8ef6-d24695ac7a96	2023-04-03 19:30:55.471048+00
 cbbd0540-6a94-4fc7-a148-c4cbbeab1db5	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	c6692b06-2e10-4b5d-ac0f-73da09e7489b	2023-04-03 19:31:09.815717+00
-aeb27807-2e4a-411f-978c-c3cf8672b9c3	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	e1022b7e-a872-47e9-9da1-2bc0d21debd0	2023-04-03 19:31:11.823356+00
 4ceb01d7-c30e-4fa0-a415-af9dcc033af2	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	a77f97f0-7c4e-46ea-a4bb-cc1471fe5a03	2023-04-03 19:34:45.50429+00
 cdd044cf-3e88-4d5f-803c-49c843815aa9	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	0a872b17-049e-48c9-906a-ce48fcee357a	2023-04-03 19:34:46.508084+00
 595a8429-3fbf-40bc-b97a-f1dca3416cdc	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	ad442d54-b26f-4aee-b13e-17cd44ffc43a	2023-04-03 19:34:58.731285+00
@@ -916,20 +900,18 @@ a6b15ab7-937c-4e48-92e1-f35a7ace611b	6e621ebe-c0b1-4877-8244-5e581f25d878	ed930f
 b1d2c239-f2dd-49b5-91eb-238400dfc0c8	6e621ebe-c0b1-4877-8244-5e581f25d878	3e23cf2f-f52b-45a4-8af5-7be6caaf2ba5	2023-04-04 06:29:38.480497+00
 7ea0020c-51ba-458f-9e66-57162645269e	6e621ebe-c0b1-4877-8244-5e581f25d878	ca13ce3b-96ae-4094-aba7-582da95cdb1e	2023-04-04 07:36:54.195168+00
 f112f2e4-ee90-4842-a3dd-64b84e366104	6e621ebe-c0b1-4877-8244-5e581f25d878	55b20b35-4fb5-44c7-a09e-5f29372dea54	2023-04-04 07:36:56.321601+00
-3ece2a10-54b5-4352-903b-d8b4c169bc1a	6e621ebe-c0b1-4877-8244-5e581f25d878	e1022b7e-a872-47e9-9da1-2bc0d21debd0	2023-04-04 08:00:49.671168+00
-f323b262-ba52-4a4a-a58f-7754a585fe62	6e621ebe-c0b1-4877-8244-5e581f25d878	146c8078-8f13-457e-b841-b25b088da11c	2023-04-04 08:00:50.882194+00
-4cfb192d-2efc-4e80-abff-cffa3762d884	6e621ebe-c0b1-4877-8244-5e581f25d878	4a96d7c1-efdf-4b3d-8ef6-d24695ac7a96	2023-04-04 08:00:51.9528+00
 c0cdb8da-035d-41bf-86dc-bcc43a895aac	6e621ebe-c0b1-4877-8244-5e581f25d878	f0b791fc-789d-4d70-98d1-672876060a32	2023-04-04 08:00:52.690083+00
-dfd0325c-7634-4404-a344-63d625bb01ed	6e621ebe-c0b1-4877-8244-5e581f25d878	b7f8e609-8ddf-4a22-9a35-701a4348f82e	2023-04-04 08:00:53.55671+00
 41f19a58-e429-4711-b511-0eacd8ebe8bb	6e621ebe-c0b1-4877-8244-5e581f25d878	0c3e3ff8-862a-4b71-bc31-976dc146b4bc	2023-04-04 08:02:01.607164+00
 61821ffc-7443-422e-9344-429e393164db	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	1d9b4478-a6ff-47ae-bcc5-9593659b4ee8	2023-04-04 15:05:39.127841+00
 524f4eb2-67b1-4387-9ab8-8663d37b1fb0	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	28127c59-1c80-4fa6-ba04-eba9603a0255	2023-04-05 14:48:30.31891+00
+a5d9ee66-9d00-4c32-98a3-e172b407a655	6936b4b4-1453-4202-879f-763be55d5bbd	28127c59-1c80-4fa6-ba04-eba9603a0255	2023-04-07 10:14:35.523568+00
+d3028e9d-f241-44fd-99a7-44dfb853330e	6936b4b4-1453-4202-879f-763be55d5bbd	689a5d26-d1cd-41d2-a0f9-2410ae072a49	2023-04-07 10:14:37.18416+00
 \.
 
 
 --
--- TOC entry 3278 (class 0 OID 16633)
--- Dependencies: 219
+-- TOC entry 3280 (class 0 OID 16561)
+-- Dependencies: 221
 -- Data for Name: mention; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -941,8 +923,8 @@ bc774ee8-3352-4f96-a9e9-5d6002a1d32e	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	ca13ce
 
 
 --
--- TOC entry 3280 (class 0 OID 24884)
--- Dependencies: 221
+-- TOC entry 3281 (class 0 OID 16566)
+-- Dependencies: 222
 -- Data for Name: message; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -984,7 +966,7 @@ df32981a-00a2-4f53-8860-262b0fd15ca6	6e621ebe-c0b1-4877-8244-5e581f25d878	6b2f8c
 
 
 --
--- TOC entry 3282 (class 0 OID 33156)
+-- TOC entry 3282 (class 0 OID 16574)
 -- Dependencies: 223
 -- Data for Name: notification; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -998,12 +980,15 @@ e1c379b1-1256-4c99-ad8b-7dc2a5815e83	2023-04-05 14:32:00.488669+00	jiji	Message	
 39779f88-133f-4302-9ec8-22da34253f11	2023-04-05 14:32:26.228768+00	loloollo	Message	6e621ebe-c0b1-4877-8244-5e581f25d878	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	f
 e5068b3a-2af9-4df7-b062-ff33b4ab9d7c	2023-04-05 14:34:14.335279+00	lolol	Message	6e621ebe-c0b1-4877-8244-5e581f25d878	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	f
 bb9bd337-a0eb-485f-827c-aa1409140f40	2023-04-05 15:05:21.700594+00	rien	Message	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	6e621ebe-c0b1-4877-8244-5e581f25d878	f
+ef3df24a-b067-43e0-84eb-3c40f517ef30	2023-04-07 10:13:59.322084+00	A new follower has been added	Follower	6936b4b4-1453-4202-879f-763be55d5bbd	6e621ebe-c0b1-4877-8244-5e581f25d878	f
+be926edd-9078-47f2-81d3-bdcfdf841d19	2023-04-07 10:14:10.044991+00	A new follower has been added	Follower	6936b4b4-1453-4202-879f-763be55d5bbd	6e621ebe-c0b1-4877-8244-5e581f25d878	f
+c1afa51e-551b-4150-9290-980742869108	2023-04-07 10:21:16.442286+00	A new follower has been added	Follower	6936b4b4-1453-4202-879f-763be55d5bbd	c5b2ab53-64eb-410d-964c-1ca6df21b0c0	f
 \.
 
 
 --
--- TOC entry 3275 (class 0 OID 16592)
--- Dependencies: 216
+-- TOC entry 3283 (class 0 OID 16583)
+-- Dependencies: 224
 -- Data for Name: retweet; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1014,8 +999,6 @@ COPY public.retweet (user_id, tweet_id, created_at, id) FROM stdin;
 6b2f8c43-8d7f-4d05-878c-923f6d74cd67	fe3610d5-5a5e-48e1-b59f-5a39c9b0f208	2023-04-02 08:20:18.870843+00	c57a62cc-f042-45c7-bf7a-f11d3e36a641
 6b2f8c43-8d7f-4d05-878c-923f6d74cd67	64ad5ef5-5133-4e28-a68c-fdb6b4c46e1f	2023-04-02 14:01:32.384142+00	2349d8e6-0c60-44ab-ac8c-49b942da3e58
 6b2f8c43-8d7f-4d05-878c-923f6d74cd67	9e4fcbf1-db7e-4ed4-bc3b-8f78fb53b6b7	2023-04-02 14:02:32.74303+00	02035a80-f4c1-41a7-bf6e-9a044d480daa
-2a4d1591-32db-4e1b-bdda-e8703cebb0a8	b7f8e609-8ddf-4a22-9a35-701a4348f82e	2023-04-03 19:25:05.006798+00	0b8242ec-231f-4c32-bf32-8de06548bf5e
-6b2f8c43-8d7f-4d05-878c-923f6d74cd67	b7f8e609-8ddf-4a22-9a35-701a4348f82e	2023-04-03 19:25:55.10352+00	06293ffa-1011-4f08-8298-15ef1c8051b0
 2a4d1591-32db-4e1b-bdda-e8703cebb0a8	ca13ce3b-96ae-4094-aba7-582da95cdb1e	2023-04-03 19:48:30.644236+00	8c318967-f55c-4b5c-819e-04574d140b2f
 6b2f8c43-8d7f-4d05-878c-923f6d74cd67	55b20b35-4fb5-44c7-a09e-5f29372dea54	2023-04-03 19:52:45.289989+00	ff2c0d07-2887-4e19-9b9d-e39a8bfc0e5c
 6e621ebe-c0b1-4877-8244-5e581f25d878	ed930f48-7501-4a2b-9112-02987d26a688	2023-04-04 07:38:17.382351+00	4a634d88-34b3-46e0-afb1-c57f0adbf6a6
@@ -1026,8 +1009,8 @@ COPY public.retweet (user_id, tweet_id, created_at, id) FROM stdin;
 
 
 --
--- TOC entry 3272 (class 0 OID 16542)
--- Dependencies: 213
+-- TOC entry 3284 (class 0 OID 16588)
+-- Dependencies: 225
 -- Data for Name: tweet; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1071,11 +1054,7 @@ ed930f48-7501-4a2b-9112-02987d26a688	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	rienWh
 e05ec5dc-f8d4-4f0d-b05c-1a511a8e372a	1ce2b46d-c92c-4fd4-a1e3-b4d4e2074815	Hello world!	2022-01-01 00:00:00+00	["/main/FpkMFTpX0AABs_O.jpg"]	\N
 64ad5ef5-5133-4e28-a68c-fdb6b4c46e1f	6e621ebe-c0b1-4877-8244-5e581f25d878	#jetweet lol	2023-04-01 21:52:44.226216+00	"null"	\N
 a23481d1-53b1-41cd-81b9-c7f4583862e6	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	ccc	2023-04-02 20:08:27.282359+00	"null"	\N
-b7f8e609-8ddf-4a22-9a35-701a4348f82e	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	Bonjour #FreeAbdeslam	2023-04-03 19:24:51.598581+00	"null"	\N
 f0b791fc-789d-4d70-98d1-672876060a32	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	salut #FreeAbdeslam	2023-04-03 19:26:21.692947+00	"null"	\N
-4a96d7c1-efdf-4b3d-8ef6-d24695ac7a96	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	#FreeAbdeslam	2023-04-03 19:26:26.289519+00	"null"	\N
-146c8078-8f13-457e-b841-b25b088da11c	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	#FreeAbdeslam	2023-04-03 19:26:39.50906+00	"null"	\N
-e1022b7e-a872-47e9-9da1-2bc0d21debd0	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	#FreeAbdeslam	2023-04-03 19:26:44.411781+00	"null"	\N
 c6692b06-2e10-4b5d-ac0f-73da09e7489b	2a4d1591-32db-4e1b-bdda-e8703cebb0a8	et la certif abruti @nelda	2023-04-03 19:27:20.163217+00	"null"	\N
 fddb7a4d-dceb-475a-8031-ef3467362bc8	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	Beaucoup de choses peuvent expliquer cette réaction sobre (vision froide de l&#39;entraîneur, peur du VAR, etc.) mais je pense qu&#39;il y aussi de l&#39;empathie envers Solbakken Le joueur veut jouer, il va devoir se rasseoir, c&#39;est jamais un moment cool. J&#39;aime bien cette réaction de José	2023-04-03 19:31:59.308537+00	"null"	\N
 98f8712c-b796-4a75-b2e1-9e2107820429	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	Beaucoup de choses peuvent expliquer cette réaction sobre (vision froide de l&#39;entraîneur, peur du VAR, etc.) mais je pense qu&#39;il y aussi de l&#39;empathie envers Solbakken Le joueur veut jouer, il va devoir se rasseoir, c&#39;est jamais un moment cool. J&#39;aime bien cette réaction de José	2023-04-03 19:33:02.978016+00	"null"	\N
@@ -1091,12 +1070,16 @@ f8ada09b-469d-4691-b540-0235ea95e950	6e621ebe-c0b1-4877-8244-5e581f25d878	répon
 689a5d26-d1cd-41d2-a0f9-2410ae072a49	6e621ebe-c0b1-4877-8244-5e581f25d878	deuxième réponse\n\n	2023-04-04 11:35:32.088551+00	\N	ed930f48-7501-4a2b-9112-02987d26a688
 1d9b4478-a6ff-47ae-bcc5-9593659b4ee8	6b2f8c43-8d7f-4d05-878c-923f6d74cd67	kiikk	2023-04-04 15:03:19.663245+00	\N	ca13ce3b-96ae-4094-aba7-582da95cdb1e
 28127c59-1c80-4fa6-ba04-eba9603a0255	6e621ebe-c0b1-4877-8244-5e581f25d878	@nelda	2023-04-05 13:54:38.321991+00	"null"	\N
+0bd4ee69-619c-4755-ba11-7111971cb17d	6936b4b4-1453-4202-879f-763be55d5bbd	salut bg	2023-04-07 10:36:39.547266+00	\N	28127c59-1c80-4fa6-ba04-eba9603a0255
+627f2372-f6bc-435b-a09e-3b03ea9ddf0c	6936b4b4-1453-4202-879f-763be55d5bbd	salut	2023-04-07 10:47:08.888699+00	\N	0a872b17-049e-48c9-906a-ce48fcee357a
+226a730c-7a4b-4cd8-a363-64849107690a	6936b4b4-1453-4202-879f-763be55d5bbd	sdfiourefgo^t	2023-04-07 10:48:45.471169+00	\N	0a872b17-049e-48c9-906a-ce48fcee357a
+7e2fc6a1-80e8-4655-ad17-b108c995cf87	6936b4b4-1453-4202-879f-763be55d5bbd	efftye	2023-04-07 10:49:51.966643+00	\N	0a872b17-049e-48c9-906a-ce48fcee357a
 \.
 
 
 --
--- TOC entry 3277 (class 0 OID 16617)
--- Dependencies: 218
+-- TOC entry 3285 (class 0 OID 16596)
+-- Dependencies: 226
 -- Data for Name: tweet_hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1109,11 +1092,7 @@ f070e435-469f-4ea9-8421-3a8e857463ba	68467af0-a65e-4443-a0c4-16acbd3eb77d	4bb141
 e6b31864-f681-4b03-ab68-83e8f9bf9396	8eaa756f-625a-4773-af90-2c8a72c35586	3e0a62d4-6eb6-4e30-8909-1d9bd9e90d8b
 2f25bf75-5d97-496f-99b4-1752a3a53b77	8735b68d-0704-46ba-9982-845c8673d5dd	3e0a62d4-6eb6-4e30-8909-1d9bd9e90d8b
 5295febf-d1e9-4e26-8f1a-9ec1b646a8d4	64ad5ef5-5133-4e28-a68c-fdb6b4c46e1f	a32bd55b-d319-4222-96a2-b3493440f469
-ca1e90b6-b3df-421c-ac00-5a5df260df54	b7f8e609-8ddf-4a22-9a35-701a4348f82e	5d6c0f20-04ae-490e-882c-4f409e37b442
 88ed184e-495a-48e2-aa75-31d61a9c79e9	f0b791fc-789d-4d70-98d1-672876060a32	5d6c0f20-04ae-490e-882c-4f409e37b442
-aeda9e60-ae9c-4186-91ae-a506da54153c	4a96d7c1-efdf-4b3d-8ef6-d24695ac7a96	5d6c0f20-04ae-490e-882c-4f409e37b442
-e04cb3c2-1a93-4535-ba4a-83ecded5c42e	146c8078-8f13-457e-b841-b25b088da11c	5d6c0f20-04ae-490e-882c-4f409e37b442
-48d65779-c6d5-48b0-b8a3-8d69e4079205	e1022b7e-a872-47e9-9da1-2bc0d21debd0	5d6c0f20-04ae-490e-882c-4f409e37b442
 ed4f1c9c-2a8f-4c5f-b1e4-de8012e4d50b	fddb7a4d-dceb-475a-8031-ef3467362bc8	4bb14102-8cd1-47bb-a46e-871b8023eabe
 8921983e-1949-46fe-88a5-ec2fa919ff6e	fddb7a4d-dceb-475a-8031-ef3467362bc8	4bb14102-8cd1-47bb-a46e-871b8023eabe
 d79010c4-e033-4c29-b4c1-4e950d2c360d	fddb7a4d-dceb-475a-8031-ef3467362bc8	4bb14102-8cd1-47bb-a46e-871b8023eabe
@@ -1144,8 +1123,8 @@ e36fcbda-ec38-4062-861a-3381582783f6	a77f97f0-7c4e-46ea-a4bb-cc1471fe5a03	4bb141
 
 
 --
--- TOC entry 3271 (class 0 OID 16528)
--- Dependencies: 212
+-- TOC entry 3286 (class 0 OID 16600)
+-- Dependencies: 227
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1155,13 +1134,17 @@ COPY public."user" (id, username, email, password, bio, profile_picture_url, web
 336bf68a-d72e-40ed-82ec-75a573e7ab78	charlie	charlie@example.com	password3	'	\N	\N	\N	2023-03-25 12:33:35.914806+00	Charlie	f	2001-02-01	\N
 2c13461f-7c04-4376-9f2e-15d2443a3a03	bob	bob@example.com	password2	'	\N	\N	\N	2023-03-25 12:33:35.914806+00	Bob	f	2001-02-01	\N
 6e621ebe-c0b1-4877-8244-5e581f25d878	krateros	spelfard74@gmail.com	$2a$10$fRoFKWfHn2O4PWECO7OqPOSf4VC.XkH1hhZwyl8M6v2/A2Ar1cZGm	'	\N	\N	\N	2023-03-31 18:48:24.121525+00	Krateros Wallace	f	1992-03-12	\N
-6b2f8c43-8d7f-4d05-878c-923f6d74cd67	nelda	adlencherif29@gmail.com	$2a$10$MGql3FiTb539DPCWnjCdauBJqm3lvDiFrA67cUmYPyTzU9ZctTALq	'	http://127.0.0.1:9000/main/FpkMFTpX0AABs_O.jpg	\N	\N	2023-03-28 10:54:55.805202+00	Adlen CHERIF	t	2002-07-29	\N
 2a4d1591-32db-4e1b-bdda-e8703cebb0a8	Jean-mi	yahiv71671@marikuza.com	$2a$10$wfKjGUNj8LgDdkVjYr6Fze7m6cs2nAqIQjZpMBOUYyCivI4MUAvGu	'	\N	\N	\N	2023-04-03 19:22:57.95808+00	Abdelakh Khadirhov	f	1900-01-01	\N
+f09e2c70-b74a-4000-acba-ed5ae0c831a3	123478	nemda@gmail.com	$2a$10$bSRWvcfZtWt3q1h/jWdYp.RDgHiss5B3xEJ7NL6EMviakshL7j3ES	'	\N	\N	\N	2023-04-07 10:06:20.196162+00	testst	f	2005-02-03	\N
+a81d9512-652b-4e11-8bfd-de2205126069	mefabg	udud@eeuuu.com	$2a$10$HV990u0s93TyDrY1pkhA6ewlEb03fQDy1dAW1gO7Q1cFyGjfVA5CK	'	\N	\N	\N	2023-04-07 10:08:21.707964+00	Armed	f	2005-01-31	\N
+c5b2ab53-64eb-410d-964c-1ca6df21b0c0	baptiste	test@text.cicic	$2a$10$sLoF7S7xe22n6B578DRZsuV5EVrJC/AP7PZsQJr.2j4Wl5mMP7oT6	'	\N	\N	\N	2023-04-07 10:10:09.510153+00	Baptise Reydette	f	1900-01-01	\N
+6936b4b4-1453-4202-879f-763be55d5bbd	jujulabg	retest@rien.chdhd	$2a$10$nOyUKOKfcm6uNkwoWCqImOPpXGMm4P2iwgmKVK9u3PxP0UZyKJlVu	'	\N	\N	\N	2023-04-07 10:12:50.439649+00	Juliette Silvestri	f	1900-01-01	\N
+6b2f8c43-8d7f-4d05-878c-923f6d74cd67	nelda	adlencherif29@gmail.com	$2a$10$MGql3FiTb539DPCWnjCdauBJqm3lvDiFrA67cUmYPyTzU9ZctTALq	'		\N	\N	2023-03-28 10:54:55.805202+00	Adlen CHERIF	t	2002-07-29	\N
 \.
 
 
 --
--- TOC entry 3107 (class 2606 OID 33208)
+-- TOC entry 3041 (class 2606 OID 16611)
 -- Name: event_invocation_logs event_invocation_logs_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1170,7 +1153,7 @@ ALTER TABLE ONLY hdb_catalog.event_invocation_logs
 
 
 --
--- TOC entry 3103 (class 2606 OID 33196)
+-- TOC entry 3044 (class 2606 OID 16613)
 -- Name: event_log event_log_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1179,7 +1162,7 @@ ALTER TABLE ONLY hdb_catalog.event_log
 
 
 --
--- TOC entry 3043 (class 2606 OID 16456)
+-- TOC entry 3047 (class 2606 OID 16615)
 -- Name: hdb_action_log hdb_action_log_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1188,7 +1171,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_action_log
 
 
 --
--- TOC entry 3050 (class 2606 OID 16481)
+-- TOC entry 3050 (class 2606 OID 16617)
 -- Name: hdb_cron_event_invocation_logs hdb_cron_event_invocation_logs_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1197,7 +1180,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_cron_event_invocation_logs
 
 
 --
--- TOC entry 3046 (class 2606 OID 16469)
+-- TOC entry 3053 (class 2606 OID 16619)
 -- Name: hdb_cron_events hdb_cron_events_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1206,7 +1189,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_cron_events
 
 
 --
--- TOC entry 3109 (class 2606 OID 33220)
+-- TOC entry 3056 (class 2606 OID 16621)
 -- Name: hdb_event_log_cleanups hdb_event_log_cleanups_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1215,7 +1198,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_event_log_cleanups
 
 
 --
--- TOC entry 3111 (class 2606 OID 33222)
+-- TOC entry 3058 (class 2606 OID 16623)
 -- Name: hdb_event_log_cleanups hdb_event_log_cleanups_trigger_name_scheduled_at_key; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1224,7 +1207,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_event_log_cleanups
 
 
 --
--- TOC entry 3039 (class 2606 OID 16443)
+-- TOC entry 3060 (class 2606 OID 16625)
 -- Name: hdb_metadata hdb_metadata_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1233,7 +1216,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_metadata
 
 
 --
--- TOC entry 3041 (class 2606 OID 16445)
+-- TOC entry 3062 (class 2606 OID 16627)
 -- Name: hdb_metadata hdb_metadata_resource_version_key; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1242,7 +1225,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_metadata
 
 
 --
--- TOC entry 3055 (class 2606 OID 16511)
+-- TOC entry 3064 (class 2606 OID 16629)
 -- Name: hdb_scheduled_event_invocation_logs hdb_scheduled_event_invocation_logs_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1251,7 +1234,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_scheduled_event_invocation_logs
 
 
 --
--- TOC entry 3053 (class 2606 OID 16500)
+-- TOC entry 3067 (class 2606 OID 16631)
 -- Name: hdb_scheduled_events hdb_scheduled_events_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1260,7 +1243,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_scheduled_events
 
 
 --
--- TOC entry 3057 (class 2606 OID 16527)
+-- TOC entry 3069 (class 2606 OID 16633)
 -- Name: hdb_schema_notifications hdb_schema_notifications_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1269,7 +1252,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_schema_notifications
 
 
 --
--- TOC entry 3037 (class 2606 OID 16433)
+-- TOC entry 3073 (class 2606 OID 16635)
 -- Name: hdb_version hdb_version_pkey; Type: CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1278,7 +1261,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_version
 
 
 --
--- TOC entry 3091 (class 2606 OID 24947)
+-- TOC entry 3075 (class 2606 OID 16637)
 -- Name: conversation conversation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1287,7 +1270,7 @@ ALTER TABLE ONLY public.conversation
 
 
 --
--- TOC entry 3093 (class 2606 OID 24939)
+-- TOC entry 3077 (class 2606 OID 16639)
 -- Name: conversation conversation_user1_id_user2_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1296,7 +1279,7 @@ ALTER TABLE ONLY public.conversation
 
 
 --
--- TOC entry 3067 (class 2606 OID 16562)
+-- TOC entry 3079 (class 2606 OID 16641)
 -- Name: follower follower_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1305,7 +1288,7 @@ ALTER TABLE ONLY public.follower
 
 
 --
--- TOC entry 3069 (class 2606 OID 24954)
+-- TOC entry 3081 (class 2606 OID 16643)
 -- Name: follower follower_user_id_follower_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1314,7 +1297,7 @@ ALTER TABLE ONLY public.follower
 
 
 --
--- TOC entry 3081 (class 2606 OID 16616)
+-- TOC entry 3036 (class 2606 OID 16645)
 -- Name: hashtag hashtag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1323,7 +1306,7 @@ ALTER TABLE ONLY public.hashtag
 
 
 --
--- TOC entry 3083 (class 2606 OID 24916)
+-- TOC entry 3038 (class 2606 OID 16647)
 -- Name: hashtag hashtag_text_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1332,7 +1315,7 @@ ALTER TABLE ONLY public.hashtag
 
 
 --
--- TOC entry 3097 (class 2606 OID 24925)
+-- TOC entry 3083 (class 2606 OID 16649)
 -- Name: image image_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1341,7 +1324,7 @@ ALTER TABLE ONLY public.image
 
 
 --
--- TOC entry 3071 (class 2606 OID 24910)
+-- TOC entry 3085 (class 2606 OID 16652)
 -- Name: like like_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1350,7 +1333,7 @@ ALTER TABLE ONLY public."like"
 
 
 --
--- TOC entry 3073 (class 2606 OID 24912)
+-- TOC entry 3087 (class 2606 OID 16654)
 -- Name: like like_user_id_tweet_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1359,7 +1342,7 @@ ALTER TABLE ONLY public."like"
 
 
 --
--- TOC entry 3087 (class 2606 OID 16639)
+-- TOC entry 3089 (class 2606 OID 16656)
 -- Name: mention mention_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1368,7 +1351,7 @@ ALTER TABLE ONLY public.mention
 
 
 --
--- TOC entry 3089 (class 2606 OID 33149)
+-- TOC entry 3091 (class 2606 OID 16658)
 -- Name: mention mention_user_id_tweet_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1377,7 +1360,7 @@ ALTER TABLE ONLY public.mention
 
 
 --
--- TOC entry 3095 (class 2606 OID 24893)
+-- TOC entry 3093 (class 2606 OID 16660)
 -- Name: message message_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1386,7 +1369,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 3099 (class 2606 OID 33165)
+-- TOC entry 3095 (class 2606 OID 16662)
 -- Name: notification notification_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1395,7 +1378,7 @@ ALTER TABLE ONLY public.notification
 
 
 --
--- TOC entry 3075 (class 2606 OID 16654)
+-- TOC entry 3097 (class 2606 OID 16664)
 -- Name: retweet retweet_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1404,7 +1387,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3077 (class 2606 OID 16660)
+-- TOC entry 3099 (class 2606 OID 16666)
 -- Name: retweet retweet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1413,7 +1396,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3079 (class 2606 OID 24937)
+-- TOC entry 3101 (class 2606 OID 16668)
 -- Name: retweet retweet_user_id_tweet_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1422,7 +1405,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3085 (class 2606 OID 16622)
+-- TOC entry 3105 (class 2606 OID 16670)
 -- Name: tweet_hashtag tweet_hashtag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1431,7 +1414,7 @@ ALTER TABLE ONLY public.tweet_hashtag
 
 
 --
--- TOC entry 3065 (class 2606 OID 16551)
+-- TOC entry 3103 (class 2606 OID 16672)
 -- Name: tweet tweet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1440,7 +1423,7 @@ ALTER TABLE ONLY public.tweet
 
 
 --
--- TOC entry 3059 (class 2606 OID 16541)
+-- TOC entry 3107 (class 2606 OID 16674)
 -- Name: user user_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1449,7 +1432,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 3061 (class 2606 OID 16537)
+-- TOC entry 3109 (class 2606 OID 16676)
 -- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1458,7 +1441,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 3063 (class 2606 OID 16539)
+-- TOC entry 3111 (class 2606 OID 16678)
 -- Name: user user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1467,7 +1450,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- TOC entry 3105 (class 1259 OID 33209)
+-- TOC entry 3039 (class 1259 OID 16679)
 -- Name: event_invocation_logs_event_id_idx; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1475,7 +1458,7 @@ CREATE INDEX event_invocation_logs_event_id_idx ON hdb_catalog.event_invocation_
 
 
 --
--- TOC entry 3101 (class 1259 OID 33198)
+-- TOC entry 3042 (class 1259 OID 16680)
 -- Name: event_log_fetch_events; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1483,7 +1466,7 @@ CREATE INDEX event_log_fetch_events ON hdb_catalog.event_log USING btree (locked
 
 
 --
--- TOC entry 3104 (class 1259 OID 33197)
+-- TOC entry 3045 (class 1259 OID 16681)
 -- Name: event_log_trigger_name_idx; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1491,7 +1474,7 @@ CREATE INDEX event_log_trigger_name_idx ON hdb_catalog.event_log USING btree (tr
 
 
 --
--- TOC entry 3048 (class 1259 OID 16487)
+-- TOC entry 3048 (class 1259 OID 16682)
 -- Name: hdb_cron_event_invocation_event_id; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1499,7 +1482,7 @@ CREATE INDEX hdb_cron_event_invocation_event_id ON hdb_catalog.hdb_cron_event_in
 
 
 --
--- TOC entry 3044 (class 1259 OID 16470)
+-- TOC entry 3051 (class 1259 OID 16683)
 -- Name: hdb_cron_event_status; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1507,7 +1490,7 @@ CREATE INDEX hdb_cron_event_status ON hdb_catalog.hdb_cron_events USING btree (s
 
 
 --
--- TOC entry 3047 (class 1259 OID 16471)
+-- TOC entry 3054 (class 1259 OID 16684)
 -- Name: hdb_cron_events_unique_scheduled; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1515,7 +1498,7 @@ CREATE UNIQUE INDEX hdb_cron_events_unique_scheduled ON hdb_catalog.hdb_cron_eve
 
 
 --
--- TOC entry 3051 (class 1259 OID 16501)
+-- TOC entry 3065 (class 1259 OID 16685)
 -- Name: hdb_scheduled_event_status; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1523,7 +1506,7 @@ CREATE INDEX hdb_scheduled_event_status ON hdb_catalog.hdb_scheduled_events USIN
 
 
 --
--- TOC entry 3100 (class 1259 OID 33182)
+-- TOC entry 3070 (class 1259 OID 16686)
 -- Name: hdb_source_catalog_version_one_row; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1531,7 +1514,7 @@ CREATE UNIQUE INDEX hdb_source_catalog_version_one_row ON hdb_catalog.hdb_source
 
 
 --
--- TOC entry 3035 (class 1259 OID 16434)
+-- TOC entry 3071 (class 1259 OID 16687)
 -- Name: hdb_version_one_row; Type: INDEX; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1539,7 +1522,7 @@ CREATE UNIQUE INDEX hdb_version_one_row ON hdb_catalog.hdb_version USING btree (
 
 
 --
--- TOC entry 3134 (class 2620 OID 33230)
+-- TOC entry 3134 (class 2620 OID 16688)
 -- Name: follower follower_notify_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -1547,7 +1530,7 @@ CREATE TRIGGER follower_notify_trigger AFTER INSERT OR UPDATE ON public.follower
 
 
 --
--- TOC entry 3135 (class 2620 OID 33231)
+-- TOC entry 3135 (class 2620 OID 16689)
 -- Name: mention mention_notify_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -1555,7 +1538,7 @@ CREATE TRIGGER mention_notify_trigger AFTER INSERT OR UPDATE ON public.mention F
 
 
 --
--- TOC entry 3136 (class 2620 OID 33232)
+-- TOC entry 3136 (class 2620 OID 16690)
 -- Name: message message_notify_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -1563,7 +1546,7 @@ CREATE TRIGGER message_notify_trigger AFTER INSERT OR UPDATE ON public.message F
 
 
 --
--- TOC entry 3112 (class 2606 OID 16482)
+-- TOC entry 3112 (class 2606 OID 16691)
 -- Name: hdb_cron_event_invocation_logs hdb_cron_event_invocation_logs_event_id_fkey; Type: FK CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1572,7 +1555,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_cron_event_invocation_logs
 
 
 --
--- TOC entry 3113 (class 2606 OID 16512)
+-- TOC entry 3113 (class 2606 OID 16696)
 -- Name: hdb_scheduled_event_invocation_logs hdb_scheduled_event_invocation_logs_event_id_fkey; Type: FK CONSTRAINT; Schema: hdb_catalog; Owner: postgres
 --
 
@@ -1581,7 +1564,7 @@ ALTER TABLE ONLY hdb_catalog.hdb_scheduled_event_invocation_logs
 
 
 --
--- TOC entry 3126 (class 2606 OID 24874)
+-- TOC entry 3114 (class 2606 OID 16701)
 -- Name: conversation conversation_user1_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1590,7 +1573,7 @@ ALTER TABLE ONLY public.conversation
 
 
 --
--- TOC entry 3127 (class 2606 OID 24879)
+-- TOC entry 3115 (class 2606 OID 16706)
 -- Name: conversation conversation_user2_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1599,7 +1582,7 @@ ALTER TABLE ONLY public.conversation
 
 
 --
--- TOC entry 3116 (class 2606 OID 16568)
+-- TOC entry 3116 (class 2606 OID 16711)
 -- Name: follower follower_follower_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1608,7 +1591,7 @@ ALTER TABLE ONLY public.follower
 
 
 --
--- TOC entry 3117 (class 2606 OID 16563)
+-- TOC entry 3117 (class 2606 OID 16716)
 -- Name: follower follower_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1617,7 +1600,7 @@ ALTER TABLE ONLY public.follower
 
 
 --
--- TOC entry 3131 (class 2606 OID 24926)
+-- TOC entry 3118 (class 2606 OID 16721)
 -- Name: image image_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1626,7 +1609,7 @@ ALTER TABLE ONLY public.image
 
 
 --
--- TOC entry 3132 (class 2606 OID 24931)
+-- TOC entry 3119 (class 2606 OID 16726)
 -- Name: image image_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1635,7 +1618,7 @@ ALTER TABLE ONLY public.image
 
 
 --
--- TOC entry 3118 (class 2606 OID 16585)
+-- TOC entry 3120 (class 2606 OID 16731)
 -- Name: like like_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1644,7 +1627,7 @@ ALTER TABLE ONLY public."like"
 
 
 --
--- TOC entry 3119 (class 2606 OID 16580)
+-- TOC entry 3121 (class 2606 OID 16736)
 -- Name: like like_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1653,7 +1636,7 @@ ALTER TABLE ONLY public."like"
 
 
 --
--- TOC entry 3124 (class 2606 OID 16645)
+-- TOC entry 3122 (class 2606 OID 16741)
 -- Name: mention mention_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1662,7 +1645,7 @@ ALTER TABLE ONLY public.mention
 
 
 --
--- TOC entry 3125 (class 2606 OID 16640)
+-- TOC entry 3123 (class 2606 OID 16746)
 -- Name: mention mention_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1671,7 +1654,7 @@ ALTER TABLE ONLY public.mention
 
 
 --
--- TOC entry 3128 (class 2606 OID 24948)
+-- TOC entry 3124 (class 2606 OID 16751)
 -- Name: message message_conversation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1680,7 +1663,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 3129 (class 2606 OID 24899)
+-- TOC entry 3125 (class 2606 OID 16756)
 -- Name: message message_recipient_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1689,7 +1672,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 3130 (class 2606 OID 24894)
+-- TOC entry 3126 (class 2606 OID 16761)
 -- Name: message message_sender_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1698,7 +1681,7 @@ ALTER TABLE ONLY public.message
 
 
 --
--- TOC entry 3133 (class 2606 OID 33171)
+-- TOC entry 3127 (class 2606 OID 16766)
 -- Name: notification notification_receiver_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1707,7 +1690,7 @@ ALTER TABLE ONLY public.notification
 
 
 --
--- TOC entry 3120 (class 2606 OID 16598)
+-- TOC entry 3128 (class 2606 OID 16771)
 -- Name: retweet retweet_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1716,7 +1699,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3121 (class 2606 OID 16603)
+-- TOC entry 3129 (class 2606 OID 16776)
 -- Name: retweet retweet_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1725,7 +1708,7 @@ ALTER TABLE ONLY public.retweet
 
 
 --
--- TOC entry 3114 (class 2606 OID 16552)
+-- TOC entry 3130 (class 2606 OID 16781)
 -- Name: tweet tweet_author_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1734,7 +1717,7 @@ ALTER TABLE ONLY public.tweet
 
 
 --
--- TOC entry 3122 (class 2606 OID 16628)
+-- TOC entry 3132 (class 2606 OID 16786)
 -- Name: tweet_hashtag tweet_hashtag_hashtag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1743,7 +1726,7 @@ ALTER TABLE ONLY public.tweet_hashtag
 
 
 --
--- TOC entry 3123 (class 2606 OID 16623)
+-- TOC entry 3133 (class 2606 OID 16791)
 -- Name: tweet_hashtag tweet_hashtag_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1752,7 +1735,7 @@ ALTER TABLE ONLY public.tweet_hashtag
 
 
 --
--- TOC entry 3115 (class 2606 OID 33150)
+-- TOC entry 3131 (class 2606 OID 16796)
 -- Name: tweet tweet_parent_tweet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1760,17 +1743,7 @@ ALTER TABLE ONLY public.tweet
     ADD CONSTRAINT tweet_parent_tweet_id_fkey FOREIGN KEY (parent_tweet_id) REFERENCES public.tweet(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
---
--- TOC entry 3292 (class 0 OID 0)
--- Dependencies: 7
--- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE USAGE ON SCHEMA public FROM PUBLIC;
-GRANT ALL ON SCHEMA public TO PUBLIC;
-
-
--- Completed on 2023-04-06 06:21:22
+-- Completed on 2023-04-07 12:58:50
 
 --
 -- PostgreSQL database dump complete

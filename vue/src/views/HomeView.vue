@@ -18,7 +18,7 @@
           :tweet-date="tweet.created_at"
           :tweet-likes="tweet.tweet_likes_aggregate.aggregate.count"
           :tweet-retweets="tweet.tweet_retweets_aggregate.aggregate.count"
-          :tweet-replies="2547"
+          :tweet-replies="tweet.tweet_replies_aggregate.aggregate.count"
           :tweet-bookmarked="false"
           :tweet-liked="true"
           :tweet-retweeted="false"

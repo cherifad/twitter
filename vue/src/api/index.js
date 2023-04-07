@@ -20,6 +20,11 @@ const GET_TWEETS = () => {
             user_id
           }
         }
+        tweet_replies_aggregate {
+          aggregate {
+            count
+          }
+        }
         tweet_user {
           name
           username
@@ -196,6 +201,11 @@ const GET_SINGLE_TWEET = (id) => {
           }
           nodes {
             user_id
+          }
+        }
+        tweet_replies_aggregate {
+          aggregate {
+            count
           }
         }
         tweet_user {

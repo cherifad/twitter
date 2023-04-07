@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", {
           return false;
         } else {
           this.twitterUser = response[0];
-          this.router.push(`/profile/${twitterUser.username}`);
+          this.router.push(`/${twitterUser.username}`);
           return true;
         }
       } catch (error) {
@@ -61,8 +61,9 @@ export const useAuthStore = defineStore("auth", {
           username,
           dateOfBirth
         );
-        this.twitterUser = response.data;
-        this.router.push(`/profile/${response.username}`);
+        console.log(response);
+        this.twitterUser = response;
+        this.router.push(`/${response.username}`);
         return true
       } catch (error) {
         this.twitterAuthErrors.push("Une erreur est survenue");

@@ -45,7 +45,7 @@
       </li>
       <li class="">
         <RouterLink
-          to="/messages"
+          :to="authStore.isAuthenticated ? `/messages` : '/'"
           class="p-3 w-fit flex rounded-full items-center hover:bg-gray dark:hover:bg-gray-hover"
         >
           <IconMessage class="w-6 h-6" :selected="route.name == 'Messages'" />

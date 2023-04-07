@@ -1,5 +1,5 @@
 <template>
-  <div
+  <RouterLink :to="withLink ? `/${tweetAuthorUsername}/status/${tweetId}` : ''"
     class="flex pt-3 px-4 border-b-[1px] dark:border-zinc-800 border-zinc-200"
   >
     <div class="p-2">
@@ -122,7 +122,7 @@
       </div>
     </div>
     <AddReply @close="toShow=false" :original-tweet-id="tweetId" :to-show="toShow" v-bind:original-tweet-content="tweetContent" :original-tweet-author-picture="tweetAuthorAvatar" :original-tweet-author="tweetAuthor" :original-tweet-author-username="tweetAuthorUsername" :original-tweet-date="tweetDate" />
-  </div>
+  </RouterLink>
 </template>
 
 <script setup>
@@ -147,6 +147,10 @@ const props = defineProps({
     type: String,
     default: "",
     required: true,
+  },
+  withLink: {
+    type: Boolean,
+    default: true,
   },
   withResponse: {
     type: Boolean,
